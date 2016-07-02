@@ -7,15 +7,15 @@
             <ion-list id="login-list2" class=" ">
                 <label class="item item-input " id="login-input1">
                     <span class="input-label">E-Mail</span>
-                    <input type="text" placeholder="">
+                    <input type="text" placeholder="" ng-model="log_email">
                 </label>
                 <label class="item item-input " id="login-input2">
                     <span class="input-label">Password</span>
-                    <input type="password" placeholder="">
+                    <input type="password" placeholder="" ng-model="log_pass">
                 </label>
             </ion-list>
             <div class="spacer" style="height: 40px;"></div>
-            <a ui-sref="tabsController.eVaca" id="login-button1" class=" button button-assertive  button-block ">Log in</a>
+            <a ui-sref="tabsController.eVaca" id="login-button1" class=" button button-assertive  button-block " ng-click="vm.enter">Log in</a>
             <a ui-sref="signUp" id="login-button2" class=" button button-assertive  button-block ">Create Account</a>
             <a ui-sref="resetPassword" id="login-button13" style="color:#C5366F;" class=" button button-positive  button-block button-outline ">Forgot password?</a>
         </form>

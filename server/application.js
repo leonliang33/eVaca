@@ -19,13 +19,13 @@ function getExternInfo(){
 }
 
 //Retrieve information from DB
-function getInfo(){
+exports.getInfo = function getInfo(){
 
 }
 
 //Caculate Cost of Event
 function calcEvent(event){
-     var cost
+     var cost;
 
      return cost;
 }
