@@ -2,7 +2,7 @@
 
 angular.module('app.controllers', ['app.services'])
 
-.controller('loginCtrl', ['$state','login',loginController])
+.controller('loginCtrl', ['$scope','login','$http',loginController])
 
 
 
@@ -46,13 +46,13 @@ angular.module('app.controllers', ['app.services'])
 
 })
 
-function loginController($state,login){
+function loginController($scope,login,$http){
      //console.log($scope.log_email);
      //login;
      var vm = this;
      console.log("LOGIN CONTROLLER ACTIVE");
      console.log(vm.log_email + vm.log_pass);
-     vm.enter = function(){
+     $scope.enter = function(){
           console.log("ENTER CALLED");
           login.note(vm.log_email, vm.log_pass);
      }
