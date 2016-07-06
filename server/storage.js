@@ -56,7 +56,7 @@ exports.modify_pass = function modPass(){
 
   /** ****************************************************************************
     *             returnSuccess()
-    *             //Return Account Params
+    *             Return Account Params
     * @param      None
     * @returns    None
     *****************************************************************************/

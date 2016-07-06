@@ -48,7 +48,7 @@ app.post("/", function (req, res) {
     console.log(req.body.UserName);
     console.log(req.body.Password);
     res.send("Login Info Received");
-    // storage.login_verification(req.body.UserName,req.body.Password);
+    storage.login_verification(req.body.UserName,req.body.Password);
 });
 
 //Receive post requests from client

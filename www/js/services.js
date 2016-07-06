@@ -14,7 +14,7 @@ angular.module('app.services', [])
                     data: 'UserName=' + username + '&Password=' + password + '&RememberMe=false'
                }
                console.log('trigger post request');
-               return $http.post("http://localhost:8420/",{user: username,password: password});
+               return $http.post("http://localhost:8420/",{username: username,password: password});
 
 
      }

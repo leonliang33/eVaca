@@ -54,6 +54,8 @@ function loginController($scope,login,$http){
      console.log(vm.log_email + vm.log_pass);
      $scope.enter = function(){
           console.log("ENTER CALLED");
-          login.note(vm.log_email, vm.log_pass);
+          if(!login.note(vm.log_email, vm.log_pass)){
+               $state.reload();
+          }
      }
 };

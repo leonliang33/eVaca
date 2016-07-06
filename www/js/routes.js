@@ -19,7 +19,16 @@ angular.module('app.routes', [])
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller: 'loginCtrl'
+    controller:
+    // function($scope,$state){
+    //  //     if($scope.successLoginCtrl == "yes"){
+    //  //          $state.go("/login");
+    //  //     }else{
+    //  //          $state.go('loginCtrl');
+    //  //     }
+    //       $state.go('loginCtrl');
+    // }
+    'loginCtrl'
   })
 
   .state('tabsController.eVaca', {
