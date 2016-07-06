@@ -35,12 +35,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //This no work and IDK WHY :(
-/*
-app.use(function(req, res) {
+
+app.use(function(req, res,next) {
      res.header("Access-Control-Allow-Origin", "*");
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     next();
 });
-*/
+
 
 //Receive post requests from client
 app.post("/", function (req, res) {
