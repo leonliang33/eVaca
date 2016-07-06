@@ -15,7 +15,6 @@ var storage = require("./storage.js");
 
 //******************************* Global Variables *****************************
 //Place you global variables here.
-//These variables can be called from any point in the iScript
 var budget;
 //******************************************************************************
 
@@ -74,7 +73,7 @@ exports.uber = function uber_availability(location){
       *             calcEvent(event)
       *             API Calls to retrieve information not in our database
       * @param      The event name or location
-      * @returns    <int> :: Cost of the event 
+      * @returns    <int> :: Cost of the event
       *****************************************************************************/
       //Caculate Cost of Event
       function calcEvent(event){

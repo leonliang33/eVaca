@@ -19,8 +19,6 @@ var mongodb = require("mongodb").MongoClient;
 
 //******************************* Global Variables *****************************
 //Place you global variables here.
-//These variables can be called from any point in the iScript
-
 //******************************************************************************
 
 

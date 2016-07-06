@@ -21,7 +21,6 @@ var application = require("./application.js");
 
 //******************************* Global Variables *****************************
 //Place you global variables here.
-//These variables can be called from any point in the iScript
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -29,16 +28,19 @@ var application = require("./application.js");
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-//
+
 // /**bodyParser.json(options)
 //  * Parses the text as JSON and exposes the resulting object on req.body.
 //  */
 app.use(bodyParser.json());
 
-// app.use(function(req, res) {
-//   //res.header("Access-Control-Allow-Origin", "*");
-//   //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-// });
+//This no work and IDK WHY :(
+/*
+app.use(function(req, res) {
+     res.header("Access-Control-Allow-Origin", "*");
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+});
+*/
 
 //Receive post requests from client
 app.post("/", function (req, res) {
