@@ -12,7 +12,7 @@
 //******************************* Configuration ********************************
 //Define Modules Requirement Here
 //Calls application level module
-var application = require("./application.js")
+var application = require("./application.js");
 var mongoose = require('mongoose');
 
 
@@ -20,7 +20,7 @@ var mongoose = require('mongoose');
 //******************************* Global Variables *****************************
 //Place you global variables here.
 //******************************************************************************
-
+var db_url = 'mongodb://localhost/evacadb'
 
 
 
@@ -61,16 +61,37 @@ exports.modify_usrname = function modUsrname(){
   * @returns    boolean true or false
   *****************************************************************************/
   function connectToDatabase(){
-	  mongoose.connect('mongodb://localhost/evacadb');
+	  
+	  mongoose.connect(db_url);
 	  var db = mongoose.connection;
-	  db.on('error', console.error.bind(console, 'connection error:'));
-	  db.once('open', function() {
-		  console.log("Connection to database successful");
+	  
+	  db.on('error', function(err){
+		  console.log("Connection to database unsuccessful.\n" + err);
+		  return false;
+	  });
+	  
+	  db.on('connected', function() {
+		  console.log("Connection to database successful.");
 		  return true;
 	  });
-	  console.log("Connection to database unsuccessful");
+	  
+	  db.on('disconnected', function () {  
+		  console.log('Disconected from the database.'); 
+		  return false;
+	  });
+	  
+	  console.log("Connection to database unsuccessful.");
 	  return false;
   }
+  
+  
+/** ****************************************************************************
+  *             connectToDatabase()
+  *             Function to establish the connection to the dababase. It returns
+  *				true if the connection was successful, or false if unsuccessful.
+  * @param      {none} None
+  * @returns    boolean true or false
+  *****************************************************************************/
 
 /** ****************************************************************************
   *             returnSuccess()
