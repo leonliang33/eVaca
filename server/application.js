@@ -12,6 +12,7 @@
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
 var storage = require("./storage.js");
+var mongoose = require("mongoose");
 
 //******************************* Global Variables *****************************
 //Place you global variables here.
