@@ -54,7 +54,7 @@ class Event{
           this.name = Event.get_api(this.dest,this.cost,this.time);
      }
 
-     static get_api(this.dest,this.cost,this.time){
+     static get_api(dest,cost,time){
           return name;
      }
 }

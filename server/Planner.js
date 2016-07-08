@@ -17,7 +17,7 @@ var Events = require('./Events.js');
 var users = require('./models/user.model.js');
 //******************************* Global Variables *****************************
 //var Schema = mongoose.Schema;
-var cost,time,
+var cost,time;
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *****************************
@@ -29,7 +29,6 @@ var cost,time,
 // var Preference = mongoose.model('Preference',PreferencesSchema);
 //
 // exports.Preference = Preference;
-"use strict";
 class Planner{
      constructor(dest, budget, r_date, b_date){
           this.Preferences;
@@ -41,6 +40,6 @@ class Planner{
 
 
 
-module.exports.Planner;
+module.exports = Planner;
 
 //******************************************************************************

@@ -29,7 +29,7 @@ var Planner = require('./Planner.js')
 //
 // exports.Preference = Preference;
 "use strict";
-class CurrentPlanner extends planner{
+class CurrentPlanner extends Planner{
 
      constructor(dest, budget, r_date, b_date){
 
@@ -37,15 +37,6 @@ class CurrentPlanner extends planner{
 
      }
 
-     static addEvents(time,cost,dest){
-
-          var new_event = new Event(time,cost,dest);
-
-          if(calcBudget(this.Preferences , new_event.cost)){
-               this.Events.push(new_event);
-          }
-
-     }
      set removeEvents(event){
           if(NumOfEvents() <= 0){
                //Return NULL :: Invalid operation
@@ -60,9 +51,6 @@ class CurrentPlanner extends planner{
 
      }
 
-     static calcBudget(budget,Preferences.budget){
-
-     }
 
      get NumOfEvents(){
           return this.Events.size();
@@ -70,6 +58,19 @@ class CurrentPlanner extends planner{
 
 }
 
+CurrentPlanner.prototype.calcBudget = function(){
+
+}
+
+CurrentPlanner.prototype.addEvents= function(time,cost,dest){
+
+          var new_event = new Event(time,cost,dest);
+
+          if(calcBudget(this.Preferences , new_event.cost)){
+               this.Events.push(new_event);
+          }
+
+}
 
 
 module.exports.CurrentPlanner;
