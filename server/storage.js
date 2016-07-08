@@ -26,23 +26,13 @@ var db_url = 'mongodb://localhost/evacadb'
 
 /*********************************Export Modules******************************/
 
-//Verify correct username and password
-exports.login_verification = function login(usr,pass){
+//Authentication
+exports.auth = function auth(){
 
 }
 
-//Modify password
-exports.modify_pass = function modPass(){
-
-}
-
-//Modify email
-exports.modify_email = function modEmail(){
-
-}
-
-//Modify username
-exports.modify_usrname = function modUsrname(){
+//Update User
+exports.updateUser = function updateUser(email){
 
 }
 
@@ -51,7 +41,7 @@ exports.store = function store(User){
 }
 
 exports.retrieve = function retrieve(email){
-	
+
 }
 /*****************************************************************************/
 

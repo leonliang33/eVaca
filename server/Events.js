@@ -11,11 +11,8 @@
 </pre>*************************************************************************/
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
-var mongoose = require("mongoose");
 
 //******************************* Global Variables *****************************
-var Schema = mongoose.Schema;
-
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *****************************
@@ -31,6 +28,19 @@ class Event{
      static get_api(dest,cost,time){
           return name;
      }
+
+     set set_time(time){
+          this.time=time;
+     }
+
+     get getCost(){
+          return this.cost;
+     }
+
+}
+
+Event.prototype.recommend = function(){
+     //Return similar events
 }
 
 module.exports.Event;

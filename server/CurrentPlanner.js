@@ -19,15 +19,7 @@ var Planner = require('./Planner.js')
 
 //******************************************************************************
 
-//******************************* Mongoose Object Creation *****************************
-// var PlannerSchema = new Schema({
-//   preferences:{type:[mongoose.model('Preference')]}
-//   events:{type:[mongoose.model('Events')]}
-// })
-//
-// var Preference = mongoose.model('Preference',PreferencesSchema);
-//
-// exports.Preference = Preference;
+//******************************* Object Creation *****************************
 "use strict";
 class CurrentPlanner extends Planner{
 
@@ -62,7 +54,7 @@ CurrentPlanner.prototype.calcBudget = function(){
 
 }
 
-CurrentPlanner.prototype.addEvents= function(time,cost,dest){
+CurrentPlanner.prototype.addEvents = function(time,cost,dest){
 
           var new_event = new Event(time,cost,dest);
 

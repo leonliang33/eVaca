@@ -20,20 +20,13 @@ var users = require('./models/user.model.js');
 var cost,time;
 //******************************************************************************
 
-//******************************* Mongoose Object Creation *****************************
-// var PlannerSchema = new Schema({
-//   preferences:{type:[mongoose.model('Preference')]}
-//   events:{type:[mongoose.model('Events')]}
-// })
-//
-// var Preference = mongoose.model('Preference',PreferencesSchema);
-//
-// exports.Preference = Preference;
+//******************************* Object Creation *****************************
 class Planner{
      constructor(){
           this.Preferences;
           this.Events = new Array();
      }
+
 
 }
 

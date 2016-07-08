@@ -1,5 +1,5 @@
 /************************************************************ @fileoverview<pre>
-	Name:           Storage.js
+	Name:           application.js
 	Author:         Leon Liang
 	Created:        6/15/2016
 	For Version:		1.0x

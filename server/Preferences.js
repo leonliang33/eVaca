@@ -27,11 +27,27 @@ class Preferences{
                this.destination = dest;
           }
      }
+
+     set setLocation(dest){
+          if(validLocation(this.destination)){
+               this.destination = dest;
+          }
+     }
+
+     set setBeginDate(bd){
+          this.begin_date = bd;
+     }
+
+     set setReturnDate(rd){
+          this.return_date = rd;
+     }
 }
 
 function validLocation(dest){
      return true;
 }
+
+
 
 module.exports.Preferences;
 //******************************************************************************

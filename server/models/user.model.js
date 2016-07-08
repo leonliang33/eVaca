@@ -1,5 +1,5 @@
 /************************************************************ @fileoverview<pre>
-	Name:           Planner.js
+	Name:           user.model.js
 	Author:         Leon Liang
 	Created:        6/15/2016
 	For Version:		1.0x
@@ -14,15 +14,9 @@
 var mongoose = require("mongoose");
 var current_planners = require('../CurrentPlanner.js');
 //******************************* Global Variables *****************************
-//var Schema = mongoose.Schema;
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *********************
-// var user = new Schema({
-//      email:String,
-//      password:String,
-//      Current:{type:[mongoose.model('Planner')]}
-// })
 "use strict";
 
 class User{
@@ -53,7 +47,7 @@ class User{
 
      }
 
-     get viewPlanner(){
+     get view_Planner(){
 
      }
 

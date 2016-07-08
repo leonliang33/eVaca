@@ -10,7 +10,7 @@
 
 </pre>*************************************************************************/
 //******************************* Configuration ********************************
-/*                       Define Modules Requirement Here                        */
+/*                       Define Modules Requirement Here                      */
 var mongoose = require("mongoose");
 "use strict";
 var user_model = require('../models/user.model.js');
@@ -19,6 +19,6 @@ var storage = ('../storage.js');
 var dest,budget,b_date,r_date;
 //******************************************************************************
 
-//******************************* Mongoose Object Creation *****************************
+//******************************* Mongoose Object Creation *********************
 
 //******************************************************************************
