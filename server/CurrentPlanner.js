@@ -46,7 +46,7 @@ class CurrentPlanner extends planner{
           }
 
      }
-     set removeEvents(){
+     set removeEvents(event){
           if(NumOfEvents() <= 0){
                //Return NULL :: Invalid operation
 
@@ -56,11 +56,11 @@ class CurrentPlanner extends planner{
           }
      }
 
-     set shuffleEvents(){
+     get shuffleEvents(){
 
      }
 
-     set calcBudget(){
+     set calcBudget(budget,this.Preferences.budget){
 
      }
 

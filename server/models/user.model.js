@@ -33,35 +33,35 @@ class User{
           this.Current = active_planner;
      }
 
-     set login(){
+     get login(){
 
      }
 
-     set logout(){
+     get logout(){
 
      }
 
-     set viewPlanner(){
+     get viewPlanner(){
 
      }
 
-     set delete_planner(){
+     get delete_planner(){
 
      }
 
-     set add_planner(){
+     get add_planner(){
 
      }
 
-     set viewPlanner(){
+     get viewPlanner(){
 
      }
 
-     set del_Account(){
+     get del_Account(){
 
      }
 
-     set change_password(){
+     get change_password(){
 
      }
 
