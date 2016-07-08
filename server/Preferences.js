@@ -41,7 +41,7 @@
 //      this._dest = dest;
 //      this._budget =
 // }
-
+"use strict"
 class Preferences{
      constructor(dest,budget,b_date,return_date){
           this.budget = budget;

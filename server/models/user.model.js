@@ -23,6 +23,7 @@ var current_planners = require('../CurrentPlanner.js');
 //      password:String,
 //      Current:{type:[mongoose.model('Planner')]}
 // })
+"use strict"
 
 class User{
      constructor(email,password,name,active_planner){
