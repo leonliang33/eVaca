@@ -49,7 +49,7 @@ class User{
      }
 
      set add_planner(){
-          
+
      }
 
      set viewPlanner(){
@@ -64,12 +64,17 @@ class User{
 
      }
 
-     get currentPlan(){
+     get getPlanner(){
           return this.Current;
+     }
+
+     get getEmail(){
+          return this.email;
      }
 
 }
 
+module.exports.User;
 
 
 

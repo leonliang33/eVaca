@@ -14,7 +14,7 @@
 //Calls application level module
 var application = require("./application.js");
 var mongoose = require('mongoose');
-
+var user_model = require('./models/user.model.js');
 
 
 //******************************* Global Variables *****************************
@@ -28,21 +28,29 @@ var db_url = 'mongodb://localhost/evacadb'
 
 //Verify correct username and password
 exports.login_verification = function login(usr,pass){
-	
+
 }
 
 //Modify password
 exports.modify_pass = function modPass(){
-	
+
 }
 
 //Modify email
 exports.modify_email = function modEmail(){
-	
+
 }
 
 //Modify username
 exports.modify_usrname = function modUsrname(){
+
+}
+
+exports.store = function store(User){
+
+}
+
+exports.retrieve = function retrieve(email){
 	
 }
 /*****************************************************************************/
@@ -61,30 +69,30 @@ exports.modify_usrname = function modUsrname(){
   * @returns    boolean true or false
   *****************************************************************************/
   function connectToDatabase(){
-	  
+
 	  mongoose.connect(db_url);
 	  var db = mongoose.connection;
-	  
+
 	  db.on('error', function(err){
 		  console.log("Connection to database unsuccessful.\n" + err);
 		  return false;
 	  });
-	  
+
 	  db.on('connected', function() {
 		  console.log("Connection to database successful.");
 		  return true;
 	  });
-	  
-	  db.on('disconnected', function () {  
-		  console.log('Disconected from the database.'); 
+
+	  db.on('disconnected', function () {
+		  console.log('Disconected from the database.');
 		  return false;
 	  });
-	  
+
 	  console.log("Connection to database unsuccessful.");
 	  return false;
   }
-  
-  
+
+
 /** ****************************************************************************
   *             connectToDatabase()
   *             Function to establish the connection to the dababase. It returns
@@ -101,15 +109,15 @@ exports.modify_usrname = function modUsrname(){
   *****************************************************************************/
 
   function returnSuccess(){
-	  
+
       return true;
   }
 
 /** ****************************************************************************
   *             getAccount()
   *             Return Account Params
-  * @param      
-  * @returns    
+  * @param
+  * @returns
   *****************************************************************************/
   function getAccount(){
 

@@ -30,7 +30,7 @@ var Planner = require('./Planner.js')
 // exports.Preference = Preference;
 
 class CurrentPlanner extends planner{
-     
+
      constructor(dest, budget, r_date, b_date){
 
           super(dest, budget, r_date, b_date);
@@ -47,7 +47,13 @@ class CurrentPlanner extends planner{
 
      }
      set removeEvents(){
+          if(NumOfEvents() <= 0){
+               //Return NULL :: Invalid operation
 
+          }else{
+               //Valid Operation
+
+          }
      }
 
      set shuffleEvents(){
@@ -56,6 +62,10 @@ class CurrentPlanner extends planner{
 
      set calcBudget(){
 
+     }
+
+     get NumOfEvents(){
+          return this.Events.size();
      }
 
 }
