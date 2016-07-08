@@ -45,7 +45,7 @@ var Schema = mongoose.Schema;
 // var Event = mongoose.model('EventSchema',EventSchema);
 //
 // module.exports = Event;
-"use strict"
+"use strict";
 class Event{
      constructor(time,cost,dest){
           this.time = time;

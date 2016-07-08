@@ -28,7 +28,7 @@ var Planner = require('./Planner.js')
 // var Preference = mongoose.model('Preference',PreferencesSchema);
 //
 // exports.Preference = Preference;
-"use strict"
+"use strict";
 class CurrentPlanner extends planner{
 
      constructor(dest, budget, r_date, b_date){

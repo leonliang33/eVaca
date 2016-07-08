@@ -29,7 +29,7 @@ var cost,time,
 // var Preference = mongoose.model('Preference',PreferencesSchema);
 //
 // exports.Preference = Preference;
-"use strict"
+"use strict";
 class Planner{
      constructor(dest, budget, r_date, b_date){
           this.Preferences;
