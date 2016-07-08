@@ -37,7 +37,7 @@ class CurrentPlanner extends planner{
 
      }
 
-     get addEvents(time,cost,dest){
+     static addEvents(time,cost,dest){
 
           var new_event = new Event(time,cost,dest);
 
@@ -60,7 +60,7 @@ class CurrentPlanner extends planner{
 
      }
 
-     get calcBudget(budget,this.Preferences.budget){
+     static calcBudget(budget,this.Preferences.budget){
 
      }
 
