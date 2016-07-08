@@ -30,10 +30,9 @@ var cost,time;
 //
 // exports.Preference = Preference;
 class Planner{
-     constructor(dest, budget, r_date, b_date){
+     constructor(){
           this.Preferences;
           this.Events = new Array();
-          this.budget = budget;
      }
 
 }

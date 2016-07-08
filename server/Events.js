@@ -19,32 +19,6 @@ var Schema = mongoose.Schema;
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *****************************
-// var EventSchema = new Schema({
-//      time:Date,
-//      cost:Number,
-//      name:String
-// })
-//
-// EventSchema.methods.getCost() = function getCost(){
-//
-// }
-//
-// EventSchema.methods.get_api() = function get_api(){
-//
-// }
-//
-// EventSchema.methods.recommend() = function recommend(){
-//
-// }
-//
-// EventSchema.methods.getTime() = function getTime(){
-//
-// }
-//
-//
-// var Event = mongoose.model('EventSchema',EventSchema);
-//
-// module.exports = Event;
 "use strict";
 class Event{
      constructor(time,cost,dest){
