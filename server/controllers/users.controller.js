@@ -12,6 +12,7 @@
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
 var mongoose = require("mongoose");
+"use strict";
 var user_model = require('../models/user.model.js');
 var storage = ('../storage.js');
 //******************************* Global Variables *****************************
