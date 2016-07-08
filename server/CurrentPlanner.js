@@ -60,7 +60,7 @@ class CurrentPlanner extends planner{
 
      }
 
-     static calcBudget(budget,this.Preferences.budget){
+     static calcBudget(budget,Preferences.budget){
 
      }
 
