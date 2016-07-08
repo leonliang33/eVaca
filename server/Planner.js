@@ -12,65 +12,35 @@
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
 var mongoose = require("mongoose");
-var current_planners = require('../CurrentPlanner.js');
+var Preference = require('./Preferences.js');
+var Events = require('./Events.js');
+var users = require('./models/user.model.js');
 //******************************* Global Variables *****************************
 //var Schema = mongoose.Schema;
+var cost,time,
 //******************************************************************************
 
-//******************************* Mongoose Object Creation *********************
-// var user = new Schema({
-//      email:String,
-//      password:String,
-//      Current:{type:[mongoose.model('Planner')]}
+//******************************* Mongoose Object Creation *****************************
+// var PlannerSchema = new Schema({
+//   preferences:{type:[mongoose.model('Preference')]}
+//   events:{type:[mongoose.model('Events')]}
 // })
+//
+// var Preference = mongoose.model('Preference',PreferencesSchema);
+//
+// exports.Preference = Preference;
 
-class User{
-     constructor(email,password,name,active_planner){
-          this.email = email;
-          this.password = password;
-          this.name = name;
-          this.Current = active_planner;
-     }
-
-     set login(){
-
-     }
-
-     set logout(){
-
-     }
-
-     set viewPlanner(){
-
-     }
-
-     set delete_planner(){
-
-     }
-
-     set add_planner(){
-          
-     }
-
-     set viewPlanner(){
-
-     }
-
-     set del_Account(){
-
-     }
-
-     set change_password(){
-
-     }
-
-     get currentPlan(){
-          return this.Current;
+class Planner{
+     constructor(dest, budget, r_date, b_date){
+          this.Preferences;
+          this.Events = new Array();
+          this.budget = budget;
      }
 
 }
 
 
 
+module.exports.Planner;
 
 //******************************************************************************

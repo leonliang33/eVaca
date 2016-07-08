@@ -17,7 +17,7 @@ var bodyParser = require("body-parser");
 
 //Calls on storage and applicatioon level modules
 var storage = require("./storage.js");
-var application = require("./application.js");
+var application = require("./controllers/users.controller.js");
 
 //******************************* Global Variables *****************************
 //Place you global variables here.
@@ -40,9 +40,8 @@ app.use(function(req, res,next) {
      res.header("Access-Control-Allow-Origin", "*");
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
      next();
-	 
-});
 
+});
 
 //Receive post requests from client
 app.post("/", function (req, res) {
@@ -53,16 +52,6 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.UserName,req.body.Password);
 });
 
-//Receive post requests from client
-app.get("/", function (req, res) {
-     res.send("Hello World");
-    console.log("Post received from get");
-     console.log(req.body.username);
-     console.log(req.body.password);
-     res.send("Hello World");
-    storage.login_verification(req.body.username,req.body.username);
-});
-
-app.listen(8420,function(){
+app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
 });
