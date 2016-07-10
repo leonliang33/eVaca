@@ -56,6 +56,7 @@ exports.retrieve = function retrieve(email){
   *             connectToDatabase()
   *             Function to establish the connection to the dababase. It returns
   *				true if the connection was successful, or false if unsuccessful.
+  *
   * @param      {none} None
   * @returns    boolean true or false
   *****************************************************************************/
@@ -102,7 +103,7 @@ exports.retrieve = function retrieve(email){
   *             getAccount()
   *             Return Account Params
   * @param
-  * @returns
+  * @returns    JSON file with account details
   *****************************************************************************/
   function getAccount(){
 

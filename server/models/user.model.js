@@ -36,31 +36,8 @@ class User{
 
      }
 
-     //Return list of planners
-     get viewPlanner(){
-
-     }
-
-     //delete a planner from the list
-     get delete_planner(){
-
-     }
-
-     //adds a planner to the list
-     get add_planner(){
-
-     }
-
-     get view_Planner(){
-
-     }
-
-     get del_Account(){
-
-     }
-
-     get change_password(){
-
+     set change_password(new_pass)){
+          this.password = new_pass;
      }
 
      get getPlanner(){
@@ -72,6 +49,25 @@ class User{
      }
 
 }
+
+//Delete command to delete account from the database
+User.prototype.del_Account = function(){
+
+}
+
+//Return list of planners
+User.prototype.view_planner = function(){
+
+}
+
+user.prototype.delete_planner = function(){
+
+}
+
+User.prototype.add_planner = function(){
+
+}
+
 
 module.exports = User;
 

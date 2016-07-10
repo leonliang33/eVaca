@@ -27,9 +27,7 @@ class Planner{
           this.Events = new Array();
      }
 
-
 }
-
 
 
 module.exports = Planner;

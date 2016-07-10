@@ -39,10 +39,6 @@ class CurrentPlanner extends Planner{
           }
      }
 
-     get shuffleEvents(){
-
-     }
-
 
      get NumOfEvents(){
           return this.Events.size();
@@ -50,10 +46,17 @@ class CurrentPlanner extends Planner{
 
 }
 
+//Shuffle the order of the events in the planner
+CurrentPlanner.prototype.shuffleEvents = function(){
+
+}
+
+//calculate the budget of this planner
 CurrentPlanner.prototype.calcBudget = function(){
 
 }
 
+//Adds event to the planner
 CurrentPlanner.prototype.addEvents = function(time,cost,dest){
 
           var new_event = new Event(time,cost,dest);

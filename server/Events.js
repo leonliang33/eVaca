@@ -25,14 +25,17 @@ class Event{
           this.name = Event.get_api(this.dest,this.cost,this.time);
      }
 
+     //gets event information from external source
      static get_api(dest,cost,time){
           return name;
      }
 
+     //set time in which this event is available
      set set_time(time){
           this.time=time;
      }
 
+     //gets the cost of this event
      get getCost(){
           return this.cost;
      }
