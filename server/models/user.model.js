@@ -60,10 +60,12 @@ User.prototype.view_planner = function(){
 
 }
 
+//Delete planner from list of planners
 user.prototype.delete_planner = function(){
 
 }
 
+//Add a planner to the list of planners
 User.prototype.add_planner = function(){
 
 }

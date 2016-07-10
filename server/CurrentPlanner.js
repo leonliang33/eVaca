@@ -28,7 +28,7 @@ class CurrentPlanner extends Planner{
           super(dest, budget, r_date, b_date);
 
      }
-
+     
      set removeEvents(event){
           if(NumOfEvents() <= 0){
                //Return NULL :: Invalid operation

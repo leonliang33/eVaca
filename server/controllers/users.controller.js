@@ -16,7 +16,7 @@ var mongoose = require("mongoose");
 var user_model = require('../models/user.model.js');
 var storage = ('../storage.js');
 //******************************* Global Variables *****************************
-var dest,budget,b_date,r_date;
+
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *********************
