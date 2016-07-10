@@ -20,11 +20,12 @@ var current_planners = require('../CurrentPlanner.js');
 "use strict";
 
 class User{
-     constructor(email,password,name,active_planner){
+     constructor(email,password,name,active_planners){
+          this.planners = new Array();
           this.email = email;
           this.password = password;
           this.name = name;
-          this.Current = active_planner;
+          this.Current = active_planners;
      }
 
      get login(){
@@ -35,14 +36,17 @@ class User{
 
      }
 
+     //Return list of planners
      get viewPlanner(){
 
      }
 
+     //delete a planner from the list
      get delete_planner(){
 
      }
 
+     //adds a planner to the list
      get add_planner(){
 
      }
@@ -69,7 +73,7 @@ class User{
 
 }
 
-module.exports.User;
+module.exports = User;
 
 
 

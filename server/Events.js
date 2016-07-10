@@ -39,10 +39,17 @@ class Event{
 
 }
 
+/** ****************************************************************************
+  * Name:       recommend()
+  *             Returns other events of similar to this events
+  *
+  * @param
+  * @returns    Events
+  *****************************************************************************/
 Event.prototype.recommend = function(){
-     //Return similar events
+
 }
 
-module.exports.Event;
+module.exports = Event;
 
 //******************************************************************************

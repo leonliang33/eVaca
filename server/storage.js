@@ -25,6 +25,7 @@ var db_url = 'mongodb://localhost/evacadb'
 
 
 /*********************************Export Modules******************************/
+/*These are functions that can be called outside the class*/
 
 //Authentication
 exports.auth = function auth(){
@@ -83,13 +84,6 @@ exports.retrieve = function retrieve(email){
   }
 
 
-/** ****************************************************************************
-  *             connectToDatabase()
-  *             Function to establish the connection to the dababase. It returns
-  *				true if the connection was successful, or false if unsuccessful.
-  * @param      {none} None
-  * @returns    boolean true or false
-  *****************************************************************************/
 
 /** ****************************************************************************
   *             returnSuccess()
@@ -97,11 +91,12 @@ exports.retrieve = function retrieve(email){
   * @param      {none} None
   * @returns    boolean true or false
   *****************************************************************************/
-
   function returnSuccess(){
 
       return true;
   }
+
+
 
 /** ****************************************************************************
   *             getAccount()

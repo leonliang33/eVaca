@@ -34,7 +34,6 @@ app.use(bodyParser.urlencoded({
 //  */
 app.use(bodyParser.json());
 
-//This no work and IDK WHY :(
 
 app.use(function(req, res,next) {
      res.header("Access-Control-Allow-Origin", "*");
@@ -52,6 +51,7 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.UserName,req.body.Password);
 });
 
+//Server is currently serving on port 8420
 app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
 });
