@@ -28,72 +28,72 @@ var db_url = 'mongodb://localhost/evacadb'
 
 //Verify correct username and password
 exports.login_verification = function login(usr, pass){
-	
+
 }
 
 //Modify password
 exports.modify_pass = function modPass(){
-	
+
 }
 
 //Modify email
 exports.modify_email = function modEmail(){
-	
+
 }
 
 //Modify username
 exports.modify_username = function modUsername(){
-	
+
 }
 
 //Function to insert one user in the database
 exports.insert_user = function insertUser(usr, pass, email, sec_q, sec_a){
-	
+
 }
 
-//Function used to delete a user 
+//Function used to delete a user
 exports.delete_user = function deleteUser(email){
-	
+
 }
 
-//Function to add a planner to a given user with certain 
+//Function to add a planner to a given user with certain
 exports.add_planner = function addPlanner(email_fk, city_fk, idPlanner, isActive){
-	
+
 }
 
 //Function to add the preferences to a planner
 exports.add_preference = function addPreference(city, occassion, age_appr, leave_date, return_date, ideal_opt, budget){
-	
+
 }
 
 //Adds an event to a specific planner
 exports.add_event = function addEvent(idPlanner_fk, name, date, time, cost){
-	
+
 }
 
 //Function used to update the planner
 exports.updatePlanner = function updatePlanner(email_fk, city_fk, idPlanner, isActive){
-	
+
 }
 
 //Function to update the preferences of a user
-exports.updatePreferences(city, occassion, age_appr, leave_date, return_date, ideal_opt, budget){
-	
+exports.updatePreferences = function(city, occassion, age_appr, leave_date, return_date, ideal_opt, budget){
+
 }
 
 //Function to get all the events of a user
 exports.get_allevents = function getAllEvents(email_fk){
-	
+
 }
 
 //Function to get all the events of a user for a given plannerm
 exports.get_events_planner = function getEventsByPlanner(email_fk, idPlanner_fk){
-	
+
 }
 
 //Function to get all the planners of a user
 exports.get_user_planners = function getUserPlanners(email_fk){
-	
+
 }
 /*****************************************************************************/
 
@@ -108,15 +108,15 @@ exports.get_user_planners = function getUserPlanners(email_fk){
   *****************************************************************************/
 
   function returnSuccess(){
-	  
+
       return true;
   }
 
 /** ****************************************************************************
   *             getAccount()
   *             Return Account Params
-  * @param      
-  * @returns    
+  * @param
+  * @returns
   *****************************************************************************/
   function getAccount(){
 
