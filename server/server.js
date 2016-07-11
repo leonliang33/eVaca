@@ -18,9 +18,10 @@ var bodyParser = require("body-parser");
 //Calls on storage and applicatioon level modules
 var storage = require("./storage.js");
 var application = require("./controllers/users.controller.js");
+var mongoose = require('mongoose');
 
 //******************************* Global Variables *****************************
-//Place you global variables here.
+var db_url = 'mongodb://localhost/evacadb'
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -55,3 +56,37 @@ app.post("/", function (req, res) {
 app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
 });
+
+
+/** ****************************************************************************
+  *             connectToDatabase()
+  *             Function to establish the connection to the dababase. It returns
+  *				true if the connection was successful, or false if unsuccessful.
+  *
+  * @param      {none} None
+  * @returns    boolean true or false
+  *****************************************************************************/
+  function connectToDatabase(){
+	mongoose.connect(db_url);
+	var db = mongoose.connection;  
+	
+	db.on('error', function(err){
+		console.log("Connection to database unsuccessful.\n" + err);
+		return false;
+	});
+	
+	
+	db.on('connected', function() {
+		console.log("Connection to database successful.");
+		return true;
+	});
+	  
+	db.on('disconnected', function () {
+		console.log('Disconected from the database.');
+		return false;
+	});
+	  
+	console.log("Connection to database unsuccessful.");
+	return false;
+	
+  }
