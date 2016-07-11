@@ -19,12 +19,18 @@
 //******************************* Class Function *****************************
 "use strict";
 class Preferences{
-     constructor(dest,budget,b_date,return_date){
+     constructor(dest,budget,b_date,return_date,age_st,age_end){
+          this.theme = new Array();
+          this.ageFrom = age_st;
+          this.ageTo = age_end;
           this.budget = budget;
-          this.begin_date = b_date;
-          this.return_date = return_date;
           if(validLocation(this.destination)){
                this.destination = dest;
+          }
+          if(validDate(b_date,return_date)){
+
+               this.begin_date = b_date;
+               this.return_date = return_date;
           }
      }
 
@@ -35,16 +41,24 @@ class Preferences{
           }
      }
 
-     //Set the date that user is planning to go on this vacation
-     set setBeginDate(bd){
-          this.begin_date = bd;
-     }
-
-     //Set the date the user is planning to return from vacation
-     set setReturnDate(rd){
-          this.return_date = rd;
+     set setBudget(budget){
+          this.budget = budget;
      }
 }
+
+//Set arriving and returning date
+Preferences.prototype.setAgeRange = function(fromDate,toDate){
+     this.begin_date = fromDate;
+     this.return_date = toDate;
+}
+
+//Set arriving and returning date
+Preferences.prototype.addThemes = function(new_theme){
+     this.theme.push(new_theme);
+}
+
+
+
 
 /** ****************************************************************************
   * Name:       validLocation()
@@ -54,6 +68,17 @@ class Preferences{
   * @returns    boolean true or false
   *****************************************************************************/
 function validLocation(dest){
+     return true;
+}
+
+/** ****************************************************************************
+  * Name:       validDate()
+  *             Function validates that user has inputted a valid date
+  *
+  * @param      destination :: string
+  * @returns    boolean true or false
+  *****************************************************************************/
+function validDate(start,return){
      return true;
 }
 

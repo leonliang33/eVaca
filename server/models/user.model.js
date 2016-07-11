@@ -48,6 +48,10 @@ class User{
           return this.email;
      }
 
+     set changeEmail(new_email){
+          this.email = new_email;
+     }
+
 }
 
 //Delete command to delete account from the database
