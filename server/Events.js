@@ -37,13 +37,29 @@ class Event{
 
      //gets the cost of this event
      get getCost(){
-          var map,service,infoWindow;
-          //https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
-          var location = new google.maps.LatLng(-33.8665433,151.1956316);
-          var google_places_api_key = 'AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU';
-          var eventParams = {
-               ""
+          var GooglePlaces = require("node-googleplaces");
+          const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
+          const params = {
+            location: '49.250964,-123.102192',
+            radius: 1000
           };
+           var query =
+           {
+                location : '-33.8670522,151.1957362',
+                radius : 500
+           };
+          // Callback
+          places.nearbySearch(query, (err, res) => {
+               console.log(res.body);
+               console.log(res.body.results.place_id);
+
+          });
+
+          // Promise
+          places.nearbySearch(query).then((res) => {
+            //console.log(res.body);
+            console.log(res.body.results[0].place_id);
+          });
           return this.cost;
      }
 
