@@ -27,7 +27,7 @@ class Event{
 
      //gets event information from external source
      static get_api(dest,cost,time){
-          return name;
+          return true;
      }
 
      //set time in which this event is available
@@ -36,7 +36,48 @@ class Event{
      }
 
      //gets the cost of this event
-     get getCost(){
+     // get getCost(){
+     //      var GooglePlaces = require("node-googleplaces");
+     //      const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
+     //      const params = {
+     //        location: '49.250964,-123.102192',
+     //        radius: 1000
+     //      };
+     //       var query =
+     //       {
+     //            location : '-33.8670522,151.1957362',
+     //            radius : 500
+     //       };
+     //      // Callback
+     //      places.nearbySearch(query, (err, res) => {
+     //           console.log(res.body);
+     //           console.log(res.body.results.place_id);
+     //
+     //      });
+     //
+     //      // Promise
+     //      places.nearbySearch(query).then((res) => {
+     //        //console.log(res.body);
+     //        console.log(res.body.results[0].place_id);
+     //      });
+     //      return this.cost;
+     // }
+
+}
+
+/** ****************************************************************************
+  * Name:       recommend()
+  *             Returns other events of similar to this events
+  *
+  * @param
+  * @returns    Events
+  *****************************************************************************/
+Event.prototype.recommend = function(){
+
+}
+
+Event.prototype.getCost = function(longLat){
+     //getCost(){
           var GooglePlaces = require("node-googleplaces");
           const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
           const params = {
@@ -50,8 +91,8 @@ class Event{
            };
           // Callback
           places.nearbySearch(query, (err, res) => {
-               console.log(res.body);
-               console.log(res.body.results.place_id);
+               //console.log(res.body);
+               //console.log(res.body.results.place_id);
 
           });
 
@@ -61,19 +102,7 @@ class Event{
             console.log(res.body.results[0].place_id);
           });
           return this.cost;
-     }
-
-}
-
-/** ****************************************************************************
-  * Name:       recommend()
-  *             Returns other events of similar to this events
-  *
-  * @param
-  * @returns    Events
-  *****************************************************************************/
-Event.prototype.recommend = function(){
-
+     //}
 }
 
 module.exports = Event;

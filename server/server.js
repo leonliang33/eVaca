@@ -16,6 +16,7 @@ var app = express();
 var bodyParser = require("body-parser");
 
 //Calls on storage and applicatioon level modules
+var events = require("./Events.js");
 var storage = require("./storage.js");
 var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
@@ -46,15 +47,18 @@ app.use(function(req, res,next) {
 //Receive post requests from client
 app.post("/", function (req, res) {
     console.log("Post received from post");
-    console.log(req.body.UserName);
-    console.log(req.body.Password);
+    console.log(req.body.username);
+    console.log(req.body.password);
+    //console.log(req);
     res.send("Login Info Received");
-    storage.login_verification(req.body.UserName,req.body.Password);
+    storage.login_verification(req.body.username,req.body.password);
 });
 
 //Server is currently serving on port 8420
 app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
+     var Event1 = new events(7,10,'Miami');
+     Event1.getCost();
 });
 
 
@@ -68,25 +72,25 @@ app.listen(8420,function startServer(){
   *****************************************************************************/
   function connectToDatabase(){
 	mongoose.connect(db_url);
-	var db = mongoose.connection;  
-	
+	var db = mongoose.connection;
+
 	db.on('error', function(err){
 		console.log("Connection to database unsuccessful.\n" + err);
 		return false;
 	});
-	
-	
+
+
 	db.on('connected', function() {
 		console.log("Connection to database successful.");
 		return true;
 	});
-	  
+
 	db.on('disconnected', function () {
 		console.log('Disconected from the database.');
 		return false;
 	});
-	  
+
 	console.log("Connection to database unsuccessful.");
 	return false;
-	
+
   }

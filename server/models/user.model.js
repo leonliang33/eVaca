@@ -36,7 +36,7 @@ class User{
 
      }
 
-     set change_password(new_pass)){
+     set change_password(new_pass){
           this.password = new_pass;
      }
 
@@ -65,7 +65,7 @@ User.prototype.view_planner = function(){
 }
 
 //Delete planner from list of planners
-user.prototype.delete_planner = function(){
+User.prototype.delete_planner = function(){
 
 }
 

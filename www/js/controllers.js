@@ -51,14 +51,15 @@ function loginController($scope,login,$http,$state){
      //login;
      var vm = this;
      console.log("LOGIN CONTROLLER ACTIVE");
-     console.log(vm.log_email + vm.log_pass);
+     //console.log(this.formdata.log_email +" "+ this.formdata.log_pass);
 
      $scope.enter = function(){
           console.log("ENTER CALLED");
+          console.log(this.formdata.log_email);
           $state.go('tabsController.eVaca');
-          var log_bool = login.note(vm.log_email, vm.log_pass);
+          var log_bool = login.note(this.formdata.log_email, this.formdata.log_pass);
           console.log(log_bool);
-          if(!log_bool){
+          if(log_bool){
                $state.reload();
           }else{
                $state.go('tabsController.eVaca');

@@ -11,7 +11,7 @@ angular.module('app.services', [])
                     headers: {
                          'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    data: 'UserName=' + username + '&Password=' + password + '&RememberMe=false'
+                    data: 'username=' + username + '&password=' + password + '&RememberMe=false'
                }
                console.log('trigger post request');
                if($http.post("http://localhost:8420/",{username: username,password: password})){

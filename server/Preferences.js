@@ -78,7 +78,7 @@ function validLocation(dest){
   * @param      destination :: string
   * @returns    boolean true or false
   *****************************************************************************/
-function validDate(start,return){
+function validDate(start,return1){
      return true;
 }
 
