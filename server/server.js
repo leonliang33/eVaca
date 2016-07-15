@@ -50,7 +50,7 @@ app.post("/", function (req, res) {
     console.log(req.body.username);
     console.log(req.body.password);
     //console.log(req);
-    res.send("Login Info Received");
+    res.send("true");
     storage.login_verification(req.body.username,req.body.password);
 });
 

@@ -2,7 +2,7 @@
 
 angular.module('app.controllers', ['app.services'])
 
-.controller('loginCtrl', ['$scope','login','$http','$state',loginController])
+.controller('loginCtrl', ['$scope','login','$http','$state','$q',loginController])
 
 
 
@@ -46,7 +46,7 @@ angular.module('app.controllers', ['app.services'])
 
 })
 
-function loginController($scope,login,$http,$state){
+function loginController($scope,login,$http,$state,$q){
      //console.log($scope.log_email);
      //login;
      var vm = this;
@@ -56,13 +56,31 @@ function loginController($scope,login,$http,$state){
      $scope.enter = function(){
           console.log("ENTER CALLED");
           console.log(this.formdata.log_email);
-          $state.go('tabsController.eVaca');
-          var log_bool = login.note(this.formdata.log_email, this.formdata.log_pass);
-          console.log(log_bool);
-          if(log_bool){
-               $state.reload();
-          }else{
-               $state.go('tabsController.eVaca');
-          }
+          var em =this.formdata.log_email;
+          var pass=this.formdata.log_pass;
+          //$state.go('tabsController.eVaca');
+          var log_bool;
+          //setTimeout(function(em,pass){
+               log_bool=login.note(em,pass).then(function(data){
+                    log_bool = data;
+                    console.log(log_bool);
+                    if(log_bool == "true"){
+                         console.log(log_bool);
+                         $state.go('tabsController.eVaca');
+                    }else{
+                         console.log(log_bool);
+                         $state.reload();
+                    }
+               });
+          //},200);
+          // log_bool.then(function(result){
+          //      console.log(result);
+          //      if(result){
+          //           $state.go('tabsController.eVaca');
+          //      }else{
+          //           $state.reload();
+          //      }
+          // })
+
      }
 };
