@@ -58,9 +58,7 @@ function loginController($scope,login,$http,$state,$q){
           console.log(this.formdata.log_email);
           var em =this.formdata.log_email;
           var pass=this.formdata.log_pass;
-          //$state.go('tabsController.eVaca');
           var log_bool;
-          //setTimeout(function(em,pass){
                log_bool=login.note(em,pass).then(function(data){
                     log_bool = data;
                     console.log(log_bool);
@@ -72,15 +70,6 @@ function loginController($scope,login,$http,$state,$q){
                          $state.reload();
                     }
                });
-          //},200);
-          // log_bool.then(function(result){
-          //      console.log(result);
-          //      if(result){
-          //           $state.go('tabsController.eVaca');
-          //      }else{
-          //           $state.reload();
-          //      }
-          // })
 
      }
 };
