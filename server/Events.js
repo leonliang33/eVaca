@@ -77,56 +77,54 @@ Event.prototype.recommend = function(){
 }
 
 Event.prototype.getCost = function(longLat){
-          var returnCost = new Promise( function(){
-                    var placeID;
-                    var GooglePlaces = require("node-googleplaces");
-                    const places = new GooglePlaces('AIzaSyCQkZamcWwjJ9UPNqFvtAklm5UH_3Dfo6c');
-                    const params = {
-                      location: '40.689247,-123.102192',
-                      radius: 1000
-                    };
-                     var query =
-                     {
-                          query: 'Thai Moon'
-                     };
+     //getCost(){
+          var placeID;
+          var GooglePlaces = require("node-googleplaces");
+          const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
+          const params = {
+            location: '40.689247,-123.102192',
+            radius: 1000
+          };
+          //  var query =
+          //  {
+          //       location : '40.689247, ‎-74.044502',
+          //       radius : 5
+          //  };
+           var query =
+           {
+                query: 'Restaurants near miami'
+           };
+          // Callback
+          places.textSearch(query, (err, res) => {
+               //console.log(res.body);
+               //console.log(res.body.results.place_id);
 
-                    // Callback
-                    places.textSearch(query, (err, res) => {
+          });
 
-                    });
-
-                    // Promise
-                    places.textSearch(query).then((res) => {
-                      //console.log(res.body);
-                      console.log(res.body.results[0].place_id);
-                      placeID = res.body.results[0].place_id;
+          // Promise
+          places.textSearch(query).then((res) => {
+            //console.log(res.body);
+            console.log(res.body.results[0].place_id);
+            placeID = res.body.results[0].place_id;
 
 
-                      var request_place_details={
-                           placeid : placeID
-                      };
+            var request_place_details={
+                 placeid : placeID
+            };
 
-                      console.log(request_place_details);
+            console.log(request_place_details);
 
-                      places.details(request_place_details).then((res) => {
-                           console.log(res.body.result.price_level);
-                           //console.log(res.body.html_attributions.results.price_level);
-                           this.cost = res.body.result.price_level;
-                           resolve(this.cost);
-                      });
+            places.details(request_place_details).then((res) => {
+                 console.log(res.body.result.price_level);
+                 //console.log(res.body.html_attributions.results.price_level);
+                 this.cost = res.body.result.price_level;
+                 return this.cost;
+            });
 
-                    });
-               }
+          });
 
-          );
-
-          returnCost.then((res) => {
-               console.log(res);
-               return res;
-          })
-
-          return returnCost;
-
+          //return this.cost;
+     //}
 }
 
 module.exports = Event;

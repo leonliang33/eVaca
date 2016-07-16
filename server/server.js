@@ -59,10 +59,6 @@ app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami');
      console.log(Event1.getCost());
-     // Event1.getCost().then(function(res){
-     //      console.log("Returned");
-     //      console.log(res);
-     // })
 });
 
 
