@@ -58,7 +58,7 @@ app.post("/", function (req, res) {
 app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami');
-     Event1.getCost();
+     console.log(Event1.getCost());
 });
 
 
