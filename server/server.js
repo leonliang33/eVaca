@@ -57,7 +57,11 @@ app.post("/", function (req, res) {
 //Server is currently serving on port 8420
 app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
-     var Event1 = new events(7,10,'Miami');
+     var Event1 = new events(7,10,'Miami', 'arts');
+     Event1.getApiEvents(function(response) {
+        // console.log(Event1.getEventName(response));
+        // console.log(Event1.getEventImageUrl(response));
+     });
      // console.log(Event1.getCost('Thai Moon'));
      Event1.getCost('Thai Moon').then(res => {
           console.log("RETURNED VALUE:: " + res );
