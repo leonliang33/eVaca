@@ -12,8 +12,17 @@
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
 
+var Yelp = require('yelp');
+
 //******************************* Global Variables *****************************
 //******************************************************************************
+
+var yelp = new Yelp({
+    consumer_key: 'nLM2vzedMhy4fpbcndEivA',
+    consumer_secret: 'S5p83wbhckJXEbdPhWG9b4gIc7w',
+    token: '7P_xpPKZLm395vYkrRU2ZA77oZSLiAfj',
+    token_secret: 'WQYwCZ5ktQFSmbB-qE7CLX5m0MI'
+});
 
 //******************************* Mongoose Object Creation *****************************
 "use strict";
@@ -22,13 +31,13 @@ class Event{
           this.time = time;
           this.cost = cost;
           this.dest = dest;
-          this.name = Event.get_api(this.dest,this.cost,this.time);
+          // this.name = Event.get_api(this.dest,this.cost,this.time);
      }
 
-     //gets event information from external source
-     static get_api(dest,cost,time){
-          return true;
-     }
+    //  //gets event information from external source
+    //  static get_api(dest, cost, time) {
+    //       return "statue of liberty";
+    //  }
 
      //set time in which this event is available
      set set_time(time){
@@ -74,6 +83,20 @@ class Event{
   *****************************************************************************/
 Event.prototype.recommend = function(){
 
+}
+
+Event.prototype.name = function() {
+  yelp.search({
+			location: this.dest,
+			sort: 2, // Highest rated
+			category_filter: 'arts'
+		})
+		.then(function(data) {
+      return data.businesses[0].name;
+		})
+		.catch(function(err) {
+			console.error(err);
+		});
 }
 
 Event.prototype.getCost = function(longLat){
