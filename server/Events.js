@@ -81,8 +81,6 @@ Event.prototype.recommend = function(){
 }
 var API_KEY = 'AIzaSyCQkZamcWwjJ9UPNqFvtAklm5UH_3Dfo6c';
 
-<<<<<<< HEAD
-=======
 Event.prototype.getApiEvents = function(callback) {
     yelp.search({
             location: this.dest,
