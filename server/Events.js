@@ -27,17 +27,12 @@ var yelp = new Yelp({
 //******************************* Mongoose Object Creation *****************************
 "use strict";
 class Event{
-     constructor(time,cost,dest){
+     constructor(time, cost, dest, theme) {
           this.time = time;
           this.cost = cost;
           this.dest = dest;
-          // this.name = Event.get_api(this.dest,this.cost,this.time);
+          this.theme = theme;
      }
-
-    //  //gets event information from external source
-    //  static get_api(dest, cost, time) {
-    //       return "statue of liberty";
-    //  }
 
      //set time in which this event is available
      set set_time(time){
@@ -85,18 +80,26 @@ Event.prototype.recommend = function(){
 
 }
 
-Event.prototype.name = function() {
-  yelp.search({
-			location: this.dest,
-			sort: 2, // Highest rated
-			category_filter: 'arts'
-		})
-		.then(function(data) {
-      return data.businesses[0].name;
-		})
-		.catch(function(err) {
-			console.error(err);
-		});
+Event.prototype.getApiEvents = function(callback) {
+    yelp.search({
+            location: this.dest,
+            sort: 2, // Highest rated
+            category_filter: this.theme
+        })
+        .then(function(data) {
+            callback(data);
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+}
+
+Event.prototype.getEventName = function(data) {
+    return data.businesses[0].name;
+}
+
+Event.prototype.getEventImageUrl = function(data) {
+    return data.businesses[0].image_url;
 }
 
 Event.prototype.getCost = function(longLat){
