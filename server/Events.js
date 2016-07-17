@@ -102,6 +102,7 @@ Event.prototype.getEventName = function(data) {
 Event.prototype.getEventImageUrl = function(data) {
     return data.businesses[0].image_url;
 }
+
 Event.prototype.getCost = function(name_of_place){
      // return new Promise( function(resolve,reject){
      //      var placeID;
@@ -149,21 +150,6 @@ Event.prototype.getCost = function(name_of_place){
         .then(placeID => places.details({ placeid : placeID }))
         .then(res => res.body.result.price_level);
 };
-
-Event.prototype.name = function() {
-  yelp.search({
-			location: this.dest,
-			sort: 2, // Highest rated
-			category_filter: 'arts'
-		})
-		.then(function(data) {
-      return data.businesses[0].name;
-		})
-		.catch(function(err) {
-			console.error(err);
-		});
-}
-
 
 module.exports = Event;
 
