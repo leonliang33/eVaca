@@ -101,30 +101,52 @@ Event.prototype.name = function() {
 
 Event.prototype.getCost = function(longLat){
      //getCost(){
+          var placeID;
           var GooglePlaces = require("node-googleplaces");
           const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
           const params = {
-            location: '49.250964,-123.102192',
+            location: '40.689247,-123.102192',
             radius: 1000
           };
+          //  var query =
+          //  {
+          //       location : '40.689247, ‎-74.044502',
+          //       radius : 5
+          //  };
            var query =
            {
-                location : '-33.8670522,151.1957362',
-                radius : 500
+                query: 'Restaurants near miami'
            };
           // Callback
-          places.nearbySearch(query, (err, res) => {
+          places.textSearch(query, (err, res) => {
                //console.log(res.body);
                //console.log(res.body.results.place_id);
 
           });
 
           // Promise
-          places.nearbySearch(query).then((res) => {
+          places.textSearch(query).then((res) => {
             //console.log(res.body);
             console.log(res.body.results[0].place_id);
+            placeID = res.body.results[0].place_id;
+
+
+            var request_place_details={
+                 placeid : placeID
+            };
+
+            console.log(request_place_details);
+
+            places.details(request_place_details).then((res) => {
+                 console.log(res.body.result.price_level);
+                 //console.log(res.body.html_attributions.results.price_level);
+                 this.cost = res.body.result.price_level;
+                 return this.cost;
+            });
+
           });
-          return this.cost;
+
+          //return this.cost;
      //}
 }
 
