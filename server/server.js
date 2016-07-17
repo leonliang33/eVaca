@@ -62,6 +62,10 @@ app.listen(8420,function startServer(){
         // console.log(Event1.getEventName(response));
         // console.log(Event1.getEventImageUrl(response));
      });
+     // console.log(Event1.getCost('Thai Moon'));
+     Event1.getCost('Thai Moon').then(res => {
+          console.log("RETURNED VALUE:: " + res );
+     })
 });
 
 
