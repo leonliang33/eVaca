@@ -104,8 +104,6 @@ Event.prototype.getEventName = function(data) {
 Event.prototype.getEventImageUrl = function(data) {
     return data.businesses[0].image_url;
 }
-
->>>>>>> 2c94f1827d29d31bbdb6a9cb458aa97967e00eb4
 Event.prototype.getCost = function(name_of_place){
      // return new Promise( function(resolve,reject){
      //      var placeID;
@@ -153,7 +151,6 @@ Event.prototype.getCost = function(name_of_place){
         .then(placeID => places.details({ placeid : placeID }))
         .then(res => res.body.result.price_level);
 };
-<<<<<<< HEAD
 
 Event.prototype.name = function() {
   yelp.search({
@@ -169,59 +166,6 @@ Event.prototype.name = function() {
 		});
 }
 
-=======
-
-Event.prototype.getCost = function(longLat){
-     //getCost(){
-          var placeID;
-          var GooglePlaces = require("node-googleplaces");
-          const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
-          const params = {
-            location: '40.689247,-123.102192',
-            radius: 1000
-          };
-          //  var query =
-          //  {
-          //       location : '40.689247, ‎-74.044502',
-          //       radius : 5
-          //  };
-           var query =
-           {
-                query: 'Restaurants near miami'
-           };
-          // Callback
-          places.textSearch(query, (err, res) => {
-               //console.log(res.body);
-               //console.log(res.body.results.place_id);
-
-          });
-
-          // Promise
-          places.textSearch(query).then((res) => {
-            //console.log(res.body);
-            console.log(res.body.results[0].place_id);
-            placeID = res.body.results[0].place_id;
-
-
-            var request_place_details={
-                 placeid : placeID
-            };
-
-            console.log(request_place_details);
-
-            places.details(request_place_details).then((res) => {
-                 console.log(res.body.result.price_level);
-                 //console.log(res.body.html_attributions.results.price_level);
-                 this.cost = res.body.result.price_level;
-                 return this.cost;
-            });
-
-          });
-
-          //return this.cost;
-     //}
-}
->>>>>>> 2c94f1827d29d31bbdb6a9cb458aa97967e00eb4
 
 module.exports = Event;
 
