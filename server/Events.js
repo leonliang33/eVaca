@@ -12,8 +12,17 @@
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
 
+var Yelp = require('yelp');
+
 //******************************* Global Variables *****************************
 //******************************************************************************
+
+var yelp = new Yelp({
+    consumer_key: 'nLM2vzedMhy4fpbcndEivA',
+    consumer_secret: 'S5p83wbhckJXEbdPhWG9b4gIc7w',
+    token: '7P_xpPKZLm395vYkrRU2ZA77oZSLiAfj',
+    token_secret: 'WQYwCZ5ktQFSmbB-qE7CLX5m0MI'
+});
 
 //******************************* Mongoose Object Creation *****************************
 "use strict";
@@ -22,13 +31,13 @@ class Event{
           this.time = time;
           this.cost = cost;
           this.dest = dest;
-          this.name = Event.get_api(this.dest,this.cost,this.time);
+          // this.name = Event.get_api(this.dest,this.cost,this.time);
      }
 
-     //gets event information from external source
-     static get_api(dest,cost,time){
-          return true;
-     }
+    //  //gets event information from external source
+    //  static get_api(dest, cost, time) {
+    //       return "statue of liberty";
+    //  }
 
      //set time in which this event is available
      set set_time(time){
@@ -77,6 +86,7 @@ Event.prototype.recommend = function(){
 }
 var API_KEY = 'AIzaSyCQkZamcWwjJ9UPNqFvtAklm5UH_3Dfo6c';
 
+<<<<<<< HEAD
 Event.prototype.getCost = function(name_of_place){
      // return new Promise( function(resolve,reject){
      //      var placeID;
@@ -124,6 +134,72 @@ Event.prototype.getCost = function(name_of_place){
         .then(placeID => places.details({ placeid : placeID }))
         .then(res => res.body.result.price_level);
 };
+=======
+Event.prototype.name = function() {
+  yelp.search({
+			location: this.dest,
+			sort: 2, // Highest rated
+			category_filter: 'arts'
+		})
+		.then(function(data) {
+      return data.businesses[0].name;
+		})
+		.catch(function(err) {
+			console.error(err);
+		});
+}
+
+Event.prototype.getCost = function(longLat){
+     //getCost(){
+          var placeID;
+          var GooglePlaces = require("node-googleplaces");
+          const places = new GooglePlaces('AIzaSyBudcI5Vkbr-gWSN7OlW0wbCIREQi8jtiU');
+          const params = {
+            location: '40.689247,-123.102192',
+            radius: 1000
+          };
+          //  var query =
+          //  {
+          //       location : '40.689247, ‎-74.044502',
+          //       radius : 5
+          //  };
+           var query =
+           {
+                query: 'Restaurants near miami'
+           };
+          // Callback
+          places.textSearch(query, (err, res) => {
+               //console.log(res.body);
+               //console.log(res.body.results.place_id);
+
+          });
+
+          // Promise
+          places.textSearch(query).then((res) => {
+            //console.log(res.body);
+            console.log(res.body.results[0].place_id);
+            placeID = res.body.results[0].place_id;
+
+
+            var request_place_details={
+                 placeid : placeID
+            };
+
+            console.log(request_place_details);
+
+            places.details(request_place_details).then((res) => {
+                 console.log(res.body.result.price_level);
+                 //console.log(res.body.html_attributions.results.price_level);
+                 this.cost = res.body.result.price_level;
+                 return this.cost;
+            });
+
+          });
+
+          //return this.cost;
+     //}
+}
+>>>>>>> f53b6778acf424e031dc82ab52a042ca48e77880
 
 module.exports = Event;
 
