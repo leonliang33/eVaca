@@ -22,7 +22,7 @@ var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
 
 //******************************* Global Variables *****************************
-var db_url = 'mongodb://localhost/evacadb'
+var db_url = 'mongodb://localhost/evacadb';
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -54,19 +54,17 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.username,req.body.password);
 });
 
-app.set('port', process.env.PORT || 3000);
-
-app.listen(app.get('port'), function startServer() {
-     console.log("Listening on :: " + app.get('port'));
+app.listen(8420, function startServer() {
+     console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami', 'arts');
     //  Event1.getApiEvents(function(response) {
         // console.log(Event1.getEventName(response));
         // console.log(Event1.getEventImageUrl(response));
     //  });
      // console.log(Event1.getCost('Thai Moon'));
-     Event1.getCost('Thai Moon').then(res => {
-          console.log("RETURNED VALUE:: " + res );
-     })
+    //  Event1.getCost('Thai Moon').then(res => {
+    //       console.log("RETURNED VALUE:: " + res );
+    //  })
 });
 
 
