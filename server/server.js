@@ -54,6 +54,22 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.username,req.body.password);
 });
 
+app.post('/signup', function(req,res)){
+  var user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    securtiyquestion: req.body.securtiyquestion;
+    securityanswer: req.body.securityanswer;
+  });
+  user.save(function(err){
+    req.login(user,function(err){
+      res.redirect('/')
+    });
+  });
+});
+
+
 //Server is currently serving on port 8420
 app.listen(8420,function startServer(){
      console.log("Listening on :: " + 8420);
