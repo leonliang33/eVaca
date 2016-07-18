@@ -36,12 +36,12 @@ app.use(bodyParser.urlencoded({
 */
 app.use(bodyParser.json());
 
+app.use(express.static('www'));
 
 app.use(function(req, res,next) {
      res.header("Access-Control-Allow-Origin", "*");
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
      next();
-
 });
 
 //Receive post requests from client
@@ -54,14 +54,15 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.username,req.body.password);
 });
 
-//Server is currently serving on port 8420
-app.listen(8420,function startServer(){
-     console.log("Listening on :: " + 8420);
+app.set('port', process.env.PORT || 3000);
+
+app.listen(app.get('port'), function startServer() {
+     console.log("Listening on :: " + app.get('port'));
      var Event1 = new events(7,10,'Miami', 'arts');
-     Event1.getApiEvents(function(response) {
+    //  Event1.getApiEvents(function(response) {
         // console.log(Event1.getEventName(response));
         // console.log(Event1.getEventImageUrl(response));
-     });
+    //  });
      // console.log(Event1.getCost('Thai Moon'));
      Event1.getCost('Thai Moon').then(res => {
           console.log("RETURNED VALUE:: " + res );
