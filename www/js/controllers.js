@@ -8,8 +8,6 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('resetPasswordCtrl', ['$scope','signUp','$http','$state','$q',resetPasswordController])
 
-
-
 .controller('eVacaCtrl', function($scope) {
 
 })
@@ -17,7 +15,6 @@ angular.module('app.controllers', ['app.services'])
 .controller('verifcationCodeCtrl', function($scope) {
 
 })
-
 
 .controller('historyCtrl', function($scope) {
 
@@ -30,11 +27,8 @@ angular.module('app.controllers', ['app.services'])
 .controller('plannerCtrl', function($scope) {
 
 })
+
 .controller('resetPasswordCtrl', function($scope) {
-
-})
-
-.controller('locationsCtrl', function($scope) {
 
 })
 
@@ -65,7 +59,7 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
                     else{
                          $state.reload();
                     }
-                    
+
                });
      }
 };

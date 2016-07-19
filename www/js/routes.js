@@ -47,14 +47,14 @@ angular.module('app.routes', [])
     controller: 'historyCtrl'
   })
 
-  .state('tabsController.thingsToDo', {
+  .state('thingsToDo', {
     url: '/events',
-    views: {
-      'tab4': {
+    // views: {
+    //   'tab4': {
         templateUrl: 'templates/thingsToDo.html',
         controller: 'thingsToDoCtrl'
-      }
-    }
+    //   }
+    // }
   })
 
   .state('signUp', {
@@ -83,16 +83,6 @@ angular.module('app.routes', [])
     url: '/reset_request',
     templateUrl: 'templates/resetPassword.html',
     controller: 'resetPasswordCtrl'
-  })
-
-  .state('tabsController.locations', {
-    url: '/Locations',
-    views: {
-      'tab4': {
-        templateUrl: 'templates/locations.html',
-        controller: 'locationsCtrl'
-      }
-    }
   })
 
   .state('newPassword', {

@@ -1,6 +1,11 @@
 <ion-view title="Planner" id="page9" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
         <form id="planner-form8" class="list ">
+            <label class="item item-input " id="planner-location">
+                <span class="input-label">Location</span>
+                <input type="text" placeholder="">
+            </label>
+            <div class="spacer" style="width: 300px; height: 23px;"></div>
             <label class="item item-input " id="planner-input12">
                 <span class="input-label">Budget</span>
                 <input type="number" placeholder="">
@@ -43,6 +48,6 @@
             <ion-checkbox>Food </ion-checkbox>
             <ion-checkbox>Nightlife </ion-checkbox>
         </ion-list>
-        <a ui-sref="tabsController.locations" id="planner-button5" style="border-radius:80px 80px 80px 80px;" class=" button button-assertive  button-block icon-right ion-ios-world ">Plan Location</a>
+        <a ui-sref="thingsToDo" id="plan-vacation-button" style="border-radius:100px 100px 100px 100px;" class=" button button-assertive  button-block icon ion-ios-world ">Let's Adventure</a>
     </ion-content>
 </ion-view>
