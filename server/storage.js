@@ -12,111 +12,143 @@
 //******************************* Configuration ********************************
 //Define Modules Requirement Here
 //Calls application level module
-var application = require("./application.js");
+
 var mongoose = require('mongoose');
+var url = "mongodb://localhost:27017/test";
+var db = mongoose.connection;
+var User = loadSchemas();
+exports.User = User;
 
+//*********** Exported Functions ***************
 
-
-//******************************* Global Variables *****************************
-//Place you global variables here.
-//******************************************************************************
-var db_url = 'mongodb://localhost/evacadb'
-
-
-
-/*********************************Export Modules******************************/
-
-//Verify correct username and password
-exports.login_verification = function login(usr, pass){
-
+exports.login_verification = function(u_email, u_pass){
+	var login = false;
+	console.log(u_email);
+	var user_query = getUserByEmail(u_email);
+	//console.log(user_query);
+	console.log('Done with exec');
+	user_query.then(function(usr){
+		//console.log(usr);
+		if(!usr){
+			console.log("No user found with that email.");
+		}else
+			login = usr.comparePassword(u_pass);
+	});
+	console.log('Done with then');
+	return login;
 }
 
-//Modify password
-exports.modify_pass = function modPass(){
+exports.insert_user = function (user){
+
+	var db_promise = new Promise(function (resolve,reject){
+		resolve(insertUser(user));
+	});
+	return db_promise;
 }
 
-//Modify email
-exports.modify_email = function modEmail(){
-
+exports.find_by_email = function (u_email){
+	var user;
+	var user_query = getUserByEmail(u_email);
+	user_query.then(function(usr){
+		user = usr;
+	});
+	return user;
 }
 
-//Modify username
-exports.modify_username = function modUsername(){
-
+exports.connect = function(){
+	db.on('error', console.error);
+	db.once('open', function(err) {
+		if(!err)
+			console.log('Connected to database.');
+		else
+			console.log(err);
+	});
+	var db_promise = new Promise(function (resolve,reject){
+		resolve(mongoose.connect(url));
+	});
+	return db_promise;
 }
 
-//Function to insert one user in the database
-exports.insert_user = function insertUser(usr, pass, email){
-
+exports.disconnect = function(){
+	var db_promise = new Promise(function (resolve,reject){
+		resolve(mongoose.connection.close());
+	});
+	return db_promise;
 }
 
-//Function used to delete a user
-exports.delete_user = function deleteUser(email){
+//*********** Function implementation *********** 
 
+function loadSchemas(){
+	var eventSchema = mongoose.Schema({
+		name: {type: String, unique: true}
+	});
+
+	var preferenceSchema = mongoose.Schema({
+		city: {type: String, unique: true},
+		occassion: String,
+		age_appr: Number,
+		leaving: Date,
+		returning: Date,
+		ideal_opt: String,
+		budget: Number
+	});
+
+	var plannerSchema = mongoose.Schema({
+		prefereces: [preferenceSchema],
+		events: [eventSchema],
+		isCurrent: Boolean
+	});
+
+	var userSchema = mongoose.Schema({
+		name: String,
+		email: String,
+		password: String,
+		planner: plannerSchema
+	});
+
+	userSchema.methods.comparePassword = function(psw){
+		console.log(password);
+		if(this.password == psw){
+			console.log('Email and password verified.');
+			return true;
+		}
+		console.log('Incorrect email or password.');
+		return false;
+	};
+
+	var user = mongoose.model('eVaca', userSchema);
+	console.log('User schema created.');
+	return user;
 }
 
-//Function to add a planner to a given user with certain
-exports.add_planner = function addPlanner(email_fk, city_fk, idPlanner, isActive){
-
+function getUserByEmail(u_email){
+	var user = User.findOne({email: u_email}).exec();
+	//console.log(user.password);
+	return user;
 }
 
-//Function to add the preferences to a planner
-exports.add_preference = function addPreference(city, occassion, age_appr, leave_date, return_date, ideal_opt, budget){
-
+function insertUser(user){
+	console.log(user.password);
+	newUser = new User({
+		name: user.name,
+		email: user.email,
+		password: user.password,
+		planner: user.planner
+	});
+	console.log('About to insert the user');
+	newUser.save(function(err){
+    	if(!err){
+      		console.log("User added to db.");
+    	}else{
+      		console.error(err);
+    	}
+  	});
 }
 
-//Adds an event to a specific planner
-exports.add_event = function addEvent(idPlanner_fk, name, date, time, cost){
-
-}
-
-//Function used to update the planner
-exports.updatePlanner = function updatePlanner(email_fk, city_fk, idPlanner, isActive){
-
-}
-
-//Function to update the preferences of a user
-exports.updatePreferences = function(city, occassion, age_appr, leave_date, return_date, ideal_opt, budget){
-
-}
-
-//Function to get all the events of a user
-exports.get_allevents = function getAllEvents(email_fk){
-
-}
-
-//Function to get all the events of a user for a given plannerm
-exports.get_events_planner = function getEventsByPlanner(email_fk, idPlanner_fk){
-
-}
-
-//Function to get all the planners of a user
-exports.get_user_planners = function getUserPlanners(email_fk){
-
-}
-/*****************************************************************************/
 
 
-//**************************** Function Definitions ****************************
 
-/** ****************************************************************************
-  *             returnSuccess()
-  *             Return success upon successful DB operations
-  * @param      {none} None
-  * @returns    boolean true or false
-  *****************************************************************************/
 
-  function returnSuccess(){
 
-      return true;
-  }
 
-/** ****************************************************************************
-  *             getAccount()
-  *             Return Account Params
-  * @param
-  * @returns
-  *****************************************************************************/
-  function getAccount(){
 
-  }
