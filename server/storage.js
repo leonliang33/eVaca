@@ -33,7 +33,6 @@ exports.login_verification = function login(usr, pass){
 
 //Modify password
 exports.modify_pass = function modPass(){
-
 }
 
 //Modify email
@@ -47,7 +46,7 @@ exports.modify_username = function modUsername(){
 }
 
 //Function to insert one user in the database
-exports.insert_user = function insertUser(usr, pass, email, sec_q, sec_a){
+exports.insert_user = function insertUser(usr, pass, email){
 
 }
 

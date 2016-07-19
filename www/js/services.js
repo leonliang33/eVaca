@@ -48,12 +48,13 @@ angular.module('app.services', [])
      }
 })
 
-/*.factory('resetpassword',function($http, $q){
+.factory('resetpassword',function($http, $q){
      return{
-          verifyToken: function(email){
+          getEmail: function(email){
           var deferred = $q.defer();
-          $http.get("http://localhost:8420/",{email:email}).then function successcall(results){
-               console.log(results.data);
+          $http.get("http://localhost:8420/verify",{email:email}).then(successcall,errorcall);
+               function successcall(result){
+               console.log(result.data);
 
                if(results.data == "true")
                {
@@ -69,7 +70,7 @@ angular.module('app.services', [])
      return deferred.promise;
      }
 }
-})*/
+})
 
 .service('BlankService', [function(){
 

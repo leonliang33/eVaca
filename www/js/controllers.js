@@ -6,10 +6,18 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('signUpCtrl', ['$scope','signUp','$http','$state','$q',signupController])
 
+.controller('resetPasswordCtrl', ['$scope','signUp','$http','$state','$q',resetPasswordController])
+
+
 
 .controller('eVacaCtrl', function($scope) {
 
 })
+
+.controller('verifcationCodeCtrl', function($scope) {
+
+})
+
 
 .controller('historyCtrl', function($scope) {
 
@@ -22,11 +30,6 @@ angular.module('app.controllers', ['app.services'])
 .controller('plannerCtrl', function($scope) {
 
 })
-
-.controller('verifcationCodeCtrl', function($scope) {
-
-})
-
 .controller('resetPasswordCtrl', function($scope) {
 
 })
@@ -42,21 +45,31 @@ angular.module('app.controllers', ['app.services'])
 .controller('accountPreferencesCtrl', function($scope) {
 
 })
-/*function resetPasswordController($scope, resetPassword, $http, $state, $q){
+
+function resetPasswordController($scope, resetpassword, $http, $state, $q){
      var vm = this;
 
      console.log("resetPasswordController Active");
 
-     $scope.enter = function(){
+     $scope.getemail = function(){
           console.log("ENTER CALLED");
           var email = this.formdata.email;
-          var bool;
-               bool = resetPassword.verifyToken(email).then(function(data)){
-                    bool= data;
+
+          var vbool;
+               vbool = resetPassword.getEmail(email).then(function(data){
+                    vbool= data;
+                    if(vbool = "true")
+                    {
+                         $state.go('newPassword');
+                    }
+                    else{
+                         $state.reload();
+                    }
                     
-               }
+               });
      }
-}*/
+};
+
 function loginController($scope,login,$http,$state,$q){
      //console.log($scope.log_email);
      //login;
@@ -93,7 +106,6 @@ function signupController($scope,signUp,$http,$state,$q){
      $scope.signup = function(){
           console.log("ENTER CALLED");
           console.log(this.formdata.email);
-          console.log(this.formdata.security);
           var name = this.formdata.name;
           var em = this.formdata.email;
           var pass=this.formdata.log_pass;

@@ -20,9 +20,10 @@ var events = require("./Events.js");
 var storage = require("./storage.js");
 var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
+var User = require('./models/user.model.js');
 
 //******************************* Global Variables *****************************
-var db_url = 'mongodb://localhost/evacadb'
+var db_url = 'mongodb://localhost/evacadb';
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -36,12 +37,12 @@ app.use(bodyParser.urlencoded({
 */
 app.use(bodyParser.json());
 
+app.use(express.static('www'));
 
 app.use(function(req, res,next) {
      res.header("Access-Control-Allow-Origin", "*");
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
      next();
-
 });
 
 //Receive post requests from client
@@ -54,27 +55,44 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.username,req.body.password);
 });
 
-app.post('/signup', function(req,res)){
-  var user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    securtiyquestion: req.body.securtiyquestion;
-    securityanswer: req.body.securityanswer;
-  });
-  user.save(function(err){
-    req.login(user,function(err){
-      res.redirect('/')
-    });
-  });
+app.post('/signup', function(req,res){
+
+    console.log("Post received from post");
+    console.log(req.body.name);
+    console.log(req.body.email);
+    console.log(req.body.password);
+    
+
+    res.send("true");
+    storage.insert_user(req.body.name,req.body.email,req.body.password);
+  
+  //user.save(function(err){
+    //req.login(user,function(err){
+     // res.redirect('/')
+   // });
+ // });
 });
 
+app.post('/verify', function (req, res) {
+    console.log("Post received from post");
+    console.log(req.body.email);
+    res.send("true");
+    //storage.verify_email(req.body.email);
+});
 
 //Server is currently serving on port 8420
-app.listen(8420,function startServer(){
+
+app.listen(8420, function startServer() {
      console.log("Listening on :: " + 8420);
-     var Event1 = new events(7,10,'Miami');
-     console.log(Event1.getCost());
+     var Event1 = new events(7,10,'Miami', 'arts');
+    //  Event1.getApiEvents(function(response) {
+        // console.log(Event1.getEventName(response));
+        // console.log(Event1.getEventImageUrl(response));
+    //  });
+     // console.log(Event1.getCost('Thai Moon'));
+     Event1.getCost('Thai Moon').then(res => {
+          console.log("RETURNED VALUE:: " + res );
+     })
 });
 
 
