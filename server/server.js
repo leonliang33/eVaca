@@ -45,6 +45,10 @@ app.use(function(req, res,next) {
      next();
 });
 
+app.get('/planner/thingsToDo', function(req, res) {
+    res.send('https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg');
+});
+
 //Receive post requests from client
 app.post("/", function (req, res) {
     console.log("Post received from post");
@@ -61,11 +65,11 @@ app.post('/signup', function(req,res){
     console.log(req.body.name);
     console.log(req.body.email);
     console.log(req.body.password);
-    
+
 
     res.send("true");
     storage.insert_user(req.body.name,req.body.email,req.body.password);
-  
+
   //user.save(function(err){
     //req.login(user,function(err){
      // res.redirect('/')

@@ -20,8 +20,10 @@ angular.module('app.controllers', ['app.services'])
 
 })
 
-.controller('thingsToDoCtrl', function($scope) {
-
+.controller('thingsToDoCtrl', function($scope, $http) {
+    $http.get('/planner/thingsToDo'). then(function(response) {
+      $scope.eventImageUrl = response.data;
+    });
 })
 
 .controller('plannerCtrl', function($scope) {
