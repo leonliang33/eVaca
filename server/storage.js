@@ -14,6 +14,7 @@
 //Calls application level module
 
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var url = "mongodb://localhost:27017/test";
 var db = mongoose.connection;
 var User = loadSchemas();
@@ -21,21 +22,33 @@ exports.User = User;
 
 //*********** Exported Functions ***************
 
-exports.login_verification = function(u_email, u_pass){
-	var login = false;
-	console.log(u_email);
-	var user_query = getUserByEmail(u_email);
-	//console.log(user_query);
-	console.log('Done with exec');
-	user_query.then(function(usr){
-		//console.log(usr);
-		if(!usr){
-			console.log("No user found with that email.");
-		}else
-			login = usr.comparePassword(u_pass);
+exports.updateUserEmail = function(email, newEmail){
+	return new Promise(function(resolve, reject){
+		var promise = User.findOne({email: email}).exec();
+
+		promise.then(function(user) {
+  			user.email = newEmail;
+  			return user.save();
+		}).then(function(user) {
+  			console.log('updated user\'s email with: ' + user.email);
+		}).catch(function(err){
+  			console.log('error: Cannot find the user with email', email);
+		});
 	});
-	console.log('Done with then');
-	return login;
+
+}
+
+exports.login_verification = function(u_email, u_pass){
+	return new Promise(function(resolve, reject){
+		User.findOne({email: u_email}).exec().then((res) => {
+			console.log('password in database: ', res.password);
+			var login = false;
+			(res.password == u_pass)? login = true : login = false;
+			resolve(login);
+		}).catch(function(err){
+  			console.log('error: Cannot find the user with email ', email);
+		});;
+	});
 }
 
 exports.insert_user = function (user){
@@ -69,11 +82,14 @@ exports.connect = function(){
 	return db_promise;
 }
 
+exports.verify_email = function(u_email){
+
+}
+
 exports.disconnect = function(){
-	var db_promise = new Promise(function (resolve,reject){
+	return new Promise(function (resolve,reject){
 		resolve(mongoose.connection.close());
 	});
-	return db_promise;
 }
 
 //*********** Function implementation *********** 
@@ -106,16 +122,6 @@ function loadSchemas(){
 		planner: plannerSchema
 	});
 
-	userSchema.methods.comparePassword = function(psw){
-		console.log(password);
-		if(this.password == psw){
-			console.log('Email and password verified.');
-			return true;
-		}
-		console.log('Incorrect email or password.');
-		return false;
-	};
-
 	var user = mongoose.model('eVaca', userSchema);
 	console.log('User schema created.');
 	return user;
@@ -126,6 +132,8 @@ function getUserByEmail(u_email){
 	//console.log(user.password);
 	return user;
 }
+
+
 
 function insertUser(user){
 	console.log(user.password);
@@ -144,11 +152,3 @@ function insertUser(user){
     	}
   	});
 }
-
-
-
-
-
-
-
-
