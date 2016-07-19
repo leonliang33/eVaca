@@ -46,7 +46,11 @@ app.use(function(req, res,next) {
 });
 
 app.get('/planner/thingsToDo', function(req, res) {
-    res.send('https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg');
+    var events = [
+        {name: 'Statue of Liberty', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg'},
+        {name: 'Zen Bikes', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg'}
+    ];
+    res.send(events);
 });
 
 //Receive post requests from client

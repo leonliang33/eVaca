@@ -1,13 +1,9 @@
 <ion-view title="Things To Do" id="page15" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
         <ion-list id="events-list" class=" ">
-            <ion-item class="item-thumbnail-left  " id="event1">
-                <img src="https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg" alt="Event image">
-                <h2>Statue of Liberty</h2>
-            </ion-item>
-            <ion-item class="item-thumbnail-left  " id="event1">
-                <img ng-src={{eventImageUrl}} alt="Event image">
-                <h2>Zen Bikes</h2>
+            <ion-item ng-repeat="event in events" class="item-thumbnail-left  " id="event1">
+                <img ng-src={{event.image_url}} alt="Event image">
+                <h2>{{event.name}}</h2>
             </ion-item>
         </ion-list>
     </ion-content>

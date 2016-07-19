@@ -21,8 +21,8 @@ angular.module('app.controllers', ['app.services'])
 })
 
 .controller('thingsToDoCtrl', function($scope, $http) {
-    $http.get('/planner/thingsToDo'). then(function(response) {
-      $scope.eventImageUrl = response.data;
+    $http.get('/planner/thingsToDo').then(function(response) {
+        $scope.events = response.data;
     });
 })
 
