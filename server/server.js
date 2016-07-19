@@ -20,6 +20,7 @@ var events = require("./Events.js");
 var storage = require("./storage.js");
 var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
+var User = require('./models/user.model.js');
 
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
@@ -44,6 +45,14 @@ app.use(function(req, res,next) {
      next();
 });
 
+app.get('/planner/thingsToDo', function(req, res) {
+    var events = [
+        {name: 'Statue of Liberty', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg'},
+        {name: 'Zen Bikes', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg'}
+    ];
+    res.send(events);
+});
+
 //Receive post requests from client
 app.post("/", function (req, res) {
     console.log("Post received from post");
@@ -54,6 +63,33 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.username,req.body.password);
 });
 
+app.post('/signup', function(req,res){
+
+    console.log("Post received from post");
+    console.log(req.body.name);
+    console.log(req.body.email);
+    console.log(req.body.password);
+
+
+    res.send("true");
+    storage.insert_user(req.body.name,req.body.email,req.body.password);
+
+  //user.save(function(err){
+    //req.login(user,function(err){
+     // res.redirect('/')
+   // });
+ // });
+});
+
+app.post('/verify', function (req, res) {
+    console.log("Post received from post");
+    console.log(req.body.email);
+    res.send("true");
+    //storage.verify_email(req.body.email);
+});
+
+//Server is currently serving on port 8420
+
 app.listen(8420, function startServer() {
      console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami', 'arts');
@@ -62,9 +98,9 @@ app.listen(8420, function startServer() {
         // console.log(Event1.getEventImageUrl(response));
     //  });
      // console.log(Event1.getCost('Thai Moon'));
-    //  Event1.getCost('Thai Moon').then(res => {
-    //       console.log("RETURNED VALUE:: " + res );
-    //  })
+     Event1.getCost('Thai Moon').then(res => {
+          console.log("RETURNED VALUE:: " + res );
+     })
 });
 
 

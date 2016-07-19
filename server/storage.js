@@ -12,7 +12,6 @@
 //******************************* Configuration ********************************
 //Define Modules Requirement Here
 //Calls application level module
-//*********** Global variables *****************
 
 var mongoose = require('mongoose');
 var url = "mongodb://localhost:27017/test";
