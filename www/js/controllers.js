@@ -12,6 +12,7 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('verifcationCodeCtrl', ['$scope','verificationcode','$http','$state','$q',verificationCodeController])
 
+.controller('newPasswordCtrl',['$scope', 'newPassword', '$http', '$state', '$q',newPasswordController])
 
 
 .controller('eVacaCtrl', function($scope, $http, $state) {
@@ -43,9 +44,7 @@ angular.module('app.controllers', ['app.services'])
 		});
 })
 
-.controller('newPasswordCtrl', function($scope) {
 
-})
 
 .controller('accountPreferencesCtrl', function($scope) {
 
@@ -81,7 +80,7 @@ function verificationCodeController($scope, verificationcode, $http, $state, $q)
      console.log("VERIFICATIONCODE Active");
 
      $scope.verifycode = function(){
-          console.log("ENTER CALLED");
+          console.log("VERIFY CALLED");
           var code = this.formdata.code;
 
           var verifybool;
@@ -106,7 +105,7 @@ function plannerController($scope,planner,$http,$state,$q){
      console.log("PLANNER CONTROLLER ACTIVE");
      $scope.formData = {};
      $scope.plan = function(){
-          console.log("Enter Called");
+          console.log("PLANNER Called");
           console.log(this.formdata.location);
           console.log(this.formdata.budget);
           console.log(this.formdata.occassion);
@@ -164,12 +163,36 @@ function loginController($scope,login,$http,$state,$q){
      }
 };
 
+function newPasswordController($scope, newPassword, $http, $state, $q){
+     var np = this;
+     console.log("NEW password controller active");
+
+     $scope.changePass = function(){
+          console.log("CHANGPASSWORD CALLED");
+          var vcode=this.formdata.vcode;
+          var pass1 = this.formdata.pass1;
+          var pass2 = this.formdata.pass2;
+
+          var passbool;
+               passbool = newPassword.getnewPass(vcode,pass1,pass2).then(function(data){
+                    passbool = data;
+                    console.log(passbool);
+                    if(passbool == "true"){
+                         $state.go('login');
+                    }else{
+                         $state.reload();
+                    }
+               });
+     }
+};
+
+
 function signupController($scope,signUp,$http,$state,$q){
      var sm = this;
      console.log("SIGNUP CONTROLLER ACTIVE");
 
      $scope.signup = function(){
-          console.log("ENTER CALLED");
+          console.log("SIGNUP CALLED");
           console.log(this.formdata.email);
           var name = this.formdata.name;
           var em = this.formdata.email;
