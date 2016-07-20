@@ -15,7 +15,7 @@ angular.module('app.controllers', ['app.services'])
 .controller('newPasswordCtrl',['$scope', 'newPassword', '$http', '$state', '$q',newPasswordController])
 
 
-.controller('eVacaCtrl', function($scope, $http, $state) {
+.controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state) {
 	$http.get('/main').then(function(response) {
 		$scope.planners = response.data;
 	});
@@ -24,16 +24,17 @@ angular.module('app.controllers', ['app.services'])
 		$state.go('thingsToDo', {
 			plannerId: id
 		});
-	}
+	};
+	var title = 'Delete trip';
+	var template = 'Are you sure you want to delete this trip?';
+	itemRemoval($scope, $ionicPopup, title, template);
 })
-
-
 
 .controller('historyCtrl', function($scope) {
 
 })
 
-.controller('thingsToDoCtrl', function($scope, $http, $stateParams) {
+.controller('thingsToDoCtrl', function($scope, $http, $stateParams, $ionicPopup) {
 	$http.get('/events', {
 			params: {
 				plannerId: $stateParams.plannerId
@@ -42,13 +43,44 @@ angular.module('app.controllers', ['app.services'])
 		.then(function(response) {
 			$scope.events = response.data;
 		});
+	var title = 'Delete event';
+	var template = 'Are you sure you want to delete this event?';
+	itemRemoval($scope, $ionicPopup, title, template);
 })
 
+.controller('newPasswordCtrl', function($scope) {
 
+})
 
 .controller('accountPreferencesCtrl', function($scope) {
 
 })
+
+function itemRemoval($scope, $ionicPopup, title, template) {
+	$scope.remove = function(item) {
+		var confirmPopup = $ionicPopup.confirm({
+			title: title,
+			template: template
+		});
+		confirmPopup.then(function(res) {
+			if (res) { // Deletion confirmed
+				if ('location' in item) { // Planner removal
+					console.log('removing planner');
+					var plannerIndex = $scope.planners.indexOf(item);
+					$scope.planners.splice(plannerIndex, 1);
+					// Http delete request to delete planner here
+				} else {
+					console.log('removing event');
+					var eventIndex = $scope.events.indexOf(item);
+					$scope.events.splice(eventIndex, 1);
+					// Http delete to delete event here
+				}
+			} else {
+				console.log('Deletion canceled');
+			}
+		});
+	};
+}
 
 function resetPasswordController($scope, resetpassword, $http, $state, $q){
      var vm = this;
@@ -197,7 +229,7 @@ function signupController($scope,signUp,$http,$state,$q){
           var name = this.formdata.name;
           var em = this.formdata.email;
           var pass=this.formdata.log_pass;
-        
+
 
           var sign_bool;
                sign_bool=signUp.note(name,em,pass).then(function(data){
