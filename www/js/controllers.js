@@ -48,10 +48,6 @@ angular.module('app.controllers', ['app.services'])
 	itemRemoval($scope, $ionicPopup, title, template);
 })
 
-.controller('newPasswordCtrl', function($scope) {
-
-})
-
 .controller('accountPreferencesCtrl', function($scope) {
 
 })
