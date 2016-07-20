@@ -21,6 +21,8 @@ var storage = require("./storage.js");
 var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
 var User = require('./models/user.model.js');
+var nodemailer = require('nodemailer');
+
 
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
@@ -88,8 +90,35 @@ app.post('/verify', function (req, res) {
     //storage.verify_email(req.body.email);
 });
 
-//Server is currently serving on port 8420
+app.post('/sendEmailVerification',function(req,res){
+     var rec_email = "evaca8420@gmail.com";
+     var code = "ABC";
+     var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'evaca8420@gmail.com', // Your email id
+            pass: 'evacaproject' // Your password
+       }});
+     var mailOptions = {
+           from: 'evaca8420@gmail.com>', // sender address
+           to: rec_email, // list of receivers
+           subject: 'Email Example', // Subject line
+           text: "Welcome to eVaca, here's your verification code:" + code //, // plaintext body
+    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+     };
+     transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+        res.json({yo: 'error'});
+    }else{
+        console.log('Message sent: ' + info.response);
+        res.json({yo: info.response});
+    };
+     });
+});
 
+
+//Server is currently serving on port 8420
 app.listen(8420, function startServer() {
      console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami', 'arts');
