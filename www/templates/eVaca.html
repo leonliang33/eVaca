@@ -1,7 +1,10 @@
 <ion-view title="eVaca" id="page6" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
         <ion-list id="userVacations" class=" " ui-sref="thingsToDo">
-            <ion-item id="userVacation1" ng-repeat="planner in planners" ng-click="getPlannerEvents(planner._id)">{{planner.location}}</ion-item>
+            <ion-item id="userVacation1" ng-repeat="planner in planners" ng-click="getPlannerEvents(planner._id)" on-swipe-left="remove(planner)">
+                <h2>{{planner.location}}</h2>
+                <!-- <a id="delete-event-button" style="float: right;" class=" button button-assertive  button-block " ng-click="showConfim()">Delete</a> -->
+            </ion-item>
         </ion-list>
         <a ui-sref="tabsController.planner" id="eVaca-button14" style="font-size:20px;border-radius:70px 70px 70px 70px;" class=" button button-assertive  button-block icon ion-search ">Plan Trip</a>
         <div id="eVaca-button-bar1" class=" button-bar "></div>
