@@ -68,10 +68,27 @@ Preferences.prototype.addThemes = function(new_theme){
   * @returns    boolean true or false
   *****************************************************************************/
 function validLocation(dest){
+  //ensure dest is in "City, State" format
 
-    //how will location be selected in API?? (City, State), (Zip code), (Geo-Coordinates)
+  //ensure two strings seperated by comma
+  if(!dest.includes(","))
+    return false;
 
-     return true;
+  var destParts = dest.split(",", 2);
+  var city = destParts[0];
+  var state = destParts[1];
+
+  //validate city name contains only letters and is longer than two chars
+  if(!/^[a-zA-Z]+$/.test(str) || city.length() <=2)
+    return false;
+
+  //validate state is in the United States
+  var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+  var stateAbbreviations= ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
+  if(states.indexOf(state)<0 && stateAbbreviations.indexOf(state)<0)
+    return false;
+
+  return true;
 }
 
 /** ****************************************************************************
