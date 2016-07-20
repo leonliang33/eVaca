@@ -12,6 +12,7 @@
 //Define Modules Requirement Here
 
 var express = require("express");
+var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
 
@@ -26,6 +27,7 @@ var nodemailer = require('nodemailer');
 
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
+var sess;
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -47,6 +49,8 @@ app.use(function(req, res,next) {
      next();
 });
 
+app.use(session({secret : 'secret'}));
+
 app.get('/planner/thingsToDo', function(req, res) {
     var events = [
         {name: 'Statue of Liberty', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg'},
@@ -57,16 +61,19 @@ app.get('/planner/thingsToDo', function(req, res) {
 
 //Receive post requests from client
 app.post("/", function (req, res) {
+     sess=req.session;
     console.log("Post received from post");
     console.log(req.body.username);
     console.log(req.body.password);
+    sess.username = req.body.username;
+    sess.password = req.body.password;
     //console.log(req);
     res.send("true");
     storage.login_verification(req.body.username,req.body.password);
 });
 
 app.post('/signup', function(req,res){
-
+     sess=req.session;
     console.log("Post received from post");
     console.log(req.body.name);
     console.log(req.body.email);
@@ -84,6 +91,7 @@ app.post('/signup', function(req,res){
 });
 
 app.post('/verify', function (req, res) {
+     sess=req.session;
     console.log("Post received from post");
     console.log(req.body.email);
     res.send("true");
@@ -91,6 +99,7 @@ app.post('/verify', function (req, res) {
 });
 
 app.post('/sendEmailVerification',function(req,res){
+     sess=req.session;
      var rec_email = "evaca8420@gmail.com";
      var code = "ABC";
      var transporter = nodemailer.createTransport({
@@ -115,6 +124,16 @@ app.post('/sendEmailVerification',function(req,res){
         res.json({yo: info.response});
     };
      });
+});
+
+app.get('/logout',function(req,res){
+     req.session.destroy(function(err) {
+       if(err) {
+         console.log(err);
+       } else {
+         res.send('true');
+       }
+     })
 });
 
 
