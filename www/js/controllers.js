@@ -52,7 +52,7 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
           var vbool;
                vbool = resetPassword.getEmail(email).then(function(data){
                     vbool= data;
-                    if(vbool = "true")
+                    if(vbool == "true")
                     {
                          $state.go('newPassword');
                     }
@@ -67,11 +67,17 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
 function plannerController($scope,planner,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
-    
-
-
+     $scope.formData = {};
      $scope.plan = function(){
           console.log("Enter Called");
+          console.log(this.formdata.location);
+          console.log(this.formdata.budget);
+          console.log(this.formdata.occassion);
+          console.log(this.formdata.age);
+          console.log(this.formdata.ivacation);
+          console.log(this.formdata.sdate);
+
+
           var location = this.formdata.location;
           var budget = this.formdata.budget;
           var occassion = this.formdata.occassion;
