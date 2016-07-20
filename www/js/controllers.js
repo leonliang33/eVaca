@@ -6,7 +6,7 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('signUpCtrl', ['$scope','signUp','$http','$state','$q',signupController])
 
-.controller('resetPasswordCtrl', ['$scope','signUp','$http','$state','$q',resetPasswordController])
+.controller('resetPasswordCtrl', ['$scope','resetpassword','$http','$state','$q',resetPasswordController])
 
 
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
@@ -42,10 +42,6 @@ angular.module('app.controllers', ['app.services'])
 		});
 })
 
-.controller('resetPasswordCtrl', function($scope) {
-
-})
-
 .controller('newPasswordCtrl', function($scope) {
 
 })
@@ -66,7 +62,7 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
           var vbool;
                vbool = resetPassword.getEmail(email).then(function(data){
                     vbool= data;
-                    if(vbool = "true")
+                    if(vbool == "true")
                     {
                          $state.go('newPassword');
                     }
@@ -78,15 +74,20 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
      }
 };
 
-function plannerController($scope,login,$http,$state,$q){
+function plannerController($scope,planner,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
-
-//var occassion = this.formdata.occassion;
-
-
+     $scope.formData = {};
      $scope.plan = function(){
           console.log("Enter Called");
+          console.log(this.formdata.location);
+          console.log(this.formdata.budget);
+          console.log(this.formdata.occassion);
+          console.log(this.formdata.age);
+          console.log(this.formdata.ivacation);
+          console.log(this.formdata.sdate);
+
+
           var location = this.formdata.location;
           var budget = this.formdata.budget;
           var occassion = this.formdata.occassion;
@@ -95,17 +96,17 @@ function plannerController($scope,login,$http,$state,$q){
           var rdate = this.formdata.rdate;
           var ideal_vacation = this.formdata.ivacation;
           var plan_bool;
-             plan_bool = login.planners(location,budget,occassion,age,sdate,ldate,ideal_vacation).then(function(data){
+             plan_bool = planner.getPlanner(location,budget,occassion,age,sdate,rdate,ideal_vacation).then(function(data){
                plan_bool = data;
-               console.log(log_bool);
+               console.log(plan_bool);
                if(plan_bool == "true"){
                     $state.go('thingsToDo');
                }else{
                     $state.reload();
                }
-             })
+             });
      }
-}
+};
 
 
 

@@ -12,7 +12,7 @@ angular.module('app.services', [])
                     if(results.data == "true"){
                          deferred.resolve(results.data);
                     }else{
-                         deferred.resolve(results.data);
+                         deferred.reject(results.data);
                     }
 
                }
@@ -50,12 +50,11 @@ angular.module('app.services', [])
 
 .factory('planner',function($http,$q){
      return{
-          planners: function(Occassion,Age,Leaving,returningdate,idealvacation){
+          getPlanner: function(location, budget,Occassion,Age,Leaving,returningdate,idealvacation){
                var deferred = $q.defer();
-               $http.post("http://localhost:8420/planner", {Location:Location, budget:budget,Occassion:Occassion,Age:age,Leaving:Leaving,
-                    returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
-                    function successcall(result){
-                         console.log(result.data);
+               $http.post("http://localhost:8420/planner", {Location:Location, budget:budget,Occassion:Occassion,Age:Age,Leaving:Leaving,returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
+                    function successcall(results){
+                         console.log(results.data);
                          if(results.data == "true")
                          {
                               deferred.resolve(results.data);
@@ -65,8 +64,9 @@ angular.module('app.services', [])
                     }
                function errorcall(){
                     deferred.reject(false);
-               }        
-                }
+               }
+               return deferred.promise;        
+          }
      }
 })
 
