@@ -8,8 +8,9 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('resetPasswordCtrl', ['$scope','resetpassword','$http','$state','$q',resetPasswordController])
 
-
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
+
+.controller('verifcationCodeCtrl', ['$scope','verificationcode','$http','$state','$q',verificationCodeController])
 
 .controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state) {
 	$http.get('/main').then(function(response) {
@@ -26,9 +27,7 @@ angular.module('app.controllers', ['app.services'])
 	itemRemoval($scope, $ionicPopup, title, template);
 })
 
-.controller('verifcationCodeCtrl', function($scope) {
 
-})
 
 .controller('historyCtrl', function($scope) {
 
@@ -106,6 +105,32 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
      }
 };
 
+function verificationCodeController($scope, verificationcode, $http, $state, $q){
+     var vm = this;
+
+     console.log("VERIFICATIONCODE Active");
+
+     $scope.verifycode = function(){
+          console.log("ENTER CALLED");
+          var code = this.formdata.code;
+
+          var verifybool;
+               verifyvbool = verificationcode.getCode(code).then(function(data){
+                    verifybool= data;
+                    if(verifybool == "true")
+                    {
+                         $state.go('tabsController.planner');
+                    }
+                    else{
+                         $state.reload();
+                    }
+
+               });
+     }
+};
+
+
+
 function plannerController($scope,planner,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
@@ -141,7 +166,6 @@ function plannerController($scope,planner,$http,$state,$q){
 };
 
 
-
 function loginController($scope,login,$http,$state,$q){
      //console.log($scope.log_email);
      //login;
@@ -170,7 +194,6 @@ function loginController($scope,login,$http,$state,$q){
      }
 };
 
-
 function signupController($scope,signUp,$http,$state,$q){
      var sm = this;
      console.log("SIGNUP CONTROLLER ACTIVE");
@@ -181,11 +204,10 @@ function signupController($scope,signUp,$http,$state,$q){
           var name = this.formdata.name;
           var em = this.formdata.email;
           var pass=this.formdata.log_pass;
-          var secu = this.formdata.security;
-          var sec_ans = this.formdata.sec_ans;
+
 
           var sign_bool;
-               sign_bool=signUp.note(name,em,pass,secu,sec_ans).then(function(data){
+               sign_bool=signUp.note(name,em,pass).then(function(data){
                     sign_bool = data;
                     console.log(sign_bool);
                     if(sign_bool == "true"){
