@@ -29,7 +29,7 @@ angular.module('app.services', [])
      return{
           getnewPass: function(code,pass1,pass2){
                var deferred = $q.defer();
-               $http.post("http://localhost:8420/",{code:code,pass1:pass1,pass2:pass2}).then(successcall,errorcall);
+               $http.post("http://localhost:8420/newpassword",{code:code,pass1:pass1,pass2:pass2}).then(successcall,errorcall);
                function successcall(results){
                     console.log(results.data);
                     if(results.data == "true"){
@@ -51,7 +51,7 @@ angular.module('app.services', [])
      return{
           note: function(name,email,password){
                var deferred = $q.defer();
-               $http.post("http://localhost:8420/signUp",{name: name, email: email,password: password}).then(successcall,errorcall);
+               $http.post("http://localhost:8420/signup",{name: name, email: email,password: password}).then(successcall,errorcall);
                function successcall(results){
                     // console.log('success');
                     // return true;
@@ -121,7 +121,7 @@ angular.module('app.services', [])
      return{
           getCode: function(verificationcode){
           var deferred = $q.defer();
-          $http.get("http://localhost:8420/verificationcode",{verificationcode:verificationcode}).then(successcall,errorcall);
+          $http.post("http://localhost:8420/verificationcode",{verificationcode:verificationcode}).then(successcall,errorcall);
                function successcall(results){
                console.log(results.data);
 
