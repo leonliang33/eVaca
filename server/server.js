@@ -51,12 +51,26 @@ app.use(function(req, res,next) {
 
 app.use(session({secret : 'secret'}));
 
-app.get('/planner/thingsToDo', function(req, res) {
-    var events = [
-        {name: 'Statue of Liberty', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg'},
-        {name: 'Zen Bikes', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg'}
-    ];
-    res.send(events);
+var eventsOne = [
+    {name: 'Statue of Liberty', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg'},
+    {name: 'Zen Bikes', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg'}
+];
+var eventsTwo = [
+    {name: 'Kush', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/Ws9T2waA0I-kPNscx0mXqA/ls.jpg'},
+    {name: 'Diced', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/y1PsCe_i-Kb-lql2qAnFcg/ls.jpg'}
+];
+var planners = [
+    {_id: 0, location: 'New York City', eventss: eventsOne},
+    {_id: 1, location: 'Miami', eventss: eventsTwo}
+];
+
+app.get('/main', function(req, res) {
+    res.send(planners);
+});
+
+app.get('/events', function(req, res) {
+    // console.log(req.query.plannerId);
+    res.send(planners[req.query.plannerId].eventss);
 });
 
 //Receive post requests from client
@@ -68,8 +82,8 @@ app.post("/", function (req, res) {
     sess.username = req.body.username;
     sess.password = req.body.password;
     //console.log(req);
-    res.send("true");
-    storage.login_verification(req.body.username,req.body.password);
+    // res.send("true");
+    // storage.login_verification(req.body.username,req.body.password);
 });
 
 app.post('/signup', function(req,res){
@@ -80,8 +94,8 @@ app.post('/signup', function(req,res){
     console.log(req.body.password);
 
 
-    res.send("true");
-    storage.insert_user(req.body.name,req.body.email,req.body.password);
+    // res.send("true");
+    // storage.insert_user(req.body.name,req.body.email,req.body.password);
 
   //user.save(function(err){
     //req.login(user,function(err){
@@ -146,9 +160,9 @@ app.listen(8420, function startServer() {
         // console.log(Event1.getEventImageUrl(response));
     //  });
      // console.log(Event1.getCost('Thai Moon'));
-     Event1.getCost('Thai Moon').then(res => {
-          console.log("RETURNED VALUE:: " + res );
-     })
+    //  Event1.getCost('Thai Moon').then(res => {
+    //       console.log("RETURNED VALUE:: " + res );
+    //  })
 });
 
 

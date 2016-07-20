@@ -11,10 +11,16 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
 
+.controller('eVacaCtrl', function($scope, $http, $state) {
+	$http.get('/main').then(function(response) {
+		$scope.planners = response.data;
+	});
 
-
-.controller('eVacaCtrl', function($scope) {
-
+	$scope.getPlannerEvents = function(id) {
+		$state.go('thingsToDo', {
+			plannerId: id
+		});
+	}
 })
 
 .controller('verifcationCodeCtrl', function($scope) {
@@ -25,13 +31,16 @@ angular.module('app.controllers', ['app.services'])
 
 })
 
-.controller('thingsToDoCtrl', function($scope, $http) {
-    $http.get('/planner/thingsToDo').then(function(response) {
-        $scope.events = response.data;
-    });
+.controller('thingsToDoCtrl', function($scope, $http, $stateParams) {
+	$http.get('/events', {
+			params: {
+				plannerId: $stateParams.plannerId
+			}
+		})
+		.then(function(response) {
+			$scope.events = response.data;
+		});
 })
-
-
 
 .controller('resetPasswordCtrl', function($scope) {
 
@@ -72,7 +81,7 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
 function plannerController($scope,login,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
-    
+
 //var occassion = this.formdata.occassion;
 
 

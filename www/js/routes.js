@@ -49,6 +49,9 @@ angular.module('app.routes', [])
 
   .state('thingsToDo', {
     url: '/events',
+    params: {
+        plannerId: null
+    },
     // views: {
     //   'tab4': {
         templateUrl: 'templates/thingsToDo.html',
