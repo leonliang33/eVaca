@@ -17,25 +17,29 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var url = "mongodb://localhost:27017/test";
 var db = mongoose.connection;
-var User = loadSchemas();
+var User;
+loadSchemas();
 exports.User = User;
 
 //*********** Exported Functions ***************
 
-exports.updateUserEmail = function(email, newEmail){
-	return new Promise(function(resolve, reject){
-		var promise = User.findOne({email: email}).exec();
-
-		promise.then(function(user) {
-  			user.email = newEmail;
-  			return user.save();
-		}).then(function(user) {
-  			console.log('updated user\'s email with: ' + user.email);
-		}).catch(function(err){
-  			console.log('error: Cannot find the user with email', email);
-		});
+exports.connect = function(){
+	db.on('error', console.error);
+	db.once('open', function(err) {
+		if(!err)
+			console.log('Connected to database.');
+		else
+			console.log(err);
 	});
+	return new Promise(function (resolve,reject){
+		resolve(mongoose.connect(url));
+	});
+}
 
+exports.disconnect = function(){
+	return new Promise(function (resolve,reject){
+		resolve(mongoose.connection.close());
+	});
 }
 
 exports.login_verification = function(u_email, u_pass){
@@ -47,60 +51,115 @@ exports.login_verification = function(u_email, u_pass){
 			resolve(login);
 		}).catch(function(err){
   			console.log('error: Cannot find the user with email ', email);
-		});;
+		});
+	});
+}
+
+exports.updateUserEmail = function(email, newEmail){
+	return new Promise(function(resolve, reject){
+		User.findOne({email: email}).exec().then(res => {
+  			res.email = newEmail;
+  			res.save().then((res) => {
+    			console.log('User\'s email updated from ' + email +' to '+ newEmail);
+    			resolve(true);
+  			}).catch(function(err){
+  				console.log('error: Cannot insert the user. Possible duplicate email.');
+  				resolve(false);
+			});
+		}).catch(function(err){
+  			console.log('error: Cannot find the user with email.', email);
+  			resolve(false);
+		});
 	});
 }
 
 exports.insert_user = function (user){
-
-	var db_promise = new Promise(function (resolve,reject){
-		resolve(insertUser(user));
+	return new Promise(function (resolve,reject){
+		newUser = new User({
+			name: user.name,
+			email: user.email,
+			password: user.password,
+			planner: user.planner
+		});
+		console.log('About to insert the user');
+		newUser.save().then((res) => {
+    		console.log('User '+newUser.name+' added to db.');
+    		resolve(true);
+  		}).catch(function(err){
+  			console.log('error: Cannot insert the user. Possible email duplicated.');
+  			resolve(false);
+		});
 	});
-	return db_promise;
 }
 
 exports.find_by_email = function (u_email){
-	var user;
-	var user_query = getUserByEmail(u_email);
-	user_query.then(function(usr){
-		user = usr;
+	return new Promise(function(resolve, reject){
+		User.findOne({email: u_email}).exec().then(res => {
+			resolve(res);
+		}).catch(function(err){
+			console.log('error: Cannot find the user. The user may not be registered with that email.');
+  			resolve(false);
+		});
 	});
-	return user;
 }
 
-exports.connect = function(){
-	db.on('error', console.error);
-	db.once('open', function(err) {
-		if(!err)
-			console.log('Connected to database.');
-		else
-			console.log(err);
+exports.addEventToUser = function(email, plannerID, eventname){
+	return new Promise(function(resolve, reject){
+		console.log('Preparing to find the user.')
+		User.findOne({email: email}, {planner._id: plannerID}).exec().then(res => {
+			console.log('Looking for', email);
+			console.log(res.name + ' found');
+			res.planner.event.push({event: eventname}).exec().then(res => {
+				console.log(eventname + ' added to ' + email);
+				res.save().then((res) => {
+    				console.log('Data saved.');
+    				resolve(true);
+  				}).catch(function(err){
+  					console.log('error: Cannot save the user.');
+  					resolve(false);
+				});
+			}).catch(function (err) {
+				console.log('error: Cannot push the event to the user.');
+  				resolve(false);
+			});	
+		}).catch(function(err){
+			console.log('error: Cannot find the user. The user may not be registered with that email.');
+  			resolve(false);
+		});
 	});
-	var db_promise = new Promise(function (resolve,reject){
-		resolve(mongoose.connect(url));
+}
+
+exports.addPlannerToUser = function(email, planner){
+	return new Promise(function(resolve, reject){
+		find_by_email(email).then(res => {
+			res.planner.event.push({event: eventname});
+			res.save().then((res) => {
+    			console.log('User\'s email updated from ' + email +' to '+ newEmail);
+    			resolve(true);
+  			}).catch(function(err){
+  				console.log('error: Cannot insert the event to the user.');
+  				resolve(false);
+			});
+		}).catch(function(err){
+			console.log('error: Cannot insert the event to the user.');
+  			resolve(false);
+		});
 	});
-	return db_promise;
 }
 
 exports.verify_email = function(u_email){
 
 }
 
-exports.disconnect = function(){
-	return new Promise(function (resolve,reject){
-		resolve(mongoose.connection.close());
-	});
-}
-
 //*********** Function implementation *********** 
 
 function loadSchemas(){
 	var eventSchema = mongoose.Schema({
-		name: {type: String, unique: true}
+		name: String
 	});
 
 	var preferenceSchema = mongoose.Schema({
-		city: {type: String, unique: true},
+		city: String,
 		occassion: String,
 		age_appr: Number,
 		leaving: Date,
@@ -110,45 +169,20 @@ function loadSchemas(){
 	});
 
 	var plannerSchema = mongoose.Schema({
-		prefereces: [preferenceSchema],
+		prefereces: preferenceSchema,
 		events: [eventSchema],
-		isCurrent: Boolean
+		isCurrent: Boolean,
+		_id: Number
 	});
 
 	var userSchema = mongoose.Schema({
 		name: String,
-		email: String,
+		email: {type: String, unique: true},
 		password: String,
-		planner: plannerSchema
+		planner: [plannerSchema]
 	});
 
-	var user = mongoose.model('eVaca', userSchema);
+	User = mongoose.model('eVaca', userSchema);
 	console.log('User schema created.');
-	return user;
-}
-
-function getUserByEmail(u_email){
-	var user = User.findOne({email: u_email}).exec();
-	//console.log(user.password);
-	return user;
-}
-
-
-
-function insertUser(user){
-	console.log(user.password);
-	newUser = new User({
-		name: user.name,
-		email: user.email,
-		password: user.password,
-		planner: user.planner
-	});
-	console.log('About to insert the user');
-	newUser.save(function(err){
-    	if(!err){
-      		console.log("User added to db.");
-    	}else{
-      		console.error(err);
-    	}
-  	});
+	//return user;
 }
