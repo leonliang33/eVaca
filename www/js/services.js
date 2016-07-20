@@ -75,8 +75,8 @@ angular.module('app.services', [])
           getEmail: function(email){
           var deferred = $q.defer();
           $http.get("http://localhost:8420/verify",{email:email}).then(successcall,errorcall);
-               function successcall(result){
-               console.log(result.data);
+               function successcall(results){
+               console.log(results.data);
 
                if(results.data == "true")
                {
@@ -93,6 +93,31 @@ angular.module('app.services', [])
      }
 }
 })
+
+.factory('verificationcode',function($http, $q){
+     return{
+          getCode: function(verificationcode){
+          var deferred = $q.defer();
+          $http.get("http://localhost:8420/verificationcode",{verificationcode:verificationcode}).then(successcall,errorcall);
+               function successcall(results){
+               console.log(results.data);
+
+               if(results.data == "true")
+               {
+                    deferred.resolve(results.data);
+               }else{
+                    deferred.reject(results.data);
+               }
+
+          }
+     function errorcall(){
+          deferred.reject(false);
+     }
+     return deferred.promise;
+     }
+}
+})
+
 
 .service('BlankService', [function(){
 

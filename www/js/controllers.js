@@ -8,8 +8,11 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('resetPasswordCtrl', ['$scope','resetpassword','$http','$state','$q',resetPasswordController])
 
-
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
+
+.controller('verifcationCodeCtrl', ['$scope','verificationcode','$http','$state','$q',verificationCodeController])
+
+
 
 .controller('eVacaCtrl', function($scope, $http, $state) {
 	$http.get('/main').then(function(response) {
@@ -23,9 +26,7 @@ angular.module('app.controllers', ['app.services'])
 	}
 })
 
-.controller('verifcationCodeCtrl', function($scope) {
 
-})
 
 .controller('historyCtrl', function($scope) {
 
@@ -74,6 +75,33 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
      }
 };
 
+function verificationCodeController($scope, verificationcode, $http, $state, $q){
+     var vm = this;
+
+     console.log("VERIFICATIONCODE Active");
+
+     $scope.verifycode = function(){
+          console.log("ENTER CALLED");
+          var code = this.formdata.code;
+
+          var verifybool;
+               verifyvbool = verificationcode.getCode(code).then(function(data){
+                    verifybool= data;
+                    if(verifybool == "true")
+                    {
+                         $state.go('tabsController.planner');
+                    }
+                    else{
+                         $state.reload();
+                    }
+
+               });
+     }
+};
+
+
+
+
 function plannerController($scope,planner,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
@@ -109,7 +137,6 @@ function plannerController($scope,planner,$http,$state,$q){
 };
 
 
-
 function loginController($scope,login,$http,$state,$q){
      //console.log($scope.log_email);
      //login;
@@ -137,7 +164,6 @@ function loginController($scope,login,$http,$state,$q){
 
      }
 };
-
 
 function signupController($scope,signUp,$http,$state,$q){
      var sm = this;
