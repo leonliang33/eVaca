@@ -83,7 +83,7 @@ app.post("/", function (req, res) {
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
-    // storage.login_verification(req.body.username,req.body.password);
+    storage.login_verification(req.body.username,req.body.password);
 });
 
 app.post('/signup', function(req,res){
@@ -153,6 +153,7 @@ app.get('/logout',function(req,res){
 
 //Server is currently serving on port 8420
 app.listen(8420, function startServer() {
+     storage.connect();
      console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami', 'arts');
     //  Event1.getApiEvents(function(response) {

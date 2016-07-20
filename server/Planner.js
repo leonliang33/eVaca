@@ -25,6 +25,7 @@ class Planner{
      constructor(){
           this.Preferences;
           this.Events = new Array();
+          this._id;
      }
 
 }
