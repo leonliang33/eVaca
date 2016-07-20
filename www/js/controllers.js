@@ -101,7 +101,6 @@ function verificationCodeController($scope, verificationcode, $http, $state, $q)
 
 
 
-
 function plannerController($scope,planner,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
@@ -175,11 +174,10 @@ function signupController($scope,signUp,$http,$state,$q){
           var name = this.formdata.name;
           var em = this.formdata.email;
           var pass=this.formdata.log_pass;
-          var secu = this.formdata.security;
-          var sec_ans = this.formdata.sec_ans;
+        
 
           var sign_bool;
-               sign_bool=signUp.note(name,em,pass,secu,sec_ans).then(function(data){
+               sign_bool=signUp.note(name,em,pass).then(function(data){
                     sign_bool = data;
                     console.log(sign_bool);
                     if(sign_bool == "true"){
