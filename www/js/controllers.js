@@ -8,6 +8,11 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('resetPasswordCtrl', ['$scope','signUp','$http','$state','$q',resetPasswordController])
 
+
+.controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
+
+
+
 .controller('eVacaCtrl', function($scope) {
 
 })
@@ -26,9 +31,7 @@ angular.module('app.controllers', ['app.services'])
     });
 })
 
-.controller('plannerCtrl', function($scope) {
 
-})
 
 .controller('resetPasswordCtrl', function($scope) {
 
@@ -65,6 +68,37 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
                });
      }
 };
+
+function plannerController($scope,login,$http,$state,$q){
+     var pm = this;
+     console.log("PLANNER CONTROLLER ACTIVE");
+    
+//var occassion = this.formdata.occassion;
+
+
+     $scope.plan = function(){
+          console.log("Enter Called");
+          var location = this.formdata.location;
+          var budget = this.formdata.budget;
+          var occassion = this.formdata.occassion;
+          var age = this.formdata.age;
+          var sdate = this.formdata.sdate;
+          var rdate = this.formdata.rdate;
+          var ideal_vacation = this.formdata.ivacation;
+          var plan_bool;
+             plan_bool = login.planners(location,budget,occassion,age,sdate,ldate,ideal_vacation).then(function(data){
+               plan_bool = data;
+               console.log(log_bool);
+               if(plan_bool == "true"){
+                    $state.go('thingsToDo');
+               }else{
+                    $state.reload();
+               }
+             })
+     }
+}
+
+
 
 function loginController($scope,login,$http,$state,$q){
      //console.log($scope.log_email);
