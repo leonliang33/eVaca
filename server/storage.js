@@ -156,6 +156,8 @@ exports.addPlannerToUser = function(email, newPlanner){
 	});
 }
 
+
+
 exports.verify_email = function(u_email){
 
 }
