@@ -1,2 +1,0 @@
-net stop MongoDB
-PAUSE

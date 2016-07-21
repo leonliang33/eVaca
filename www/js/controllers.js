@@ -144,13 +144,11 @@ function plannerController($scope,planner,$http,$state,$q){
 
           var location = this.formdata.location;
           var budget = this.formdata.budget;
-          var occassion = this.formdata.occassion;
-          var age = this.formdata.age;
           var sdate = this.formdata.sdate;
           var rdate = this.formdata.rdate;
           var ideal_vacation = this.formdata.ivacation;
           var plan_bool;
-             plan_bool = planner.getPlanner(location,budget,occassion,age,sdate,rdate,ideal_vacation).then(function(data){
+             plan_bool = planner.getPlanner(location,budget,sdate,rdate,ideal_vacation).then(function(data){
                plan_bool = data;
                console.log(plan_bool);
                if(plan_bool == "true"){
