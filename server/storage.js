@@ -137,7 +137,7 @@ exports.addEventToUser = function(email, plannerID, eventname) {
 exports.addPlannerToUser = function(email, planner){
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
-			res.planner.push({
+			/*res.planner.push({
 				_id: ,
 				isCurrent: ,
 				events:{
@@ -146,7 +146,7 @@ exports.addPlannerToUser = function(email, planner){
 				preferences:{
 
 				}
-			});
+			});*/
 			res.save().then((res) => {
     			console.log('User\'s email updated from ' + email +' to '+ newEmail);
     			resolve(true);
@@ -180,7 +180,7 @@ function loadSchemas(){
 	});
 
 	var plannerSchema = mongoose.Schema({
-		prefereces: preferenceSchema,
+		preferences: preferenceSchema,
 		events: [{name: String}],
 		isCurrent: Boolean,
 		_id: Number
