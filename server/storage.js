@@ -106,25 +106,47 @@ exports.find_by_email = function (u_email){
 exports.addEventToUser = function(email, plannerID, eventname) {
     return new Promise(function(resolve, reject) {
         console.log('Preparing to find the user.');
-        User.findOne({
-            email: email
-        }).exec().then(res => {
-            res.planner[0].events.push({name: eventname});
-            res.save().then((res) => {
-                console.log('Data saved.');
-                resolve(true);
-            }).catch(function(err) {
-                console.log('error: Cannot save the user.');
-                resolve(false);
-            });
+        User.findOne({ email: email }).exec().then(res => {
+        	var i = 0;
+        	console.log('Preparing to find planner.');
+        	while(i < res.planner.length){
+        		if(res.planner[i]._id == plannerID){
+        			break;
+        		}
+        		i++;
+        	}
+
+        	if(i == res.planner.length){
+        		console.log('error: Cannot find the planner', plannerID);
+        		resolve(false);
+        	}else{
+        		console.log('Planner found')
+        		res.planner[i].events.push({name: eventname});
+            	res.save().then((res) => {
+                	console.log('Data saved.');
+                	resolve(true);
+            	}).catch(function(err) {
+                	console.log('error: Cannot save the user.');
+                	resolve(false);
+            	});
+        	}
         });
-			});
+	});
 };
 
 exports.addPlannerToUser = function(email, planner){
 	return new Promise(function(resolve, reject){
-		find_by_email(email).then(res => {
-			res.planner.event.push({event: eventname});
+		User.findOne({ email: email }).exec().then(res => {
+			res.planner.push({
+				_id: ,
+				isCurrent: ,
+				events:{
+
+				},
+				preferences:{
+
+				}
+			});
 			res.save().then((res) => {
     			console.log('User\'s email updated from ' + email +' to '+ newEmail);
     			resolve(true);
@@ -146,9 +168,6 @@ exports.verify_email = function(u_email){
 //*********** Function implementation ***********
 
 function loadSchemas(){
-	var eventSchema = mongoose.Schema({
-		name: String
-	});
 
 	var preferenceSchema = mongoose.Schema({
 		city: String,
@@ -162,7 +181,7 @@ function loadSchemas(){
 
 	var plannerSchema = mongoose.Schema({
 		prefereces: preferenceSchema,
-		events: [eventSchema],
+		events: [{name: String}],
 		isCurrent: Boolean,
 		_id: Number
 	});
