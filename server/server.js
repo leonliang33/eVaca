@@ -114,7 +114,7 @@ app.post('/planner', function(req,res){
      sess.idealvacation=req.body.idealvacation;
      planners.location = sess.location;
      console.log(sess.idealvacation);
-     console.log(sess.Location);
+     console.log(sess.location);
      console.log(req.body.location);
      var Event1 = new events(7,10,req.body.location, 'food');
      var eventUrl;
@@ -147,7 +147,7 @@ app.post("/", function (req, res) {
     console.log("Post received from post");
     console.log(req.body.username);
     console.log(req.body.password);
-    sess.username = req.body.username;
+    sess.email = req.body.username;
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
