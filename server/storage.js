@@ -105,24 +105,17 @@ exports.find_by_email = function (u_email){
 
 exports.addEventToUser = function(email, plannerID, eventname) {
     return new Promise(function(resolve, reject) {
-        console.log('Preparing to find the user.');
         User.findOne({ email: email }).exec().then(res => {
-        	console.log(res);
-        	res.planner.id(plannerID).exec().then(res => {
-        		console.log('Planner found');
-        		res.events.push({name: eventname});
+        		console.log('User found');
+        		var p = res.planner.id(plannerID);
+        		p.events.push({name: eventname});
             	res.save().then((res) => {
-            		console.log(res);
                 	console.log('Data saved.');
                 	resolve(true);
             	}).catch(function(err) {
                 	console.log('error: Cannot save the user.');
                 	resolve(false);
             	});
-        	}).catch(function(err){
-				console.log('error: Cannot find the planner with id', plannerID);
-  				resolve(false);
-        	});
         }).catch(function(err){
 			console.log('error: Cannot find the user. The user may not be registered with that email.');
   			resolve(false);
