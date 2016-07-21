@@ -1,25 +1,11 @@
 <ion-view title="Verifcation Code" hide-nav-bar="true" id="page10" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class=" manual-remove-top-padding">
-        <div class="spacer" style="height: 100px;"></div>
-        <div>
-            <table>
-                <tbody>
-                    <style>
-                        #budget_amt{ 
-                            margin-left: 70px;
-                            text-align:center;
-                        }
-                    </style>
-                    <tr align="center">
-                        <td style="margin-left:10px">
-                            <label id="budget_amt" for="budget_amt" style="color:white;font-size:15px">E-mail Verification Code</label>
-                            <input id="budget_amt" type="text" align="center" value="ng93d29s126" ng-model = "formdata.code">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="spacer" style="width: 300px; height: 41px;"></div>
-        <a ui-sref="tabsController.planner" id="verifcationCode-button4" style="border-radius:80px 80px 80px 80px;" class=" button button-stable  button-block icon ion-paper-airplane " ng-click = "verifycode()">Submit</a>
+        <div class="spacer" style="width: 300px; height: 33px;"></div>
+        <form id="reset-form" class="list ">
+            <label class="item item-input " id="budget_amt">
+                <input id="budget_amt" type="text" value="" placeholder="verification code" ng-model="formdata.code">
+            </label>
+        </form>
+        <a ui-sref="tabsController.planner" id="verifcationCode-button4" style="border-radius:80px 80px 80px 80px;" class="button button-assertive button-block icon ion-paper-airplane" ng-click="verifycode()"> Submit</a>
     </ion-content>
 </ion-view>
