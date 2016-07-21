@@ -107,7 +107,34 @@ exports.addEventToUser = function(email, plannerID, eventname) {
     return new Promise(function(resolve, reject) {
         console.log('Preparing to find the user.');
         User.findOne({ email: email }).exec().then(res => {
-        	var i = 0;
+        	console.log(res);
+        	res.planner.id(plannerID).exec().then(res => {
+        		console.log('Planner found');
+        		res.events.push({name: eventname});
+            	res.save().then((res) => {
+            		console.log(res);
+                	console.log('Data saved.');
+                	resolve(true);
+            	}).catch(function(err) {
+                	console.log('error: Cannot save the user.');
+                	resolve(false);
+            	});
+        	}).catch(function(err){
+				console.log('error: Cannot find the planner with id', plannerID);
+  				resolve(false);
+        	});
+        }).catch(function(err){
+			console.log('error: Cannot find the user. The user may not be registered with that email.');
+  			resolve(false);
+        });
+	});
+};
+
+/*exports.addEventToUser = function(email, plannerID, eventname) {
+    return new Promise(function(resolve, reject) {
+        console.log('Preparing to find the user.');
+        User.findOne({ email: email }).exec().then(res => {
+        	/*var i = 0;
         	console.log('Preparing to find planner.');
         	while(i < res.planner.length){
         		if(res.planner[i]._id == plannerID){
@@ -131,13 +158,12 @@ exports.addEventToUser = function(email, plannerID, eventname) {
         	}
         });
 	});
-};
+}*/
 
 exports.addPlannerToUser = function(email, newPlanner){
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
 			res.planner.push({
-				_id: newPlanner._id, 
 				isCurrent: newPlanner.isCurrent,
 				events: newPlanner.events,
 				preferences: newPlanner.preferences
@@ -156,6 +182,9 @@ exports.addPlannerToUser = function(email, newPlanner){
 	});
 }
 
+exports.eliminateEvent = function(email, plannerID){
+
+}
 
 
 exports.verify_email = function(u_email){
@@ -181,8 +210,7 @@ function loadSchemas(){
 		events: [{name: String,
 				image_url: String
 		}],
-		isCurrent: Boolean,
-		_id: Number
+		isCurrent: Boolean
 	});
 
 	var userSchema = mongoose.Schema({
