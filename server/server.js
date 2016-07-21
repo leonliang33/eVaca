@@ -191,7 +191,7 @@ app.get('/logout',function(req,res){
 
 //Server is currently serving on port 8420
 app.listen(8420, function startServer() {
-     //storage.connect();
+     storage.connect();
      // firebase.initializeApp({
      //   databaseURL: "https://evaca-277d9.firebaseio.com",
      //   serviceAccount: './eVaca-e291cd5173a6.json'

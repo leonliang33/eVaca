@@ -77,12 +77,14 @@ exports.insert_user = function (user){
 	console.log('function called');
 	return new Promise(function (resolve,reject){
 		console.log('function called 2 :: '+ user);
-		newUser = new User({
+		var newUser = new User({
 			name: user.name,
 			email: user.email,
 			password: user.password,
 			planner: user.planner
 		});
+		// var newUser = user;
+
 		console.log('About to insert the user');
 		newUser.save().then((res) => {
     		console.log('User '+newUser.name+' added to db.');
