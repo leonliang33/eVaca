@@ -76,16 +76,12 @@ exports.updateUserEmail = function(email, newEmail){
 exports.insert_user = function (user){
 	console.log('function called');
 	return new Promise(function (resolve,reject){
-		console.log('function called 2 :: '+ user);
 		var newUser = new User({
 			name: user.name,
 			email: user.email,
 			password: user.password,
 			planner: user.planner
 		});
-		// var newUser = user;
-
-		console.log('About to insert the user');
 		newUser.save().then((res) => {
     		console.log('User '+newUser.name+' added to db.');
     		resolve(true);
@@ -119,7 +115,6 @@ exports.addEventToUser = function(email, plannerID, eventname) {
         		}
         		i++;
         	}
-
         	if(i == res.planner.length){
         		console.log('error: Cannot find the planner', plannerID);
         		resolve(false);
@@ -138,28 +133,24 @@ exports.addEventToUser = function(email, plannerID, eventname) {
 	});
 };
 
-exports.addPlannerToUser = function(email, planner){
+exports.addPlannerToUser = function(email, newPlanner){
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
-			/*res.planner.push({
-				_id: ,
-				isCurrent: ,
-				events:{
-
-				},
-				preferences:{
-
-				}
-			});*/
+			res.planner.push({
+				_id: newPlanner._id, 
+				isCurrent: newPlanner.isCurrent,
+				events: newPlanner.events,
+				preferences: newPlanner.preferences
+			});
 			res.save().then((res) => {
-    			console.log('User\'s email updated from ' + email +' to '+ newEmail);
+    			console.log('Planner successfully added to ', email);
     			resolve(true);
   			}).catch(function(err){
-  				console.log('error: Cannot insert the event to the user.');
+  				console.log('error: Cannot save the planner of', email);
   				resolve(false);
 			});
 		}).catch(function(err){
-			console.log('error: Cannot insert the event to the user.');
+			console.log('error: Cannot insert the planner to', email);
   			resolve(false);
 		});
 	});
