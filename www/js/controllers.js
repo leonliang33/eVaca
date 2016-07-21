@@ -148,11 +148,13 @@ function plannerController($scope,planner,$http,$state,$q){
              plan_bool = planner.getPlanner(location,budget,sdate,rdate,ideal_vacation).then(function(data){
                plan_bool = data;
                console.log(plan_bool);
-               if(plan_bool == "true"){
+               if(plan_bool == "0"){
                     console.log(plan_bool);
-                    //$state.go('thingsToDo');
+                    $state.go('thingsToDo',{
+                         plannerId: plan_bool
+                    });
                }else{
-                    //$state.reload();
+                    $state.reload();
                }
              });
      }

@@ -79,11 +79,16 @@ angular.module('app.services', [])
                $http.post("http://localhost:8420/planner", {Location:Location, budget:budget,Leaving:Leaving,returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
                     function successcall(results){
                          console.log(results.data);
-                         if(results.data >= '0')
+                         if(results.data.toString().replace(/'/g,"") == "0")
                          {
-                              deferred.resolve(results.data);
+                              console.log(results.data.toString().replace(/'/g,""));
+                              console.log("true");
+                              deferred.resolve(results.data.toString().replace(/'/g,""));
+                              console.log("resolved");
                          } else {
-                              deferred.reject(results.data);
+                              console.log(results.data.toString().replace(/'/g,""));
+                              console.log("false");
+                              deferred.resolve('false');
                          }
                     }
                function errorcall(){
