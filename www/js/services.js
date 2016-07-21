@@ -9,7 +9,7 @@ angular.module('app.services', [])
                     // console.log('success');
                     // return true;
                     console.log(results.data);
-                    if(results.data == "true"){
+                    if(results.data.toString() == "true"){
                          deferred.resolve(results.data);
                     }else{
                          deferred.reject(results.data);

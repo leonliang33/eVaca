@@ -178,7 +178,7 @@ function loginController($scope,login,$http,$state,$q){
                log_bool=login.note(em,pass).then(function(data){
                     log_bool = data;
                     console.log(log_bool);
-                    if(log_bool == "true"){
+                    if(log_bool){
                          console.log(log_bool);
                          $state.go('tabsController.eVaca');
                     }else{
