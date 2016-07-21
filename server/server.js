@@ -70,7 +70,20 @@ app.get('/main', function(req, res) {
 
 app.get('/events', function(req, res) {
     // console.log(req.query.plannerId);
-    res.send(planners[req.query.plannerId].eventss);
+    res.send(planners[req.query.plannerId].events);
+});
+
+app.post('/planner', function(req,res){
+     sess=req.session;
+     sess.Location = req.body.Location;
+     sess.budget=req.body.budget;
+     sess.Leaving=req.body.Leaving;
+     sess.returningdate=req.body.returningdate;
+     sess.idealvacation=req.body.idealvacation;
+     planners.location = sess.Location;
+     var id = "'" + planners[0]._id + "'";
+     console.log(planners[0]._id);
+     res.send(id);
 });
 
 //Receive post requests from client

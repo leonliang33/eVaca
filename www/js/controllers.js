@@ -149,9 +149,10 @@ function plannerController($scope,planner,$http,$state,$q){
                plan_bool = data;
                console.log(plan_bool);
                if(plan_bool == "true"){
-                    $state.go('thingsToDo');
+                    console.log(plan_bool);
+                    //$state.go('thingsToDo');
                }else{
-                    $state.reload();
+                    //$state.reload();
                }
              });
      }

@@ -74,11 +74,12 @@ angular.module('app.services', [])
 .factory('planner',function($http,$q){
      return{
           getPlanner: function(location, budget,Leaving,returningdate,idealvacation){
+               console.log("get planner entered");
                var deferred = $q.defer();
                $http.post("http://localhost:8420/planner", {Location:Location, budget:budget,Leaving:Leaving,returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
                     function successcall(results){
                          console.log(results.data);
-                         if(results.data == "true")
+                         if(results.data >= '0')
                          {
                               deferred.resolve(results.data);
                          } else {
@@ -88,7 +89,7 @@ angular.module('app.services', [])
                function errorcall(){
                     deferred.reject(false);
                }
-               return deferred.promise;        
+               return deferred.promise;
           }
      }
 })

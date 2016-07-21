@@ -9,7 +9,7 @@
             <label class="item item-input " id="planner-input12">
                 <span class="input-label">Budget</span>
                 <input type="number" placeholder="" ng-model= "formdata.budget">
-          
+
             </label>
         </form>
         <form id = "planner-form6" class="list ">
@@ -33,6 +33,6 @@
             <ion-checkbox ng-model="formdata.ivacation.food">Food </ion-checkbox>
             <ion-checkbox ng-model="formdata.ivacation.nightlife">Nightlife </ion-checkbox>
         </ion-list>
-        <a ui-sref="thingsToDo" id="plan-vacation-button" style="border-radius:100px 100px 100px 100px;" class=" button button-assertive  button-block icon ion-ios-world " ng-click="plan()">Let's Adventure</a>
+        <a id="plan-vacation-button" style="border-radius:100px 100px 100px 100px;" class=" button button-assertive  button-block icon ion-ios-world " ng-click="plan()">Let's Adventure</a>
     </ion-content>
 </ion-view>
