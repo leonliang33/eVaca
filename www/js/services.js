@@ -73,9 +73,9 @@ angular.module('app.services', [])
 
 .factory('planner',function($http,$q){
      return{
-          getPlanner: function(location, budget,Occassion,Age,Leaving,returningdate,idealvacation){
+          getPlanner: function(location, budget,Leaving,returningdate,idealvacation){
                var deferred = $q.defer();
-               $http.post("http://localhost:8420/planner", {Location:Location, budget:budget,Occassion:Occassion,Age:Age,Leaving:Leaving,returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
+               $http.post("http://localhost:8420/planner", {Location:Location, budget:budget,Leaving:Leaving,returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
                     function successcall(results){
                          console.log(results.data);
                          if(results.data == "true")
