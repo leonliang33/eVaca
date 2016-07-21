@@ -103,31 +103,23 @@ exports.find_by_email = function (u_email){
 	});
 }
 
-exports.addEventToUser = function(email, plannerID, eventname){
-	return new Promise(function(resolve, reject){
-		console.log('Preparing to find the user.')
-		User.findOne({email: email}, {planner._id: plannerID}).exec().then(res => {
-			console.log('Looking for', email);
-			console.log(res.name + ' found');
-			res.planner.event.push({event: eventname}).exec().then(res => {
-				console.log(eventname + ' added to ' + email);
-				res.save().then((res) => {
-    				console.log('Data saved.');
-    				resolve(true);
-  				}).catch(function(err){
-  					console.log('error: Cannot save the user.');
-  					resolve(false);
-				});
-			}).catch(function (err) {
-				console.log('error: Cannot push the event to the user.');
-  				resolve(false);
-			});	
-		}).catch(function(err){
-			console.log('error: Cannot find the user. The user may not be registered with that email.');
-  			resolve(false);
-		});
-	});
-}
+exports.addEventToUser = function(email, plannerID, eventname) {
+    return new Promise(function(resolve, reject) {
+        console.log('Preparing to find the user.');
+        User.findOne({
+            email: email
+        }).exec().then(res => {
+            res.planner[0].events.push({name: eventname});
+            res.save().then((res) => {
+                console.log('Data saved.');
+                resolve(true);
+            }).catch(function(err) {
+                console.log('error: Cannot save the user.');
+                resolve(false);
+            });
+        });
+			});
+};
 
 exports.addPlannerToUser = function(email, planner){
 	return new Promise(function(resolve, reject){
@@ -151,7 +143,7 @@ exports.verify_email = function(u_email){
 
 }
 
-//*********** Function implementation *********** 
+//*********** Function implementation ***********
 
 function loadSchemas(){
 	var eventSchema = mongoose.Schema({
