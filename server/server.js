@@ -28,6 +28,7 @@ var nodemailer = require('nodemailer');
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
 var sess;
+var email;
 
 var newUser = new storage.User({
      name: String,
@@ -104,7 +105,10 @@ app.get('/main', function(req, res) {
 });
 
 app.get('/events', function(req, res) {
-    sess = req.session;
+    // console.log(req.query.plannerId);
+    sess=req.session;
+    console.log(email);
+    // storage.find_by_email(email).then(user => res.send(user.planner[0].events))
     res.send(planners2[0].events);
 });
 var planners2 = [
@@ -134,7 +138,17 @@ app.post('/planner', function(req,res){
         console.log(planners2[0].events);
 
         res.send("0");
-        // storage.addPlannerToUser(planners2).then(result => res.send("0"));
+
+        // ------- Old with the bug
+        // events3.name = Event1.getEventName(response);
+        // events3.image_url = Event1.getEventImageUrl(response);
+        // console.log("sess email :: "+email);
+        //
+        // planners2[0].location = sess.location;
+        // planners2[0].events = events3.image_url;
+        //
+        // console.log(planners2);
+        // storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
    })
 });
 
@@ -148,7 +162,8 @@ app.post("/", function (req, res) {
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
-    storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
+    email = sess.email;
+    storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
 });
 
 
@@ -169,6 +184,7 @@ app.post('/signup', function(req,res){
     newUser.email=req.body.email;
     newUser.password=req.body.password;
     // res.send("true");
+    email = sess.email;
     storage.insert_user(newUser).then(results=>res.send(results));
 
   //user.save(function(err){
@@ -243,37 +259,3 @@ app.listen(8420, function startServer() {
     //       console.log("RETURNED VALUE:: " + res );
     //  })
 });
-
-
-/** ****************************************************************************
-  *             connectToDatabase()
-  *             Function to establish the connection to the dababase. It returns
-  *				true if the connection was successful, or false if unsuccessful.
-  *
-  * @param      {none} None
-  * @returns    boolean true or false
-  *****************************************************************************/
-  function connectToDatabase(){
-	mongoose.connect(db_url);
-	var db = mongoose.connection;
-
-	db.on('error', function(err){
-		console.log("Connection to database unsuccessful.\n" + err);
-		return false;
-	});
-
-
-	db.on('connected', function() {
-		console.log("Connection to database successful.");
-		return true;
-	});
-
-	db.on('disconnected', function () {
-		console.log('Disconected from the database.');
-		return false;
-	});
-
-	console.log("Connection to database unsuccessful.");
-	return false;
-
-  }

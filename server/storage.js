@@ -157,9 +157,10 @@ exports.addPlannerToUser = function(email, newPlanner){
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
 			res.planner.push({
-				isCurrent: newPlanner.isCurrent,
+				//isCurrent: newPlanner.isCurrent,
 				events: newPlanner.events,
-				preferences: newPlanner.preferences
+				location: newPlanner.location,
+				//preferences: newPlanner.preferences
 			});
 			res.save().then((res) => {
     			console.log('Planner successfully added to ', email);
