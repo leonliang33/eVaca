@@ -16,7 +16,7 @@ angular.module('app.controllers', ['app.services'])
 
 
 .controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state) {
-	$http.get('/main').then(function(response) {
+	$http.get('http://localhost:8420/main').then(function(response) {
 		$scope.planners = response.data;
 	});
 
@@ -35,7 +35,7 @@ angular.module('app.controllers', ['app.services'])
 })
 
 .controller('thingsToDoCtrl', function($scope, $http, $stateParams, $ionicPopup) {
-	$http.get('/events', {
+	$http.get('http://localhost:8420/events', {
 			params: {
 				plannerId: $stateParams.plannerId
 			}
