@@ -28,6 +28,36 @@ var nodemailer = require('nodemailer');
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
 var sess;
+
+var newUser = new storage.User({
+     name: String,
+     email: String,
+     password: String,
+     planner: planners
+});
+var ares = new storage.User({
+     name: 'Kratos',
+     email: 'kratos@war.com',
+     password: 'ADS343!QEF#0',
+     planner: [{
+          _id: 132,
+          isCurrent: true,
+          prefereces:{
+               city: 'Olympus',
+               occassion: 'Fun',
+               age_appr: 30,
+               leaving: "2016-10-20T20:00:00.000Z",
+               returning: "2016-10-30T10:00:00.000Z",
+               ideal_opt: 'killing',
+               budget: 0
+          },
+          events: [{
+               name: 'Kill gods at beach bay'
+          },{
+               name: 'Get orbs in the cave'
+          }]
+     }]
+});
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -70,25 +100,45 @@ app.get('/main', function(req, res) {
 
 app.get('/events', function(req, res) {
     // console.log(req.query.plannerId);
-    res.send(planners[req.query.plannerId].events);
+    res.send(planners2[0].events);
 });
-
+var planners2 = [
+   {location:String, events:null}
+];
 app.post('/planner', function(req,res){
      sess=req.session;
-     sess.Location = req.body.Location;
+     sess.location = req.body.location;
      sess.budget=req.body.budget;
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
-     planners.location = sess.Location;
-     var Event1 = new events(7,10,sess.Location, sess.idealvacation);
-    //  Event1.getApiEvents(function(response) {
-        // console.log(Event1.getEventName(response));
-        // console.log(Event1.getEventImageUrl(response));
-    //  });
-     var id = "'" + planners[0]._id + "'";
-     console.log(planners[0]._id);
-     res.send(id);
+     planners.location = sess.location;
+     console.log(sess.idealvacation);
+     console.log(sess.Location);
+     console.log(req.body.location);
+     var Event1 = new events(7,10,req.body.location, 'food');
+     var eventUrl;
+     var user,id;
+     var events3 = [
+         {name: String, image_url: String}
+     ];
+     console.log("About to call events get api");
+     Event1.getApiEvents(function(response) {
+        console.log(Event1.getEventName(response));
+        console.log(Event1.getEventImageUrl(response));
+        events3.name = Event1.getEventName(response);
+        events3.image_url = Event1.getEventImageUrl(response);
+
+
+        planners2[0].location = sess.Location;
+        planners2[0].events = response;
+
+        console.log(planners2);
+        storage.addPlannerToUser(planners2).then(result => res.send('0'));
+   })
+   // var id = "'" + planners2[0]._id + "'";
+   // console.log(planners2[0]._id);
+   // res.send(id);
 });
 
 //Receive post requests from client
@@ -101,38 +151,9 @@ app.post("/", function (req, res) {
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
-    storage.login_verification(req.body.username,req.body.password);
+    storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
 });
 
-var newUser = new storage.User({
-     name: String,
-     email: String,
-     password: String,
-     planner: planners
-});
-var ares = new storage.User({
-     name: 'Kratos',
-     email: 'kratos@war.com',
-     password: 'ADS343!QEF#0',
-     planner: [{
-          _id: 132,
-          isCurrent: true,
-          prefereces:{
-               city: 'Olympus',
-               occassion: 'Fun',
-               age_appr: 30,
-               leaving: "2016-10-20T20:00:00.000Z",
-               returning: "2016-10-30T10:00:00.000Z",
-               ideal_opt: 'killing',
-               budget: 0
-          },
-          events: [{
-               name: 'Kill gods at beach bay'
-          },{
-               name: 'Get orbs in the cave'
-          }]
-     }]
-});
 
 app.post('/signup', function(req,res){
      sess=req.session;
