@@ -15,7 +15,7 @@ var express = require("express");
 var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
-
+//var firebase = require("firebase");
 //Calls on storage and applicatioon level modules
 var events = require("./Events.js");
 var storage = require("./storage.js");
@@ -23,7 +23,7 @@ var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
 var User = require('./models/user.model.js');
 var nodemailer = require('nodemailer');
-
+//var firebase_db = require('./firebase_db.js');
 
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
@@ -153,7 +153,11 @@ app.get('/logout',function(req,res){
 
 //Server is currently serving on port 8420
 app.listen(8420, function startServer() {
-     storage.connect();
+     //storage.connect();
+     // firebase.initializeApp({
+     //   databaseURL: "https://evaca-277d9.firebaseio.com",
+     //   serviceAccount: './eVaca-e291cd5173a6.json'
+     // });
      console.log("Listening on :: " + 8420);
      var Event1 = new events(7,10,'Miami', 'arts');
     //  Event1.getApiEvents(function(response) {
