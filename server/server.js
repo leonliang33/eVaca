@@ -95,15 +95,20 @@ var planners = [
 ];
 
 app.get('/main', function(req, res) {
-    res.send(planners);
+    sess = req.session;
+    console.log('-------');
+    console.log(sess.email);
+    console.log('---------');
+    // storage.find_by_email(sess.email).then(dbres => res.send(dbres.planner));
+    res.send(planners2);
 });
 
 app.get('/events', function(req, res) {
-    // console.log(req.query.plannerId);
+    sess = req.session;
     res.send(planners2[0].events);
 });
 var planners2 = [
-   {location:String, events:null}
+   {location:String, events:[null]}
 ];
 app.post('/planner', function(req,res){
      sess=req.session;
@@ -113,45 +118,37 @@ app.post('/planner', function(req,res){
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
      planners.location = sess.location;
-     console.log(sess.idealvacation);
-     console.log(sess.location);
-     console.log(req.body.location);
+
      var Event1 = new events(7,10,req.body.location, 'food');
-     var eventUrl;
-     var user,id;
-     var events3 = [
-         {name: String, image_url: String}
-     ];
+
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
         console.log(Event1.getEventName(response));
         console.log(Event1.getEventImageUrl(response));
-        events3.name = Event1.getEventName(response);
-        events3.image_url = Event1.getEventImageUrl(response);
 
-
-        planners2[0].location = sess.Location;
-        planners2[0].events = response;
+        planners2[0].location = Event1.dest;
+        planners2[0].events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
 
         console.log(planners2);
-        storage.addPlannerToUser(planners2).then(result => res.send('0'));
+        console.log('-----------------------------------');
+        console.log(planners2[0].events);
+
+        res.send("0");
+        // storage.addPlannerToUser(planners2).then(result => res.send("0"));
    })
-   // var id = "'" + planners2[0]._id + "'";
-   // console.log(planners2[0]._id);
-   // res.send(id);
 });
 
 //Receive post requests from client
 app.post("/", function (req, res) {
      sess=req.session;
     console.log("Post received from post");
-    console.log(req.body.username);
+    console.log(req.body.email);
     console.log(req.body.password);
-    sess.email = req.body.username;
+    sess.email = req.body.email;
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
-    storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
+    storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
 
 
