@@ -60,8 +60,8 @@ var eventsTwo = [
     {name: 'Diced', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/y1PsCe_i-Kb-lql2qAnFcg/ls.jpg'}
 ];
 var planners = [
-    {_id: 0, location: 'New York City', eventss: eventsOne},
-    {_id: 1, location: 'Miami', eventss: eventsTwo}
+    {_id: 0, location: 'New York City', events: eventsOne},
+    {_id: 1, location: 'Miami', events: eventsTwo}
 ];
 
 app.get('/main', function(req, res) {
@@ -86,6 +86,36 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.username,req.body.password);
 });
 
+var newUser = new storage.User({
+     name: String,
+     email: String,
+     password: String,
+     planner: planners
+});
+var ares = new storage.User({
+     name: 'Kratos',
+     email: 'kratos@war.com',
+     password: 'ADS343!QEF#0',
+     planner: [{
+          _id: 132,
+          isCurrent: true,
+          prefereces:{
+               city: 'Olympus',
+               occassion: 'Fun',
+               age_appr: 30,
+               leaving: "2016-10-20T20:00:00.000Z",
+               returning: "2016-10-30T10:00:00.000Z",
+               ideal_opt: 'killing',
+               budget: 0
+          },
+          events: [{
+               name: 'Kill gods at beach bay'
+          },{
+               name: 'Get orbs in the cave'
+          }]
+     }]
+});
+
 app.post('/signup', function(req,res){
      sess=req.session;
     console.log("Post received from post");
@@ -93,9 +123,17 @@ app.post('/signup', function(req,res){
     console.log(req.body.email);
     console.log(req.body.password);
 
-
+    sess.name=req.body.name;
+    sess.email=req.body.email;
+    sess.password=req.body.password;
+    console.log(sess.name);
+    console.log(sess.email);
+    console.log(req.body.password);
+    newUser.name = req.body.name;
+    newUser.email=req.body.email;
+    newUser.password=req.body.password;
     // res.send("true");
-    // storage.insert_user(req.body.name,req.body.email,req.body.password);
+    storage.insert_user(newUser).then(res=>console.log(res));
 
   //user.save(function(err){
     //req.login(user,function(err){

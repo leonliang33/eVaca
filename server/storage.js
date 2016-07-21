@@ -74,7 +74,9 @@ exports.updateUserEmail = function(email, newEmail){
 }
 
 exports.insert_user = function (user){
+	console.log('function called');
 	return new Promise(function (resolve,reject){
+		console.log('function called 2 :: '+ user);
 		newUser = new User({
 			name: user.name,
 			email: user.email,
@@ -87,7 +89,7 @@ exports.insert_user = function (user){
     		resolve(true);
   		}).catch(function(err){
   			console.log('error: Cannot insert the user. Possible email duplicated.');
-  			resolve(false);
+  			reject(false);
 		});
 	});
 }
@@ -181,7 +183,9 @@ function loadSchemas(){
 
 	var plannerSchema = mongoose.Schema({
 		preferences: preferenceSchema,
-		events: [{name: String}],
+		events: [{name: String,
+				image_url: String
+		}],
 		isCurrent: Boolean,
 		_id: Number
 	});
