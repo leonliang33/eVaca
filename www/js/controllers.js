@@ -229,7 +229,7 @@ function signupController($scope,signUp,$http,$state,$q){
                sign_bool=signUp.note(name,em,pass).then(function(data){
                     sign_bool = data;
                     console.log(sign_bool);
-                    if(sign_bool == "true"){
+                    if(sign_bool){
                          console.log(sign_bool);
                          $state.go('verifcationCode');
                     }else{

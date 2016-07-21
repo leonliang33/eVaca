@@ -56,10 +56,10 @@ angular.module('app.services', [])
                     // console.log('success');
                     // return true;
                     console.log(results.data);
-                    if(results.data == "true"){
+                    if(results.data){
                          deferred.resolve(results.data);
                     }else{
-                         deferred.reject(results.data);
+                         deferred.resolve(false);
                     }
 
                }

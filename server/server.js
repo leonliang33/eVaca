@@ -81,6 +81,11 @@ app.post('/planner', function(req,res){
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
      planners.location = sess.Location;
+     var Event1 = new events(7,10,sess.Location, sess.idealvacation);
+    //  Event1.getApiEvents(function(response) {
+        // console.log(Event1.getEventName(response));
+        // console.log(Event1.getEventImageUrl(response));
+    //  });
      var id = "'" + planners[0]._id + "'";
      console.log(planners[0]._id);
      res.send(id);
@@ -146,7 +151,7 @@ app.post('/signup', function(req,res){
     newUser.email=req.body.email;
     newUser.password=req.body.password;
     // res.send("true");
-    storage.insert_user(newUser).then(res=>console.log(res));
+    storage.insert_user(newUser).then(results=>res.send(results));
 
   //user.save(function(err){
     //req.login(user,function(err){
