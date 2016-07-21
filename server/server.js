@@ -28,6 +28,7 @@ var nodemailer = require('nodemailer');
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
 var sess;
+var email;
 
 var newUser = new storage.User({
      name: String,
@@ -100,7 +101,10 @@ app.get('/main', function(req, res) {
 
 app.get('/events', function(req, res) {
     // console.log(req.query.plannerId);
-    res.send(planners2[0].events);
+    sess=req.session;
+    console.log(email);
+    storage.find_by_email(email).then(user => res.send(user.planner[0].events))
+    //res.send(planners2[0].events);
 });
 var planners2 = [
    {location:String, events:null}
@@ -128,13 +132,13 @@ app.post('/planner', function(req,res){
         console.log(Event1.getEventImageUrl(response));
         events3.name = Event1.getEventName(response);
         events3.image_url = Event1.getEventImageUrl(response);
+        console.log("sess email :: "+email);
 
-
-        planners2[0].location = sess.Location;
-        planners2[0].events = response;
+        planners2[0].location = sess.location;
+        planners2[0].events = events3.image_url;
 
         console.log(planners2);
-        storage.addPlannerToUser(planners2).then(result => res.send('0'));
+        storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
    })
    // var id = "'" + planners2[0]._id + "'";
    // console.log(planners2[0]._id);
@@ -151,6 +155,7 @@ app.post("/", function (req, res) {
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
+    email = sess.email;
     storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
 });
 
@@ -172,6 +177,7 @@ app.post('/signup', function(req,res){
     newUser.email=req.body.email;
     newUser.password=req.body.password;
     // res.send("true");
+    email = sess.email;
     storage.insert_user(newUser).then(results=>res.send(results));
 
   //user.save(function(err){
