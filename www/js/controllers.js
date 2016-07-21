@@ -136,11 +136,8 @@ function plannerController($scope,planner,$http,$state,$q){
           console.log("PLANNER Called");
           console.log(this.formdata.location);
           console.log(this.formdata.budget);
-          console.log(this.formdata.occassion);
-          console.log(this.formdata.age);
           console.log(this.formdata.ivacation);
           console.log(this.formdata.sdate);
-
 
           var location = this.formdata.location;
           var budget = this.formdata.budget;
