@@ -157,13 +157,14 @@ app.post("/", function (req, res) {
      sess=req.session;
     console.log("Post received from post");
     console.log(req.body.email);
+    console.log('--------------');
     console.log(req.body.password);
     sess.email = req.body.email;
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
     email = sess.email;
-    storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
+    storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
 
 
