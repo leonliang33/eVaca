@@ -101,7 +101,7 @@ app.post('/planner', function(req,res){
      console.log("Days = "+num_of_days);
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
-     console.log("About to call events get api");
+     console.log("About to call events get api ");
      Event1.getApiEvents(function(response) {
         planners2.location = req.body.location;
         // planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
