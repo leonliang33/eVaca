@@ -86,7 +86,8 @@ app.post('/planner', function(req,res){
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
         planners2.location = req.body.location;
-        planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
+        // planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
+        planners2.events = response.businesses;
         storage.addPlannerToUser(email,planners2).then(result => {
           storage.find_by_email(email).then(dbres => {
             // Sends the most recently added planner
