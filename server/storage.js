@@ -102,6 +102,24 @@ exports.updateUserPassword = function(email, newPass){
 	});
 }
 
+exports.updateUserName = function(email, newName){
+	return new Promise(function(resolve, reject){
+		User.findOne({email: email}).exec().then(res => {
+  			res.name = newName;
+  			res.save().then((res) => {
+    			console.log('User\'s name updated from');
+    			resolve(true);
+  			}).catch(function(err){
+  				console.log('error: Cannot save the user');
+  				resolve(false);
+			});
+		}).catch(function(err){
+  			console.log('error: Cannot find the user with email', email);
+  			resolve(false);
+		});
+	});
+}
+
 exports.insert_user = function (user){
 	return new Promise(function (resolve,reject){
 		var newUser = new User({
