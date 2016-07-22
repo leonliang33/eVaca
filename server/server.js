@@ -68,12 +68,9 @@ app.get('/main', function(req, res) {
 });
 
 app.get('/events', function(req, res) {
-    // console.log(req.query.plannerId);
-    sess=req.session;
-    console.log(email);
-    storage.find_by_email(email).then(user => {
-         res.send(JSON.stringify(user.planner[0].events));
-    })
+	sess = req.session;
+	storage.find_by_email(email).then(user =>
+		res.send(user.planner.id(req.query.plannerId).events));
 });
 
 app.post('/planner', function(req,res){

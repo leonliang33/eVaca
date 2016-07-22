@@ -104,6 +104,14 @@ Event.prototype.getEventImageUrl = function(data) {
     return data.businesses[0].image_url;
 }
 
+Event.prototype.getEventNameAt = function(data, index) {
+    return data.businesses[index].name;
+}
+
+Event.prototype.getEventImageUrlAt = function(data, index) {
+    return data.businesses[index].image_url;
+}
+
 Event.prototype.getCost = function(name_of_place){
      // return new Promise( function(resolve,reject){
      //      var placeID;
