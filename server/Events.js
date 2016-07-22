@@ -87,7 +87,7 @@ Event.prototype.getApiEvents = function(callback) {
             location: this.dest,
             sort: 2, // Highest rated
             category_filter: this.theme,
-            limit: this.time
+            limit: this.time*3
         })
         .then(function(data) {
              //console.log(data);

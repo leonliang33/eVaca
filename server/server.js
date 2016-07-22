@@ -81,6 +81,7 @@ app.post('/planner', function(req,res){
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
+     console.log("vacation type = "+ req.body.idealvacation);
      var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000));
      console.log("Days = "+num_of_days);
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, 'food');
