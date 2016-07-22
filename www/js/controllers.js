@@ -15,9 +15,18 @@ angular.module('app.controllers', ['app.services'])
 .controller('newPasswordCtrl',['$scope', 'newPassword', '$http', '$state', '$q',newPasswordController])
 
 
-.controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state) {
+.controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state, planner) {
 	$http.get('http://localhost:8420/main').then(function(response) {
 		$scope.planners = response.data;
+	});
+
+	$scope.$watch(function() {
+		return planner.getNewPlanner();
+	}, function(planner) {
+		console.log(planner);
+		if (planner !== null) {
+			$scope.planners.push(planner);
+		}
 	});
 
 	$scope.getPlannerEvents = function(id) {

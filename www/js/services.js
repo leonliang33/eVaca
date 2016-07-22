@@ -72,6 +72,16 @@ angular.module('app.services', [])
 })
 
 .factory('planner',function($http,$q){
+      var planner = null;
+
+      function setNewPlanner(newPlanner) {
+          planner = newPlanner;
+      }
+
+      function getNewPlanner() {
+          return planner;
+      }
+
      return{
           getPlanner: function(location, budget,Leaving,returningdate,idealvacation){
                console.log("get planner entered");
@@ -92,7 +102,9 @@ angular.module('app.services', [])
                         //  }
                         // console.log(results.data);
                         if(results.data){
+                             setNewPlanner(results.data);
                              deferred.resolve(results.data);
+
                         }else{
                              deferred.resolve(false);
                         }
@@ -101,7 +113,9 @@ angular.module('app.services', [])
                     deferred.reject(false);
                }
                return deferred.promise;
-          }
+          },
+          setNewPlanner: setNewPlanner,
+          getNewPlanner: getNewPlanner,
      }
 })
 
