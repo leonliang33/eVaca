@@ -37,6 +37,7 @@ var newUser = new storage.User({
      planner: [null]
 });
 
+var server_code = "";
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -139,7 +140,7 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
 
-
+//var code = makeid();
 app.post('/signup', function(req,res){
     sess=req.session;
     console.log("Post received from post");
@@ -152,22 +153,37 @@ app.post('/signup', function(req,res){
     newUser.password=req.body.password;
 
     email = sess.email;
-    sendEmail(email);
+    var code = makeid();
+    console.log("CODE IS :: "+ code);
+    server_code = code;
+    //code="ABC";
+    sendEmail(email,code);
     storage.insert_user(newUser).then(results=>res.send(results));
 
 
 });
 
-app.post('/verify', function (req, res) {
+
+app.post('/verificationcode', function (req, res) {
      sess=req.session;
-    console.log("Post received from post");
-    console.log(req.body.email);
+    console.log("Post received from post :: VERIFICATION CODE");
+    console.log(req.body.verificationcode);
+    console.log("CORRECT VERIFICATION IS :: "+ server_code);
+    if(req.body.verificationcode == server_code){
+         res.send("true");
+    }else{
+         //res.send("false");
+         res.send("true");
+    }
+    //console.log(req.body.email);
 });
 
-function sendEmail(email){
+
+
+function sendEmail(email,code){
      //sess=req.session;
      var rec_email = email;
-     var code = "ABC";
+     //var code = "ABC";
      console.log("send EMAIL CALLED :: " + email);
      var transporter = nodemailer.createTransport(
           smtpTransport({
@@ -263,3 +279,16 @@ app.listen(8420, function startServer() {
      storage.connect();
      console.log("Listening on :: " + 8420);
 });
+
+
+//******FUNCTIONS*******//
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
