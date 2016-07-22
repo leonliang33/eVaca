@@ -82,10 +82,12 @@ Event.prototype.recommend = function(){
 var API_KEY = 'AIzaSyCQkZamcWwjJ9UPNqFvtAklm5UH_3Dfo6c';
 
 Event.prototype.getApiEvents = function(callback) {
+
     yelp.search({
             location: this.dest,
             sort: 2, // Highest rated
-            category_filter: this.theme
+            category_filter: this.theme,
+            limit: this.time*3
         })
         .then(function(data) {
              //console.log(data);
@@ -94,6 +96,24 @@ Event.prototype.getApiEvents = function(callback) {
         .catch(function(err) {
             console.error(err);
         });
+     //    var i = 0;
+     //    var hold = "";
+     //    while(this.cost >=0){
+     //         yelp.search({
+     //              location: this.dest,
+     //              sort: 2, // Highest rated
+     //              category_filter: this.theme
+     //         })
+     //         .then(res => getCost(res.businesses[i]).name) //getCost is asynchronous
+     //         .then(price => {
+     //              this.cost = this.cost - price;
+     //              if(this.cost >= 0){
+     //                   hold += res.businesses[i];
+     //              }
+     //         });
+     //         this.cost = this.cost - price;
+     //    }
+     //    callback(hold);
 }
 
 Event.prototype.getEventName = function(data) {
@@ -157,7 +177,7 @@ Event.prototype.getCost = function(name_of_place){
      return places.textSearch({ query: name_of_place })
         .then(res => res.body.results[0].place_id)
         .then(placeID => places.details({ placeid : placeID }))
-        .then(res => res.body.result.price_level);
+        .then(res => res.body.result.price_level).then(price => price*100);
 };
 
 module.exports = Event;

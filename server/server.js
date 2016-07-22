@@ -74,26 +74,56 @@ app.get('/events', function(req, res) {
 });
 
 app.post('/planner', function(req,res){
+
      sess=req.session;
      sess.location = req.body.location;
      sess.budget=req.body.budget;
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
-
-     var Event1 = new events(7,10,req.body.location, 'food');
+     var vacaType="";
+     var JvacaType = JSON.stringify(req.body.idealvacation);
+     if(JvacaType.indexOf('arts')){
+          vacaType='arts,';
+     }
+     if(JvacaType.indexOf('food')){
+          vacaType = 'food,';
+     }
+     if(JvacaType.indexOf('nightlife')){
+          vacaType = 'nightlife,'
+     }
+     if(JvacaType.indexOf('active')){
+          vacaType = 'active,'
+     }
+     console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
+     var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000));
+     console.log("Days = "+num_of_days);
+     var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
         planners2.location = req.body.location;
         // planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
         planners2.events = response.businesses;
-        storage.addPlannerToUser(email,planners2).then(result => {
-          storage.find_by_email(email).then(dbres => {
-            // Sends the most recently added planner
-            res.send(dbres.planner[dbres.planner.length-1]);
-          });
-        });
+        while(num_of_days>=0){
+
+             if(sess.budget == Event1.getCost(response.businesses[num_of_days])){
+                  planners2.events = [{name: response.businesses[num_of_days].name, image_url: response.businesses[num_of_days].image_url} ];
+             }
+             num_of_days--;
+        }
+
+        setTimeout(function(){
+             storage.addPlannerToUser(email,planners2).then(result => {
+               storage.find_by_email(email).then(dbres => {
+                 // Sends the most recently added planner
+                 res.send(dbres.planner[dbres.planner.length-1]);
+               });
+             });
+        },5000)
+
+
+
       });
 });
 
