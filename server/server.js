@@ -84,16 +84,16 @@ app.post('/planner', function(req,res){
      var vacaType="";
      var JvacaType = JSON.stringify(req.body.idealvacation);
      if(JvacaType.indexOf('arts')){
-          vacaType='arts,';
+          vacaType+='arts,';
      }
      if(JvacaType.indexOf('food')){
-          vacaType = 'food,';
+          vacaType += 'food,';
      }
      if(JvacaType.indexOf('nightlife')){
-          vacaType = 'nightlife,'
+          vacaType += 'nightlife,'
      }
      if(JvacaType.indexOf('active')){
-          vacaType = 'active,'
+          vacaType += 'active,'
      }
      console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
      var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000));
@@ -120,7 +120,7 @@ app.post('/planner', function(req,res){
                  res.send(dbres.planner[dbres.planner.length-1]);
                });
              });
-        },5000)
+        },3000)
 
 
 

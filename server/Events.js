@@ -86,7 +86,7 @@ Event.prototype.getApiEvents = function(callback) {
     yelp.search({
             location: this.dest,
             sort: 2, // Highest rated
-            category_filter: this.theme,
+            term: this.theme,
             limit: this.time*3
         })
         .then(function(data) {
