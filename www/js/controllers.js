@@ -36,7 +36,7 @@ angular.module('app.controllers', ['app.services'])
 	};
 	var title = 'Delete trip';
 	var template = 'Are you sure you want to delete this trip?';
-	itemRemoval($scope, $ionicPopup, title, template);
+	itemRemoval($scope, $http, $ionicPopup, title, template);
 })
 
 .controller('historyCtrl', function($scope) {
@@ -54,14 +54,14 @@ angular.module('app.controllers', ['app.services'])
 		});
 	var title = 'Delete event';
 	var template = 'Are you sure you want to delete this event?';
-	itemRemoval($scope, $ionicPopup, title, template);
+	itemRemoval($scope, $http, $ionicPopup, title, template);
 })
 
 .controller('accountPreferencesCtrl', function($scope) {
 
 })
 
-function itemRemoval($scope, $ionicPopup, title, template) {
+function itemRemoval($scope, $http, $ionicPopup, title, template) {
 	$scope.remove = function(item) {
 		var confirmPopup = $ionicPopup.confirm({
 			title: title,
@@ -69,20 +69,63 @@ function itemRemoval($scope, $ionicPopup, title, template) {
 		});
 		confirmPopup.then(function(res) {
 			if (res) { // Deletion confirmed
-				if ('location' in item) { // Planner removal
-					console.log('removing planner');
-					var plannerIndex = $scope.planners.indexOf(item);
-					$scope.planners.splice(plannerIndex, 1);
-					// Http delete request to delete planner here
+				if ('location' in item) {
+						plannerRemoval($scope, $http, $ionicPopup, item);
 				} else {
-					console.log('removing event');
-					var eventIndex = $scope.events.indexOf(item);
-					$scope.events.splice(eventIndex, 1);
-					// Http delete to delete event here
+						eventRemoval($scope, $http, $ionicPopup, item);
 				}
 			} else {
 				console.log('Deletion canceled');
 			}
+		});
+	};
+}
+
+function plannerRemoval($scope, $http, $ionicPopup, item) {
+	console.log('removing planner');
+	dbDeleteRequest($http, 'deletePlanner', item, function(delresponse) {
+		console.log(delresponse.data);
+		if (delresponse.data === '0') {
+			var plannerIndex = $scope.planners.indexOf(item);
+			$scope.planners.splice(plannerIndex, 1);
+		} else {
+			ionicAlert($scope, $ionicPopup);
+			$scope.showAlert();
+		}
+	});
+}
+
+function eventRemoval($scope, $http, $ionicPopup, item) {
+	console.log('removing event');
+	dbDeleteRequest($http, 'deleteEvent', item, function(delresponse) {
+			console.log(delresponse.data);
+			if (delresponse.data === '0') {
+				var eventIndex = $scope.events.indexOf(item);
+				$scope.events.splice(eventIndex, 1);
+			} else {
+				ionicAlert($scope, $ionicPopup);
+				$scope.showAlert();
+			}
+		});
+}
+
+function dbDeleteRequest($http, path, item, callback) {
+	$http.post('http://localhost:8420/' + path, {
+			itemId: item._id
+		})
+		.then(function(delresponse) {
+				callback(delresponse);
+		});
+}
+
+function ionicAlert($scope, $ionicPopup) {
+	$scope.showAlert = function() {
+		var alertPopup = $ionicPopup.alert({
+			title: 'Cannot delete',
+			template: 'Please, try again'
+		});
+		alertPopup.then(function(res) {
+			console.log("Couldn't delete from the database");
 		});
 	};
 }
