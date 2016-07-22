@@ -2,9 +2,9 @@ angular.module('app.services', [])
 
 .factory('login', function($http,$q){
      return{
-          note: function(username,password){
+          note: function(email,password){
                var deferred = $q.defer();
-               $http.post("http://localhost:8420/",{username: username,password: password}).then(successcall,errorcall);
+               $http.post("http://localhost:8420/",{email: email,password: password}).then(successcall,errorcall);
                function successcall(results){
                     // console.log('success');
                     // return true;

@@ -99,6 +99,7 @@ var planners = [
 
 app.get('/main', function(req, res) {
     sess = req.session;
+
     console.log('-------');
     console.log(email);
     console.log('---------');
@@ -107,6 +108,9 @@ app.get('/main', function(req, res) {
      res.send(dbres.planner);
     });
     //res.send(planners2);
+
+    //storage.find_by_email(email).then(dbres => res.send(dbres.planner));
+
 });
 
 app.get('/events', function(req, res) {
@@ -120,6 +124,9 @@ app.get('/events', function(req, res) {
     //res.send(planners2[0].events);
 });
 
+// var planners2 = [
+//    {location:String, events:null}
+// ];
 app.post('/planner', function(req,res){
      sess=req.session;
      sess.location = req.body.location;
@@ -133,6 +140,7 @@ app.post('/planner', function(req,res){
 
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
+// <<<<<<< HEAD
         console.log(Event1.getEventName(response));
         console.log(Event1.getEventImageUrl(response));
 
@@ -155,6 +163,11 @@ app.post('/planner', function(req,res){
         //
         // console.log(planners2);
         storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
+// =======
+//         planners2[0].location = Event1.dest;
+//         planners2[0].events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
+//         storage.addPlannerToUser(email,planners2[0]).then(result => res.send('0'));
+// >>>>>>> 33e0df4fb8b7bd959827a29e34c4b53cee383334
    })
 });
 
@@ -163,13 +176,20 @@ app.post("/", function (req, res) {
      sess=req.session;
     console.log("Post received from post");
     console.log(req.body.username);
+    console.log(req.body.email);
+    console.log('--------------');
     console.log(req.body.password);
     sess.email = req.body.username;
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
-    email = req.body.username;
-    storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
+// <<<<<<< HEAD
+    email = req.body.email;
+    storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
+// =======
+//     email = sess.email;
+//     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
+// >>>>>>> 33e0df4fb8b7bd959827a29e34c4b53cee383334
 });
 
 

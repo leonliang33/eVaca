@@ -50,7 +50,7 @@ exports.login_verification = function(u_email, u_pass){
 			(res.password == u_pass)? login = true : login = false;
 			resolve(login);
 		}).catch(function(err){
-  			console.log('error: Cannot find the user with email ', email);
+  			console.log('error: Cannot find the user with email ', u_email);
 		});
 	});
 }
