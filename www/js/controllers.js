@@ -42,7 +42,7 @@ angular.module('app.controllers', ['app.services'])
 		})
 		.then(function(response) {
 				$scope.events = response.data;
-				console.log(response);
+				console.log(response.data);
 		});
 	var title = 'Delete event';
 	var template = 'Are you sure you want to delete this event?';

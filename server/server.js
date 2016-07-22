@@ -30,6 +30,8 @@ var db_url = 'mongodb://localhost/evacadb';
 var sess;
 var email;
 
+var planners2 =
+   {location:String, events:[null]};
 var newUser = new storage.User({
      name: String,
      email: String,
@@ -98,22 +100,26 @@ var planners = [
 app.get('/main', function(req, res) {
     sess = req.session;
     console.log('-------');
-    console.log(sess.email);
+    console.log(email);
     console.log('---------');
-    // storage.find_by_email(sess.email).then(dbres => res.send(dbres.planner));
-    res.send(planners2);
+    storage.find_by_email(email).then(dbres => {
+         console.log(dbres);
+     res.send(dbres.planner);
+    });
+    //res.send(planners2);
 });
 
 app.get('/events', function(req, res) {
     // console.log(req.query.plannerId);
     sess=req.session;
     console.log(email);
-    // storage.find_by_email(email).then(user => res.send(user.planner[0].events))
-    res.send(planners2[0].events);
+    storage.find_by_email(email).then(user => {
+         console.log("FROM FIND BY EMAIL :: "+ user);
+         res.send(JSON.stringify(user.planner[0].events));
+    })
+    //res.send(planners2[0].events);
 });
-var planners2 = [
-   {location:String, events:[null]}
-];
+
 app.post('/planner', function(req,res){
      sess=req.session;
      sess.location = req.body.location;
@@ -130,14 +136,14 @@ app.post('/planner', function(req,res){
         console.log(Event1.getEventName(response));
         console.log(Event1.getEventImageUrl(response));
 
-        planners2[0].location = Event1.dest;
-        planners2[0].events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
+        planners2.location = req.body.location;
+        planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
 
         console.log(planners2);
         console.log('-----------------------------------');
-        console.log(planners2[0].events);
+        console.log(planners2.events);
 
-        res.send("0");
+        //res.send("0");
 
         // ------- Old with the bug
         // events3.name = Event1.getEventName(response);
@@ -148,7 +154,7 @@ app.post('/planner', function(req,res){
         // planners2[0].events = events3.image_url;
         //
         // console.log(planners2);
-        // storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
+        storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
    })
 });
 
@@ -156,13 +162,13 @@ app.post('/planner', function(req,res){
 app.post("/", function (req, res) {
      sess=req.session;
     console.log("Post received from post");
-    console.log(req.body.email);
+    console.log(req.body.username);
     console.log(req.body.password);
-    sess.email = req.body.email;
+    sess.email = req.body.username;
     sess.password = req.body.password;
     //console.log(req);
     // res.send("true");
-    email = sess.email;
+    email = req.body.username;
     storage.login_verification(req.body.username,req.body.password).then(result => res.send(result));
 });
 

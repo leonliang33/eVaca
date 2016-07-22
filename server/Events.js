@@ -90,6 +90,7 @@ Event.prototype.getApiEvents = function(callback) {
             category_filter: this.theme
         })
         .then(function(data) {
+             //console.log(data);
             callback(data);
         })
         .catch(function(err) {

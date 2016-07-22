@@ -154,12 +154,14 @@ exports.addEventToUser = function(email, plannerID, eventname) {
 }*/
 
 exports.addPlannerToUser = function(email, newPlanner){
+	console.log("planner is ::" + newPlanner);
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
+			console.log("add planner ::" + newPlanner);
 			res.planner.push({
 				//isCurrent: newPlanner.isCurrent,
 				events: newPlanner.events,
-				location: newPlanner.location,
+				location: newPlanner.location
 				//preferences: newPlanner.preferences
 			});
 			res.save().then((res) => {
@@ -201,6 +203,7 @@ function loadSchemas(){
 
 	var plannerSchema = mongoose.Schema({
 		preferences: preferenceSchema,
+		location: String,
 		events: [{name: String,
 				image_url: String
 		}],
