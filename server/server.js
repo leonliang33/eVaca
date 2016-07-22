@@ -81,10 +81,24 @@ app.post('/planner', function(req,res){
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
-     console.log("vacation type = "+ req.body.idealvacation);
+     var vacaType="";
+     var JvacaType = JSON.stringify(req.body.idealvacation);
+     if(JvacaType.indexOf('arts')){
+          vacaType='arts,';
+     }
+     if(JvacaType.indexOf('food')){
+          vacaType = 'food,';
+     }
+     if(JvacaType.indexOf('nightlife')){
+          vacaType = 'nightlife,'
+     }
+     if(JvacaType.indexOf('active')){
+          vacaType = 'active,'
+     }
+     console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
      var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000));
      console.log("Days = "+num_of_days);
-     var Event1 = new events(num_of_days,req.body.budget,req.body.location, 'food');
+     var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
