@@ -36,31 +36,9 @@ var newUser = new storage.User({
      name: String,
      email: String,
      password: String,
-     planner: planners
+     planner: [planners2]
 });
-var ares = new storage.User({
-     name: 'Kratos',
-     email: 'kratos@war.com',
-     password: 'ADS343!QEF#0',
-     planner: [{
-          _id: 132,
-          isCurrent: true,
-          prefereces:{
-               city: 'Olympus',
-               occassion: 'Fun',
-               age_appr: 30,
-               leaving: "2016-10-20T20:00:00.000Z",
-               returning: "2016-10-30T10:00:00.000Z",
-               ideal_opt: 'killing',
-               budget: 0
-          },
-          events: [{
-               name: 'Kill gods at beach bay'
-          },{
-               name: 'Get orbs in the cave'
-          }]
-     }]
-});
+
 //******************************************************************************
 
 /*********************************Websockets and Middleware Routing******************************/
@@ -84,33 +62,9 @@ app.use(function(req, res,next) {
 
 app.use(session({secret : 'secret'}));
 
-var eventsOne = [
-    {name: 'Statue of Liberty', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/zFViHlJJeJ4RhRWFYdXDQQ/ls.jpg'},
-    {name: 'Zen Bikes', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/nd3h0tvmF7AW8jejOgneWQ/ls.jpg'}
-];
-var eventsTwo = [
-    {name: 'Kush', image_url: 'https://s3-media2.fl.yelpcdn.com/bphoto/Ws9T2waA0I-kPNscx0mXqA/ls.jpg'},
-    {name: 'Diced', image_url: 'https://s3-media3.fl.yelpcdn.com/bphoto/y1PsCe_i-Kb-lql2qAnFcg/ls.jpg'}
-];
-var planners = [
-    {_id: 0, location: 'New York City', events: eventsOne},
-    {_id: 1, location: 'Miami', events: eventsTwo}
-];
-
 app.get('/main', function(req, res) {
-    sess = req.session;
-
-    console.log('-------');
-    console.log(email);
-    console.log('---------');
-    storage.find_by_email(email).then(dbres => {
-         console.log(dbres);
-     res.send(dbres.planner);
-    });
-    //res.send(planners2);
-
-    //storage.find_by_email(email).then(dbres => res.send(dbres.planner));
-
+	sess = req.session;
+	storage.find_by_email(email).then(dbres => res.send(dbres.planner));
 });
 
 app.get('/events', function(req, res) {
@@ -118,15 +72,10 @@ app.get('/events', function(req, res) {
     sess=req.session;
     console.log(email);
     storage.find_by_email(email).then(user => {
-         console.log("FROM FIND BY EMAIL :: "+ user);
          res.send(JSON.stringify(user.planner[0].events));
     })
-    //res.send(planners2[0].events);
 });
 
-// var planners2 = [
-//    {location:String, events:null}
-// ];
 app.post('/planner', function(req,res){
      sess=req.session;
      sess.location = req.body.location;
@@ -134,82 +83,39 @@ app.post('/planner', function(req,res){
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
-     planners.location = sess.location;
 
      var Event1 = new events(7,10,req.body.location, 'food');
 
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
-// <<<<<<< HEAD
-        console.log(Event1.getEventName(response));
-        console.log(Event1.getEventImageUrl(response));
-
         planners2.location = req.body.location;
         planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
-
-        console.log(planners2);
-        console.log('-----------------------------------');
-        console.log(planners2.events);
-
-        //res.send("0");
-
-        // ------- Old with the bug
-        // events3.name = Event1.getEventName(response);
-        // events3.image_url = Event1.getEventImageUrl(response);
-        // console.log("sess email :: "+email);
-        //
-        // planners2[0].location = sess.location;
-        // planners2[0].events = events3.image_url;
-        //
-        // console.log(planners2);
         storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
-// =======
-//         planners2[0].location = Event1.dest;
-//         planners2[0].events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
-//         storage.addPlannerToUser(email,planners2[0]).then(result => res.send('0'));
-// >>>>>>> 33e0df4fb8b7bd959827a29e34c4b53cee383334
    })
 });
 
 //Receive post requests from client
 app.post("/", function (req, res) {
-     sess=req.session;
+    sess=req.session;
     console.log("Post received from post");
-    console.log(req.body.username);
-    console.log(req.body.email);
-    console.log('--------------');
-    console.log(req.body.password);
     sess.email = req.body.username;
     sess.password = req.body.password;
-    //console.log(req);
-    // res.send("true");
-// <<<<<<< HEAD
     email = req.body.email;
     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
-// =======
-//     email = sess.email;
-//     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
-// >>>>>>> 33e0df4fb8b7bd959827a29e34c4b53cee383334
 });
 
 
 app.post('/signup', function(req,res){
-     sess=req.session;
+    sess=req.session;
     console.log("Post received from post");
-    console.log(req.body.name);
-    console.log(req.body.email);
-    console.log(req.body.password);
-
     sess.name=req.body.name;
     sess.email=req.body.email;
     sess.password=req.body.password;
-    console.log(sess.name);
-    console.log(sess.email);
-    console.log(req.body.password);
+
     newUser.name = req.body.name;
     newUser.email=req.body.email;
     newUser.password=req.body.password;
-    // res.send("true");
+
     email = sess.email;
     storage.insert_user(newUser).then(results=>res.send(results));
 
@@ -224,7 +130,6 @@ app.post('/verify', function (req, res) {
      sess=req.session;
     console.log("Post received from post");
     console.log(req.body.email);
-    res.send("true");
     //storage.verify_email(req.body.email);
 });
 
@@ -266,7 +171,6 @@ app.get('/logout',function(req,res){
      })
 });
 
-
 //Server is currently serving on port 8420
 app.listen(8420, function startServer() {
      storage.connect();
@@ -275,13 +179,4 @@ app.listen(8420, function startServer() {
      //   serviceAccount: './eVaca-e291cd5173a6.json'
      // });
      console.log("Listening on :: " + 8420);
-     var Event1 = new events(7,10,'Miami', 'arts');
-    //  Event1.getApiEvents(function(response) {
-        // console.log(Event1.getEventName(response));
-        // console.log(Event1.getEventImageUrl(response));
-    //  });
-     // console.log(Event1.getCost('Thai Moon'));
-    //  Event1.getCost('Thai Moon').then(res => {
-    //       console.log("RETURNED VALUE:: " + res );
-    //  })
 });
