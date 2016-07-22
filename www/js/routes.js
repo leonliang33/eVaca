@@ -94,6 +94,12 @@ angular.module('app.routes', [])
     controller: 'newPasswordCtrl'
   })
 
+  .state('newEmail', {
+    url: '/newEmail',
+    templateUrl: 'templates/newEmail.html',
+    controller: 'newEmailCtrl'
+  })
+
   .state('accountPreferences', {
     url: '/Accounts',
     templateUrl: 'templates/accountPreferences.html',
