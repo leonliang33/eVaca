@@ -78,18 +78,24 @@ angular.module('app.services', [])
                var deferred = $q.defer();
                $http.post("http://localhost:8420/planner", {location:location, budget:budget,Leaving:Leaving,returningdate:returningdate,idealvacation:idealvacation}).then(successcall,errorcall);
                     function successcall(results){
-                         console.log(results.data);
-                         if(results.data.toString().replace(/'/g,"") == "0")
-                         {
-                              console.log(results.data.toString().replace(/'/g,""));
-                              console.log("true");
-                              deferred.resolve(results.data.toString().replace(/'/g,""));
-                              console.log("resolved");
-                         } else {
-                              console.log(results.data.toString().replace(/'/g,""));
-                              console.log("false");
-                              deferred.resolve('false');
-                         }
+                        //  console.log(results.data);
+                        //  if(results.data.toString().replace(/'/g,"") == "0")
+                        //  {
+                        //       console.log(results.data.toString().replace(/'/g,""));
+                        //       console.log("true");
+                        //       deferred.resolve(results.data.toString().replace(/'/g,""));
+                        //       console.log("resolved");
+                        //  } else {
+                        //       console.log(results.data.toString().replace(/'/g,""));
+                        //       console.log("false");
+                        //       deferred.resolve('false');
+                        //  }
+                        // console.log(results.data);
+                        if(results.data){
+                             deferred.resolve(results.data);
+                        }else{
+                             deferred.resolve(false);
+                        }
                     }
                function errorcall(){
                     deferred.reject(false);

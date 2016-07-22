@@ -134,29 +134,22 @@ function plannerController($scope,planner,$http,$state,$q){
      $scope.formData = {};
      $scope.plan = function(){
           console.log("PLANNER Called");
-          console.log(this.formdata.location);
-          console.log(this.formdata.budget);
-          console.log(this.formdata.ivacation);
-          console.log(this.formdata.sdate);
-
           var location = this.formdata.location;
           var budget = this.formdata.budget;
           var sdate = this.formdata.sdate;
           var rdate = this.formdata.rdate;
           var ideal_vacation = this.formdata.ivacation;
-          var plan_bool;
-             plan_bool = planner.getPlanner(location,budget,sdate,rdate,ideal_vacation).then(function(data){
-               plan_bool = data;
-               console.log(plan_bool);
-               if(plan_bool == "0"){
-                    console.log(plan_bool);
-                    $state.go('thingsToDo',{
-                         plannerId: plan_bool
-                    });
-               }else{
-                    $state.reload();
-               }
-             });
+          planner.getPlanner(location, budget, sdate, rdate, ideal_vacation).then(function(data) {
+          	if ('_id' in data) {
+          		$state.go('thingsToDo', {
+          			newPlanner: 'true',
+          			planner: data,
+          			plannerId: data._id
+          		});
+          	} else {
+          		$state.reload();
+          	}
+          });
      }
 };
 

@@ -87,8 +87,13 @@ app.post('/planner', function(req,res){
      Event1.getApiEvents(function(response) {
         planners2.location = req.body.location;
         planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
-        storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
-   })
+        storage.addPlannerToUser(email,planners2).then(result => {
+          storage.find_by_email(email).then(dbres => {
+            // Sends the most recently added planner
+            res.send(dbres.planner[dbres.planner.length-1]);
+          });
+        });
+      });
 });
 
 //Receive post requests from client
