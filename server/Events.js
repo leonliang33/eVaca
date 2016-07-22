@@ -94,6 +94,25 @@ Event.prototype.getApiEvents = function(callback) {
         .catch(function(err) {
             console.error(err);
         });
+     //    var i = 0;
+     //    var hold = "";
+     //    while(this.cost >=0){
+     //         yelp.search({
+     //              location: this.dest,
+     //              sort: 2, // Highest rated
+     //              category_filter: this.theme
+     //         })
+     //         .then(res => getCost(res.businesses[i]).name)
+     //         .then(price => {
+     //              this.cost = this.cost - price;
+     //              if(this.cost >= 0){
+     //                   hold += res.businesses[i];
+     //              }
+     //         });
+     //         this.cost = this.cost - price;
+     //    }
+     //    console.log(hold);
+     //    callback(hold);
 }
 
 Event.prototype.getEventName = function(data) {
