@@ -131,7 +131,7 @@ exports.removeUser = function(email){
 				resolve(true);
 			}
 		}).catch(function(err){
-			console.log('error: Query did\'t finish');
+			console.log('error: Query didn\'t finish');
   			resolve(false);
         });
 	});
