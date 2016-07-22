@@ -55,6 +55,17 @@ exports.login_verification = function(u_email, u_pass){
 	});
 }
 
+exports.find_by_email = function (u_email){
+	return new Promise(function(resolve, reject){
+		User.findOne({email: u_email}).exec().then(res => {
+			resolve(res);
+		}).catch(function(err){
+			console.log('error: Cannot find the user. The user may not be registered with that email.');
+  			resolve(false);
+		});
+	});
+}
+
 exports.updateUserEmail = function(email, newEmail){
 	return new Promise(function(resolve, reject){
 		User.findOne({email: email}).exec().then(res => {
@@ -74,7 +85,6 @@ exports.updateUserEmail = function(email, newEmail){
 }
 
 exports.insert_user = function (user){
-	console.log('function called');
 	return new Promise(function (resolve,reject){
 		var newUser = new User({
 			name: user.name,
@@ -92,23 +102,30 @@ exports.insert_user = function (user){
 	});
 }
 
-exports.find_by_email = function (u_email){
-	return new Promise(function(resolve, reject){
-		User.findOne({email: u_email}).exec().then(res => {
-			resolve(res);
+exports.removeUser = function(email){
+	return new Promise(function(resolve, reject) {
+		User.findOneAndRemove({email: email}).exec().then(res => {
+			if(res == null){
+				console.log('User '+email+' doesn\'t exist');
+				resolve(false);
+			}else{
+				console.log('User '+email+' was removed.');
+				resolve(true);
+			}
 		}).catch(function(err){
-			console.log('error: Cannot find the user. The user may not be registered with that email.');
+			console.log('');
   			resolve(false);
-		});
+        });
 	});
 }
 
 exports.addEventToUser = function(email, plannerID, eventname) {
     return new Promise(function(resolve, reject) {
         User.findOne({ email: email }).exec().then(res => {
-        		console.log('User found');
+        		console.log('User found.');
         		var p = res.planner.id(plannerID);
         		p.events.push({name: eventname});
+        		console.log('Element pushed.')
             	res.save().then((res) => {
                 	console.log('Data saved.');
                 	resolve(true);
@@ -122,6 +139,26 @@ exports.addEventToUser = function(email, plannerID, eventname) {
         });
 	});
 };
+
+exports.removeEvent = function(email, plannerID, eventID){
+	return new Promise(function(resolve, reject) {
+        User.findOne({ email: email }).exec().then(res => {
+        		console.log('User found.');
+        		res.planner.id(plannerID).events.id(eventID).remove();
+        		console.log('Event removed.')
+            	res.save().then((res) => {
+                	console.log('Data saved.');
+                	resolve(true);
+            	}).catch(function(err) {
+                	console.log('error: Cannot save the user.');
+                	resolve(false);
+            	});
+        }).catch(function(err){
+			console.log('error: Either the user or the planner don\'t exist');
+  			resolve(false);
+        });
+	});
+}
 
 /*exports.addEventToUser = function(email, plannerID, eventname) {
     return new Promise(function(resolve, reject) {
@@ -154,10 +191,8 @@ exports.addEventToUser = function(email, plannerID, eventname) {
 }*/
 
 exports.addPlannerToUser = function(email, newPlanner){
-	console.log("planner is ::" + newPlanner);
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
-			console.log("add planner ::" + newPlanner);
 			res.planner.push({
 				//isCurrent: newPlanner.isCurrent,
 				events: newPlanner.events,
@@ -178,8 +213,24 @@ exports.addPlannerToUser = function(email, newPlanner){
 	});
 }
 
-exports.eliminateEvent = function(email, plannerID){
-
+exports.removePlanner = function(email, plannerID){
+	return new Promise(function(resolve, reject) {
+        User.findOne({ email: email }).exec().then(res => {
+        		console.log('User found.');
+        		res.planner.id(plannerID).remove();
+        		console.log('Planner removed.')
+            	res.save().then((res) => {
+                	console.log('Data saved.');
+                	resolve(true);
+            	}).catch(function(err) {
+                	console.log('error: Cannot save the user.');
+                	resolve(false);
+            	});
+        }).catch(function(err){
+			console.log('error: Either the user or the planner don\'t exist');
+  			resolve(false);
+        });
+	});
 }
 
 
@@ -206,8 +257,7 @@ function loadSchemas(){
 		location: String,
 		events: [{name: String,
 				image_url: String
-		}],
-		isCurrent: Boolean
+		}]
 	});
 
 	var userSchema = mongoose.Schema({
@@ -219,5 +269,4 @@ function loadSchemas(){
 
 	User = mongoose.model('eVaca', userSchema);
 	console.log('User schema created.');
-	//return user;
 }
