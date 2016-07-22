@@ -15,7 +15,6 @@ var express = require("express");
 var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
-//var firebase = require("firebase");
 //Calls on storage and applicatioon level modules
 var events = require("./Events.js");
 var storage = require("./storage.js");
@@ -23,8 +22,7 @@ var application = require("./controllers/users.controller.js");
 var mongoose = require('mongoose');
 var User = require('./models/user.model.js');
 var nodemailer = require('nodemailer');
-//var firebase_db = require('./firebase_db.js');
-
+var smtpTransport = require('nodemailer-smtp-transport');
 //******************************* Global Variables *****************************
 var db_url = 'mongodb://localhost/evacadb';
 var sess;
@@ -36,7 +34,7 @@ var newUser = new storage.User({
      name: String,
      email: String,
      password: String,
-     planner: [planners2]
+     planner: [null]
 });
 
 //******************************************************************************
@@ -64,6 +62,7 @@ app.use(session({secret : 'secret'}));
 
 app.get('/main', function(req, res) {
 	sess = req.session;
+     console.log("MAIN :: "+email);
 	storage.find_by_email(email).then(dbres => res.send(dbres.planner));
 });
 
@@ -81,7 +80,7 @@ app.post('/planner', function(req,res){
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
-     var vacaType="";
+     var vacaType=" ";
      var JvacaType = JSON.stringify(req.body.idealvacation);
      console.log("JSON type = "+JvacaType);
      if(JvacaType.indexOf('arts')){
@@ -103,8 +102,8 @@ app.post('/planner', function(req,res){
 
      console.log("About to call events get api ");
      Event1.getApiEvents(function(response) {
+
         planners2.location = req.body.location;
-        // planners2.events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
         planners2.events = response.businesses;
         while(num_of_days>=0){
 
@@ -130,11 +129,13 @@ app.post('/planner', function(req,res){
 
 //Receive post requests from client
 app.post("/", function (req, res) {
+     email = "";
     sess=req.session;
     console.log("Post received from post");
     sess.email = req.body.username;
     sess.password = req.body.password;
     email = req.body.email;
+    console.log(email);
     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
 
@@ -151,25 +152,65 @@ app.post('/signup', function(req,res){
     newUser.password=req.body.password;
 
     email = sess.email;
+    sendEmail(email);
     storage.insert_user(newUser).then(results=>res.send(results));
 
-  //user.save(function(err){
-    //req.login(user,function(err){
-     // res.redirect('/')
-   // });
- // });
+
 });
 
 app.post('/verify', function (req, res) {
      sess=req.session;
     console.log("Post received from post");
     console.log(req.body.email);
-    //storage.verify_email(req.body.email);
 });
+
+function sendEmail(email){
+     //sess=req.session;
+     var rec_email = email;
+     var code = "ABC";
+     console.log("send EMAIL CALLED :: " + email);
+     var transporter = nodemailer.createTransport(
+          smtpTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'evaca8420@gmail.com', // Your email id
+            pass: 'evacaproject' // Your password
+       }})
+     //'smtps://user%40gmail.com:pass@smtp.gmail.com'
+ );
+ // Create a SMTP transport object
+// var transporter = nodemailer.createTransport("SMTP", {
+//         service: 'Gmail',
+//         auth: {
+//             user: "evaca8420@gmail.com",
+//             pass: "evacaproject"
+//         }
+//     });
+
+console.log('SMTP Configured');
+     var mailOptions = {
+          tls: { rejectUnauthorized: false },
+           from: 'evaca8420@gmail.com', // sender address
+           to: rec_email, // list of receivers
+           subject: 'Email Example', // Subject line
+           text: "Welcome to eVaca, here's your verification code:" + code //, // plaintext body
+    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+     };
+     transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+        //res.json({yo: 'error'});
+    }else{
+        console.log('Message sent: ' + info.response);
+        //res.json({yo: info.response});
+    };
+     });
+}
+
 
 app.post('/sendEmailVerification',function(req,res){
      sess=req.session;
-     var rec_email = "evaca8420@gmail.com";
+     var rec_email = req.body.email;
      var code = "ABC";
      var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -220,9 +261,5 @@ app.post('/deleteEvent', function(req, res) {
 //Server is currently serving on port 8420
 app.listen(8420, function startServer() {
      storage.connect();
-     // firebase.initializeApp({
-     //   databaseURL: "https://evaca-277d9.firebaseio.com",
-     //   serviceAccount: './eVaca-e291cd5173a6.json'
-     // });
      console.log("Listening on :: " + 8420);
 });
