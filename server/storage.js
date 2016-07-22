@@ -43,7 +43,6 @@ exports.disconnect = function(){
 }
 
 exports.login_verification = function(u_email, u_pass){
-	console.log(u_email);
 	return new Promise(function(resolve, reject){
 		User.findOne({email: u_email}).exec().then((res) => {
 			console.log('password in database: ', res.password);

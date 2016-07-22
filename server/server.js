@@ -97,11 +97,7 @@ var planners = [
 
 app.get('/main', function(req, res) {
     sess = req.session;
-    console.log('-------');
-    console.log(sess.email);
-    console.log('---------');
-    // storage.find_by_email(sess.email).then(dbres => res.send(dbres.planner));
-    res.send(planners2);
+    storage.find_by_email(email).then(dbres => res.send(dbres.planner));
 });
 
 app.get('/events', function(req, res) {
@@ -112,7 +108,7 @@ app.get('/events', function(req, res) {
     res.send(planners2[0].events);
 });
 var planners2 = [
-   {location:String, events:[null]}
+   {location:String, events:null}
 ];
 app.post('/planner', function(req,res){
      sess=req.session;
@@ -127,28 +123,9 @@ app.post('/planner', function(req,res){
 
      console.log("About to call events get api");
      Event1.getApiEvents(function(response) {
-        console.log(Event1.getEventName(response));
-        console.log(Event1.getEventImageUrl(response));
-
         planners2[0].location = Event1.dest;
         planners2[0].events = [{name: Event1.getEventName(response), image_url: Event1.getEventImageUrl(response)} ];
-
-        console.log(planners2);
-        console.log('-----------------------------------');
-        console.log(planners2[0].events);
-
-        res.send("0");
-
-        // ------- Old with the bug
-        // events3.name = Event1.getEventName(response);
-        // events3.image_url = Event1.getEventImageUrl(response);
-        // console.log("sess email :: "+email);
-        //
-        // planners2[0].location = sess.location;
-        // planners2[0].events = events3.image_url;
-        //
-        // console.log(planners2);
-        // storage.addPlannerToUser(email,planners2).then(result => res.send('0'));
+        storage.addPlannerToUser(email,planners2[0]).then(result => res.send('0'));
    })
 });
 

@@ -82,8 +82,6 @@ Event.prototype.recommend = function(){
 var API_KEY = 'AIzaSyCQkZamcWwjJ9UPNqFvtAklm5UH_3Dfo6c';
 
 Event.prototype.getApiEvents = function(callback) {
-     console.log('about to call yelp');
-     console.log(this.dest+ " "+ this.theme);
     yelp.search({
             location: this.dest,
             sort: 2, // Highest rated
