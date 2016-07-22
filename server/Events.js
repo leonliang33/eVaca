@@ -95,25 +95,8 @@ Event.prototype.getApiEvents = function(callback) {
         })
         .catch(function(err) {
             console.error(err);
+            callback("Location Not Found");
         });
-     //    var i = 0;
-     //    var hold = "";
-     //    while(this.cost >=0){
-     //         yelp.search({
-     //              location: this.dest,
-     //              sort: 2, // Highest rated
-     //              category_filter: this.theme
-     //         })
-     //         .then(res => getCost(res.businesses[i]).name) //getCost is asynchronous
-     //         .then(price => {
-     //              this.cost = this.cost - price;
-     //              if(this.cost >= 0){
-     //                   hold += res.businesses[i];
-     //              }
-     //         });
-     //         this.cost = this.cost - price;
-     //    }
-     //    callback(hold);
 }
 
 Event.prototype.getEventName = function(data) {
@@ -133,44 +116,7 @@ Event.prototype.getEventImageUrlAt = function(data, index) {
 }
 
 Event.prototype.getCost = function(name_of_place){
-     // return new Promise( function(resolve,reject){
-     //      var placeID;
-     //      var GooglePlaces = require("node-googleplaces");
-     //      const places = new GooglePlaces(API_KEY);
-     //      const params = {
-     //           location: '40.689247,-123.102192',
-     //           radius: 1000
-     //      };
-     //      var query =
-     //      {
-     //            query: name_of_place
-     //       };
-     //       // ASYNC call
-     //       places.textSearch(query).then((res) => {
-     //            console.log("FIRST ASYNC CALL");
-     //            console.log(res.body.results[0].place_id);
-     //            placeID = res.body.results[0].place_id;
-     //            var request_place_details={
-     //                 placeid : placeID
-     //            };
-     //            console.log(request_place_details);
-     //            //Another ASYNC CALL
-     //            return request_place_details;
-     //
-     //       }).then((request_place_details) => {
-     //            console.log("SECOND ASYNC CALL");
-     //            var plc_detail = places.details(request_place_details).then((res) => {
-     //                 console.log(res.body.result.price_level + "   S");
-     //                 var cost = res.body.result.price_level;
-     //                 //trying to resolve getCost promise
-     //                 //resolve(this.cost);
-     //                 return cost;
-     //            });
-     //            return plc_detail;
-     //       }).then((ret) => {
-     //            resolve(ret);
-     //       });
-     //  })
+
      var GooglePlaces = require("node-googleplaces");
      const places = new GooglePlaces(API_KEY);
 
