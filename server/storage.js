@@ -89,10 +89,10 @@ exports.updateUserPassword = function(email, newPass){
 		User.findOne({email: email}).exec().then(res => {
   			res.password = newPass;
   			res.save().then((res) => {
-    			console.log('User\'s password updated');
+    			console.log('User\'s password updated.');
     			resolve(true);
   			}).catch(function(err){
-  				console.log('error: Cannot save the user');
+  				console.log('error: Cannot save the user.');
   				resolve(false);
 			});
 		}).catch(function(err){
@@ -107,10 +107,10 @@ exports.updateUserName = function(email, newName){
 		User.findOne({email: email}).exec().then(res => {
   			res.name = newName;
   			res.save().then((res) => {
-    			console.log('User\'s name updated from');
+    			console.log('User\'s name updated.');
     			resolve(true);
   			}).catch(function(err){
-  				console.log('error: Cannot save the user');
+  				console.log('error: Cannot save the user.');
   				resolve(false);
 			});
 		}).catch(function(err){
@@ -149,7 +149,7 @@ exports.removeUser = function(email){
 				resolve(true);
 			}
 		}).catch(function(err){
-			console.log('error: Query didn\'t finish');
+			console.log('error: Query didn\'t finish.');
   			resolve(false);
         });
 	});
