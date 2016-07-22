@@ -83,6 +83,7 @@ app.post('/planner', function(req,res){
      sess.idealvacation=req.body.idealvacation;
      var vacaType="";
      var JvacaType = JSON.stringify(req.body.idealvacation);
+     console.log("JSON type = "+JvacaType);
      if(JvacaType.indexOf('arts')){
           vacaType+='arts,';
      }
