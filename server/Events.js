@@ -82,12 +82,15 @@ Event.prototype.recommend = function(){
 var API_KEY = 'AIzaSyCQkZamcWwjJ9UPNqFvtAklm5UH_3Dfo6c';
 
 Event.prototype.getApiEvents = function(callback) {
-
+     var days_lim=this.time*3;
+     if(days_lim > 20){
+          days_lim = 20;
+     }
     yelp.search({
             location: this.dest,
             sort: 2, // Highest rated
             term: this.theme,
-            limit: this.time*3
+            limit: days_lim
         })
         .then(function(data) {
              //console.log(data);
