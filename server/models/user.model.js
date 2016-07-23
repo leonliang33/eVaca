@@ -54,11 +54,31 @@ class User{
           this.email = new_email;
      }
 
+     // set setPassword(pass){
+     //      this.password = pass;
+     // }
+     //
+     // set setName(name){
+     //      this.name=name;
+     // }
+
 }
 
 //Delete command to delete account from the database
 User.prototype.del_Account = function(){
 
+}
+
+User.prototype.setName = function(name){
+     this.name = name;
+}
+
+User.prototype.setPassword = function(pass){
+     this.password = pass;
+}
+
+User.prototype.setEmail = function(email){
+     this.email=email;
 }
 
 //Return list of planners
@@ -95,6 +115,7 @@ User.prototype.add_planner = function(days,budget,location,type,email){
              }
 
              setTimeout(function(){
+                  console.log(planners2);
                   resolve(storage.addPlannerToUser(email,planners2));
              },3000)
 
@@ -103,6 +124,38 @@ User.prototype.add_planner = function(days,budget,location,type,email){
            });
      })
 }
+
+User.prototype.save = function(){
+
+     console.log('save activated');
+     console.log(this.name + " " + this.email + " " + this.password);
+     var newUser = new storage.User({
+          name: String,
+          email: String,
+          password: String,
+          planner: [{}]
+     });
+     console.log(this.name + " " + this.email + " " + this.password);
+     newUser.name = this.name;
+     newUser.email = this.email;
+     newUser.password = this.password;
+     console.log(newUser);
+     return new Promise(function(resolve,reject){
+          resolve(storage.insert_user(newUser));
+     })
+
+
+}
+
+User.prototype.load = function(email){
+     console.log("load being called");
+     return new Promise(function(resolve,reject){
+          console.log("load being called2");
+          console.log(email);
+          resolve(storage.find_by_email(email));
+     })
+}
+
 
 
 module.exports = User;

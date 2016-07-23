@@ -31,12 +31,12 @@ var User1;
 
 var planners2 =
    {location:String, events:[null]};
-var newUser = new storage.User({
-     name: String,
-     email: String,
-     password: String,
-     planner: [null]
-});
+// var newUser = new storage.User({
+//      name: String,
+//      email: String,
+//      password: String,
+//      planner: [null]
+// });
 
 var server_code = "";
 //******************************************************************************
@@ -65,12 +65,13 @@ app.use(session({secret : 'secret'}));
 app.get('/main', function(req, res) {
 	sess = req.session;
      console.log("MAIN :: "+email);
-	storage.find_by_email(email).then(dbres => res.send(dbres.planner));
+     User1.load(email).then(dbres => res.send(dbres.planner));
 });
 
 app.get('/events', function(req, res) {
 	sess = req.session;
-	storage.find_by_email(email).then(user =>
+     User1.load(email).then(user =>
+
 		res.send(user.planner.id(req.query.plannerId).events));
 });
 
@@ -103,35 +104,13 @@ app.post('/planner', function(req,res){
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
      console.log("About to call events get api ");
-     // Event1.getApiEvents(function(response) {
-     //
-     //    planners2.location = req.body.location;
-     //    planners2.events = response.businesses;
-     //    while(num_of_days>=0){
-     //
-     //         if(sess.budget == Event1.getCost(response.businesses[num_of_days])){
-     //              planners2.events = [{name: response.businesses[num_of_days].name, image_url: response.businesses[num_of_days].image_url} ];
-     //         }
-     //         num_of_days--;
-     //    }
-     //
-     //    setTimeout(function(){
-     //         storage.addPlannerToUser(email,planners2).then(result => {
-     //           storage.find_by_email(email).then(dbres => {
-     //             // Sends the most recently added planner
-     //             res.send(dbres.planner[dbres.planner.length-1]);
-     //           });
-     //         });
-     //    },3000)
-     //
-     //
-     //
-     //  });
-     //var User1 = new User(email);
      User1.add_planner(num_of_days,req.body.budget,req.body.location,vacaType.substring(0,vacaType.length-1),email)
           .then(result => {
-               storage.find_by_email(email).then(dbres => {
+               console.log("add planner result" + result);
+               User1.load(email).then(dbres => {
+                    console.log(dbres);
                     // Sends the most recently added planner
+                    console.log(dbres.planner[dbres.planner.length-1]);
                     res.send(dbres.planner[dbres.planner.length-1]);
                });
           });
@@ -146,11 +125,11 @@ app.post("/", function (req, res) {
     sess.password = req.body.password;
     email = req.body.email;
     User1= new User(email);
+    User1.setEmail(email);
     console.log(email);
     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
 
-//var code = makeid();
 app.post('/signup', function(req,res){
     sess=req.session;
     console.log("Post received from post");
@@ -158,18 +137,15 @@ app.post('/signup', function(req,res){
     sess.email=req.body.email;
     sess.password=req.body.password;
 
-    newUser.name = req.body.name;
-    newUser.email=req.body.email;
-    newUser.password=req.body.password;
-
     email = sess.email;
     var code = makeid();
     console.log("CODE IS :: "+ code);
     server_code = code;
-    //code="ABC";
     sendEmail(email,code);
-    storage.insert_user(newUser).then(results=>res.send(results));
-
+    User1= new User(email);
+    User1.setPassword(req.body.password);
+    User1.setName(req.body.name);
+    User1.save().then(results=>res.send(results));
 
 });
 
@@ -185,7 +161,6 @@ app.post('/verificationcode', function (req, res) {
          //res.send("false");
          res.send("true");
     }
-    //console.log(req.body.email);
 });
 
 
@@ -210,48 +185,17 @@ console.log('SMTP Configured');
            from: 'evaca8420@gmail.com', // sender address
            to: rec_email, // list of receivers
            subject: 'Email Example', // Subject line
-           text: "Welcome to eVaca, here's your verification code:" + code //, // plaintext body
-    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+           text: "Welcome to eVaca, here's your verification code:" + code
      };
      transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-        //res.json({yo: 'error'});
-    }else{
-        console.log('Message sent: ' + info.response);
-        //res.json({yo: info.response});
-    };
+         if(error){
+             console.log(error);
+         }else{
+             console.log('Message sent: ' + info.response);
+         };
      });
 }
 
-
-app.post('/sendEmailVerification',function(req,res){
-     sess=req.session;
-     var rec_email = req.body.email;
-     var code = "ABC";
-     var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'evaca8420@gmail.com', // Your email id
-            pass: 'evacaproject' // Your password
-       }});
-     var mailOptions = {
-           from: 'evaca8420@gmail.com>', // sender address
-           to: rec_email, // list of receivers
-           subject: 'Email Example', // Subject line
-           text: "Welcome to eVaca, here's your verification code:" + code //, // plaintext body
-    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-     };
-     transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-        res.json({yo: 'error'});
-    }else{
-        console.log('Message sent: ' + info.response);
-        res.json({yo: info.response});
-    };
-     });
-});
 
 app.get('/logout',function(req,res){
      req.session.destroy(function(err) {
