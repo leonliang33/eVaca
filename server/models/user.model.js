@@ -13,6 +13,8 @@
 /*                       Define Modules Requirement Here                        */
 var mongoose = require("mongoose");
 var current_planners = require('../CurrentPlanner.js');
+var Events = require('../Events.js');
+var storage = require('../storage.js');
 //******************************* Global Variables *****************************
 //******************************************************************************
 
@@ -20,12 +22,12 @@ var current_planners = require('../CurrentPlanner.js');
 "use strict";
 
 class User{
-     constructor(email,password,name,active_planners){
+     constructor(email){
           this.planners = new Array();
           this.email = email;
-          this.password = password;
-          this.name = name;
-          this.Current = active_planners;
+          this.password;
+          this.name;
+          this.Current;
      }
 
      get login(){
@@ -70,8 +72,53 @@ User.prototype.delete_planner = function(){
 }
 
 //Add a planner to the list of planners
-User.prototype.add_planner = function(){
+User.prototype.add_planner = function(days,budget,location,type,email){
+     return new Promise(function(resolve,reject){
+          var Event1 = new Events(days,budget,location,type);
+          var planners2 =
+             {location:String, events:[null]};
+          Event1.getApiEvents(function(response) {
 
+             planners2.location = location;
+             planners2.events = response.businesses;
+             while(days>=0){
+
+                  if(budget == Event1.getCost(response.businesses[days])){
+                       planners2.events = [{name: response.businesses[days].name, image_url: response.businesses[days].image_url} ];
+                  }
+                  days--;
+             }
+
+             setTimeout(function(){
+                  resolve(storage.addPlannerToUser(email,planners2));
+             },3000)
+
+
+
+           });
+     })
+     // var Event1 = new Events(days,budget,location,type);
+     // var planners2 =
+     //    {location:String, events:[null]};
+     // Event1.getApiEvents(function(response) {
+     //
+     //    planners2.location = req.body.location;
+     //    planners2.events = response.businesses;
+     //    while(num_of_days>=0){
+     //
+     //         if(sess.budget == Event1.getCost(response.businesses[num_of_days])){
+     //              planners2.events = [{name: response.businesses[num_of_days].name, image_url: response.businesses[num_of_days].image_url} ];
+     //         }
+     //         num_of_days--;
+     //    }
+     //
+     //    setTimeout(function(){
+     //         return (storage.addPlannerToUser(email,planners2));
+     //    },3000)
+     //
+     //
+     //
+     //  });
 }
 
 

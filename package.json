@@ -4,9 +4,11 @@
   "description": "Vacation planner to easily plan vacations on budget",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
     "express": "^4.14.0",
     "express-session": "^1.14.0",
     "firebase": "^3.2.0",
+    "mocha": "^2.5.3",
     "mongoose": "^4.5.3",
     "node-googleplaces": "^0.1.2",
     "nodemailer": "^2.5.0",

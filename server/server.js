@@ -102,30 +102,38 @@ app.post('/planner', function(req,res){
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
      console.log("About to call events get api ");
-     Event1.getApiEvents(function(response) {
-
-        planners2.location = req.body.location;
-        planners2.events = response.businesses;
-        while(num_of_days>=0){
-
-             if(sess.budget == Event1.getCost(response.businesses[num_of_days])){
-                  planners2.events = [{name: response.businesses[num_of_days].name, image_url: response.businesses[num_of_days].image_url} ];
-             }
-             num_of_days--;
-        }
-
-        setTimeout(function(){
-             storage.addPlannerToUser(email,planners2).then(result => {
+     // Event1.getApiEvents(function(response) {
+     //
+     //    planners2.location = req.body.location;
+     //    planners2.events = response.businesses;
+     //    while(num_of_days>=0){
+     //
+     //         if(sess.budget == Event1.getCost(response.businesses[num_of_days])){
+     //              planners2.events = [{name: response.businesses[num_of_days].name, image_url: response.businesses[num_of_days].image_url} ];
+     //         }
+     //         num_of_days--;
+     //    }
+     //
+     //    setTimeout(function(){
+     //         storage.addPlannerToUser(email,planners2).then(result => {
+     //           storage.find_by_email(email).then(dbres => {
+     //             // Sends the most recently added planner
+     //             res.send(dbres.planner[dbres.planner.length-1]);
+     //           });
+     //         });
+     //    },3000)
+     //
+     //
+     //
+     //  });
+     var User1 = new User(email);
+     User1.add_planner(num_of_days,req.body.budget,req.body.location,vacaType.substring(0,vacaType.length-1),email)
+          .then(result => {
                storage.find_by_email(email).then(dbres => {
-                 // Sends the most recently added planner
-                 res.send(dbres.planner[dbres.planner.length-1]);
+                    // Sends the most recently added planner
+                    res.send(dbres.planner[dbres.planner.length-1]);
                });
-             });
-        },3000)
-
-
-
-      });
+          });
 });
 
 //Receive post requests from client
@@ -192,16 +200,7 @@ function sendEmail(email,code){
             user: 'evaca8420@gmail.com', // Your email id
             pass: 'evacaproject' // Your password
        }})
-     //'smtps://user%40gmail.com:pass@smtp.gmail.com'
  );
- // Create a SMTP transport object
-// var transporter = nodemailer.createTransport("SMTP", {
-//         service: 'Gmail',
-//         auth: {
-//             user: "evaca8420@gmail.com",
-//             pass: "evacaproject"
-//         }
-//     });
 
 console.log('SMTP Configured');
      var mailOptions = {
