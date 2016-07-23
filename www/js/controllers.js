@@ -39,7 +39,7 @@ angular.module('app.controllers', ['app.services'])
 	itemRemoval($scope, $http, $ionicPopup, title, template);
 })
 
-.controller('historyCtrl', function($scope) {
+.controller('newEmailCtrl', function($scope) {
 
 })
 
