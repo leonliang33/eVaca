@@ -145,7 +145,16 @@ app.post('/signup', function(req,res){
     User1= new User(email);
     User1.setPassword(req.body.password);
     User1.setName(req.body.name);
-    User1.save().then(results=>res.send(results));
+    User1.save().then(results=>{
+         storage.find_by_email(email).then(res_find => {
+              console.log("first planner to be deleted "+res_find.planner[0]._id);
+              console.log("email from the person to be deleted = "+ email);
+              User1.delete_planner(res_find.planner[0]._id).then(r =>
+                   {
+                       res.send(results);
+                   });
+         })
+    });
 
 });
 

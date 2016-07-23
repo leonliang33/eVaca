@@ -256,6 +256,8 @@ exports.removePlanner = function(email, plannerID){
 	return new Promise(function(resolve, reject) {
         User.findOne({ email: email }).exec().then(res => {
         		console.log('User found.');
+			console.log('planner we want to delete :: '+ plannerID);
+			console.log(res.planner);
         		res.planner.id(plannerID).remove();
         		console.log('Planner removed.')
             	res.save().then((res) => {
