@@ -264,13 +264,13 @@ app.get('/logout',function(req,res){
 app.post('/deletePlanner', function(req, res) {
     console.log(req.body.itemId);
     res.send('0');
-    // storage.removePlanner(email, req.body.plannerId);
+    storage.removePlanner(email, req.body.itemId);
 });
 
 app.post('/deleteEvent', function(req, res) {
     console.log(req.body.itemId);
     res.send('0');
-    // storage.removeEvent(email, req.body.eventId);
+    storage.removeEvent(email, req.body.itemId);
 });
 
 //Server is currently serving on port 8420

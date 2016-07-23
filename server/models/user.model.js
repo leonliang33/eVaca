@@ -97,28 +97,6 @@ User.prototype.add_planner = function(days,budget,location,type,email){
 
            });
      })
-     // var Event1 = new Events(days,budget,location,type);
-     // var planners2 =
-     //    {location:String, events:[null]};
-     // Event1.getApiEvents(function(response) {
-     //
-     //    planners2.location = req.body.location;
-     //    planners2.events = response.businesses;
-     //    while(num_of_days>=0){
-     //
-     //         if(sess.budget == Event1.getCost(response.businesses[num_of_days])){
-     //              planners2.events = [{name: response.businesses[num_of_days].name, image_url: response.businesses[num_of_days].image_url} ];
-     //         }
-     //         num_of_days--;
-     //    }
-     //
-     //    setTimeout(function(){
-     //         return (storage.addPlannerToUser(email,planners2));
-     //    },3000)
-     //
-     //
-     //
-     //  });
 }
 
 
