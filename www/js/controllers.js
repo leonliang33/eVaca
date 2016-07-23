@@ -54,14 +54,14 @@ angular.module('app.controllers', ['app.services'])
 		});
 	var title = 'Delete event';
 	var template = 'Are you sure you want to delete this event?';
-	itemRemoval($scope, $http, $ionicPopup, title, template);
+	itemRemoval($scope, $http, $ionicPopup, title, template, $stateParams.plannerId);
 })
 
 .controller('accountPreferencesCtrl', function($scope) {
 
 })
 
-function itemRemoval($scope, $http, $ionicPopup, title, template) {
+function itemRemoval($scope, $http, $ionicPopup, title, template, plannerID) {
 	$scope.remove = function(item) {
 		var confirmPopup = $ionicPopup.confirm({
 			title: title,
@@ -72,7 +72,7 @@ function itemRemoval($scope, $http, $ionicPopup, title, template) {
 				if ('location' in item) {
 						plannerRemoval($scope, $http, $ionicPopup, item);
 				} else {
-						eventRemoval($scope, $http, $ionicPopup, item);
+						eventRemoval($scope, $http, $ionicPopup, item,plannerID);
 				}
 			} else {
 				console.log('Deletion canceled');
@@ -95,9 +95,9 @@ function plannerRemoval($scope, $http, $ionicPopup, item) {
 	});
 }
 
-function eventRemoval($scope, $http, $ionicPopup, item) {
+function eventRemoval($scope, $http, $ionicPopup, item, plannerID) {
 	console.log('removing event');
-	dbDeleteRequest($http, 'deleteEvent', item, function(delresponse) {
+	dbEventDeleteRequest($http, 'deleteEvent', item, plannerID, function(delresponse) {
 			console.log(delresponse.data);
 			if (delresponse.data === '0') {
 				var eventIndex = $scope.events.indexOf(item);
@@ -111,6 +111,16 @@ function eventRemoval($scope, $http, $ionicPopup, item) {
 
 function dbDeleteRequest($http, path, item, callback) {
 	$http.post('http://localhost:8420/' + path, {
+			itemId: item._id
+		})
+		.then(function(delresponse) {
+				callback(delresponse);
+		});
+}
+
+function dbEventDeleteRequest($http, path, item,plannerid, callback) {
+	$http.post('http://localhost:8420/' + path, {
+               plannerID: plannerid,
 			itemId: item._id
 		})
 		.then(function(delresponse) {

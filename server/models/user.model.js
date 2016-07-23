@@ -62,13 +62,18 @@ User.prototype.del_Account = function(){
 }
 
 //Return list of planners
-User.prototype.view_planner = function(){
-
+User.prototype.view_planner = function(itemID){
+     storage.removePlanner(this.email, itemID);
 }
 
 //Delete planner from list of planners
-User.prototype.delete_planner = function(){
+User.prototype.delete_planner = function(itemID){
+     storage.removePlanner(this.email, itemID);
+}
 
+User.prototype.delete_event = function(plannerID,itemID){
+
+     storage.removeEvent(this.email,plannerID, itemID);
 }
 
 //Add a planner to the list of planners

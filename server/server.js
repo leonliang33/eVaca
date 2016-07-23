@@ -27,6 +27,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 var db_url = 'mongodb://localhost/evacadb';
 var sess;
 var email;
+var User1;
 
 var planners2 =
    {location:String, events:[null]};
@@ -126,7 +127,7 @@ app.post('/planner', function(req,res){
      //
      //
      //  });
-     var User1 = new User(email);
+     //var User1 = new User(email);
      User1.add_planner(num_of_days,req.body.budget,req.body.location,vacaType.substring(0,vacaType.length-1),email)
           .then(result => {
                storage.find_by_email(email).then(dbres => {
@@ -144,6 +145,7 @@ app.post("/", function (req, res) {
     sess.email = req.body.username;
     sess.password = req.body.password;
     email = req.body.email;
+    User1= new User(email);
     console.log(email);
     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
@@ -264,13 +266,15 @@ app.get('/logout',function(req,res){
 app.post('/deletePlanner', function(req, res) {
     console.log(req.body.itemId);
     res.send('0');
-    storage.removePlanner(email, req.body.itemId);
+    //storage.removePlanner(req.body.itemId);
+    User1.delete_planner(req.body.itemId);
 });
 
 app.post('/deleteEvent', function(req, res) {
     console.log(req.body.itemId);
+    User1.delete_event(req.body.plannerID,req.body.itemId);
     res.send('0');
-    storage.removeEvent(email, req.body.itemId);
+    //storage.removeEvent(email, req.body.itemId);
 });
 
 //Server is currently serving on port 8420
