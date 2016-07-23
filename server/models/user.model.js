@@ -11,6 +11,7 @@
 </pre>*************************************************************************/
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
+"use strict";
 var mongoose = require("mongoose");
 var current_planners = require('../CurrentPlanner.js');
 var Events = require('../Events.js');
@@ -19,7 +20,7 @@ var storage = require('../storage.js');
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *********************
-"use strict";
+//"use strict";
 
 class User{
      constructor(email){
@@ -83,7 +84,7 @@ User.prototype.setEmail = function(email){
 
 //Return list of planners
 User.prototype.view_planner = function(itemID){
-     storage.removePlanner(this.email, itemID);
+
 }
 
 //Delete planner from list of planners
