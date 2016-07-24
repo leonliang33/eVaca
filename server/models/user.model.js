@@ -127,19 +127,19 @@ User.prototype.add_planner = function(days,budget,location,type,email){
 
 User.prototype.save = function(){
 
-     console.log('save activated');
-     console.log(this.name + " " + this.email + " " + this.password);
+     //console.log('save activated');
+     //console.log(this.name + " " + this.email + " " + this.password);
      var newUser = new storage.User({
           name: String,
           email: String,
           password: String,
           planner: [{}]
      });
-     console.log(this.name + " " + this.email + " " + this.password);
+     //console.log(this.name + " " + this.email + " " + this.password);
      newUser.name = this.name;
      newUser.email = this.email;
      newUser.password = this.password;
-     console.log(newUser);
+     //console.log(newUser);
      return new Promise(function(resolve,reject){
           resolve(storage.insert_user(newUser));
      })
@@ -148,10 +148,10 @@ User.prototype.save = function(){
 }
 
 User.prototype.load = function(email){
-     console.log("load being called");
+     //console.log("load being called");
      return new Promise(function(resolve,reject){
-          console.log("load being called2");
-          console.log(email);
+          //console.log("load being called2");
+          //console.log(email);
           resolve(storage.find_by_email(email));
      })
 }

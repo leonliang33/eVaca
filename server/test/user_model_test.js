@@ -14,11 +14,11 @@ describe("Functions that users can perform",function(){
 		User1.setName(name);
 		User1.save().then(results=>{
 			 storage.find_by_email(email).then(res_find => {
-				  console.log("first planner to be deleted "+res_find.planner[0]._id);
-				  console.log("email from the person to be deleted = "+ email);
+				  //console.log("first planner to be deleted "+res_find.planner[0]._id);
+				  //console.log("email from the person to be deleted = "+ email);
 				  User1.delete_planner(res_find.planner[0]._id).then(r =>
 					   {
-						   expect(results);
+						   expect(results).to.equal(true);
 					   });
 			 })
 		});
@@ -28,7 +28,9 @@ describe("Functions that users can perform",function(){
 		 var User1= new User(email);
 		  User1.add_planner(5,155,'Chicago','nightlife',email)
           .then(result => {
-			   expect(result).to.be.an('object');
+			   (result.then(res => {
+				   expect(res.to.be.an('object'))
+			   }))
           });
      });
 	 
