@@ -111,8 +111,8 @@ User.prototype.add_planner = function(days,budget,location,type,email){
           var planners2 =
              {location:String, events:[null]};
           Event1.getApiEvents(function(response) {
-
-             planners2.location = location;
+             // Quick hack to add to fix user's bad location inputs
+             planners2.location = response.businesses[0].location.city;
              planners2.events = response.businesses;
              while(days>=0){
 
