@@ -112,10 +112,12 @@ angular.module('app.controllers', ['app.services'])
     };
 })
 
-.controller('plannerCtrl', function($scope, $http, $state, planner) {
+.controller('plannerCtrl', function($scope, $http, $state, $ionicLoading, planner) {
 	$scope.currentDate = new Date();
 
 	$scope.plan = function() {
+    $ionicLoading.show();
+
 		$http.post('http://localhost:8420/planner', {
 			location: this.formdata.location,
 			budget: this.formdata.budget,
@@ -123,6 +125,8 @@ angular.module('app.controllers', ['app.services'])
 			returningdate: this.formdata.rdate,
 			idealvacation: this.formdata.ivacation
 		}).then(function(plannerRes) {
+      $ionicLoading.hide();
+
 			if ('_id' in plannerRes.data) {
         planner.setNewPlanner(plannerRes.data); // For eVaca controller $watch
 
