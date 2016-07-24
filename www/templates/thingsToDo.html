@@ -1,7 +1,8 @@
 <ion-view title="Things To Do" id="page15" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
-        <ion-list id="events-list" class=" " can-swipe="true">
-            <ion-item ng-repeat="event in events" class="item-thumbnail-left  " id="event1">
+        <ion-list id="events-list" ng-repeat="event in events" can-swipe="true">
+            <ion-item id="daysDivider" ng-if="$index % 3 == 0" class="item item-divider">Day {{$index / 3 + 1}}</ion-item>
+            <ion-item class="item-thumbnail-left  " id="event1">
                 <img ng-src={{event.image_url}} alt="Event image">
                 <h2>{{event.name}}</h2>
                 <ion-option-button class="ion-trash-a" ng-click="remove(event)"></ion-option-button>
