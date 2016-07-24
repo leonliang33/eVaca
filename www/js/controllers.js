@@ -58,6 +58,7 @@ angular.module('app.controllers', ['app.services'])
 				email: this.formdata.email
 			})
 			.then(function(resetRes) {
+                    console.log(resetRes);
 				if (resetRes.data) {
 					$scope.confirmMessage = 'Email has been sent';
 				} else {
