@@ -5,6 +5,7 @@
             <label class="item item-input">
                 <input type="text" value="" name="code" placeholder="verification code" ng-model="formdata.code" required>
             </label>
+            <p style="color:red;" ng-if="errorMessage">* {{errorMessage}}</p>
             <div style="color:white;">
                 <p ng-show="verifForm.code.$invalid && !verifForm.code.$pristine">* Verification code is required</p>
                 <!-- <p ng-show="verifForm.code.$error.minlength">* Verification code must be longer than 6 characters</p> -->

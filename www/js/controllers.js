@@ -6,8 +6,6 @@ angular.module('app.controllers', ['app.services'])
 
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
 
-.controller('verifcationCodeCtrl', ['$scope','verificationcode','$http','$state','$q',verificationCodeController])
-
 .controller('loginCtrl', function($scope, $http, $state) {
     $scope.enter = function() {
         $http.post('http://localhost:8420/', {
@@ -36,6 +34,21 @@ angular.module('app.controllers', ['app.services'])
                     $state.go('verifcationCode');
                 } else {
                     $scope.errorMessage = 'A user with that email already exists';
+                }
+            });
+    };
+})
+
+.controller('verifcationCodeCtrl', function($scope, $http, $state) {
+    $scope.verifycode = function() {
+        $http.post('http://localhost:8420/verificationcode', {
+                verificationcode: this.formdata.code
+            })
+            .then(function(verifRes) {
+                if (verifRes.data == "true") {
+                    $state.go('tabsController.planner');
+                } else {
+										$scope.errorMessage = 'Wrong validation code';
                 }
             });
     };
@@ -214,30 +227,6 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
                     if(vbool == "true")
                     {
                          $state.go('newPassword');
-                    }
-                    else{
-                         $state.reload();
-                    }
-
-               });
-     }
-};
-
-function verificationCodeController($scope, verificationcode, $http, $state, $q){
-     var vm = this;
-
-     console.log("VERIFICATIONCODE Active");
-
-     $scope.verifycode = function(){
-          console.log("VERIFY CALLED");
-          var code = this.formdata.code;
-
-          var verifybool;
-               verifyvbool = verificationcode.getCode(code).then(function(data){
-                    verifybool= data;
-                    if(verifybool == "true")
-                    {
-                         $state.go('tabsController.planner');
                     }
                     else{
                          $state.reload();
