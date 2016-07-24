@@ -32,8 +32,6 @@ angular.module('app.controllers', ['app.services'])
                 password: this.formdata.log_pass
             })
             .then(function(signupRes) {
-							console.log('hereee');
-							console.log(signupRes.data);
                 if (signupRes.data) {
                     $state.go('verifcationCode');
                 } else {
@@ -146,8 +144,7 @@ function itemRemoval($scope, $http, $ionicPopup, title, template, plannerID) {
 function plannerRemoval($scope, $http, $ionicPopup, item) {
 	console.log('removing planner');
 	dbDeleteRequest($http, 'deletePlanner', item, function(delresponse) {
-		console.log(delresponse.data);
-		if (delresponse.data === '0') {
+		if (delresponse.data) {
 			var plannerIndex = $scope.planners.indexOf(item);
 			$scope.planners.splice(plannerIndex, 1);
 		} else {
@@ -161,7 +158,7 @@ function eventRemoval($scope, $http, $ionicPopup, item, plannerID) {
 	console.log('removing event');
 	dbEventDeleteRequest($http, 'deleteEvent', item, plannerID, function(delresponse) {
 			console.log(delresponse.data);
-			if (delresponse.data === '0') {
+			if (delresponse.data) {
 				var eventIndex = $scope.events.indexOf(item);
 				$scope.events.splice(eventIndex, 1);
 			} else {

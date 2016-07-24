@@ -160,6 +160,7 @@ app.post('/signup', function(req,res){
     User1= new User(email);
     User1.setPassword(req.body.password);
     User1.setName(req.body.name);
+    User1.setEmail(req.body.email);
     User1.save().then(results=>{
          storage.find_by_email(email).then(res_find => {
               console.log("first planner to be deleted "+res_find.planner[0]._id);
@@ -232,18 +233,11 @@ app.get('/logout',function(req,res){
 });
 
 app.post('/deletePlanner', function(req, res) {
-    console.log(req.body.itemId);
-    User1.delete_planner(req.body.itemId, function(response) {
-      res.send('0');
-    });
+    User1.delete_planner(req.body.itemId).then(results => res.send(results));
 });
 
 app.post('/deleteEvent', function(req, res) {
-    console.log(req.body.itemId);
-    User1.delete_event(req.body.plannerID,req.body.itemId, function(response) {
-
-      res.send('0');
-    });
+    User1.delete_event(req.body.plannerID, req.body.itemId).then(results => res.send(results))
 });
 
 //Server is currently serving on port 8420
