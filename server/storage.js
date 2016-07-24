@@ -58,7 +58,7 @@ exports.login_verification = function(u_email, u_pass){
 
 exports.find_by_email = function (u_email){
 	return new Promise(function(resolve, reject){
-		User.findOne({email: u_email}).exec().then(res => {			
+		User.findOne({email: u_email}).exec().then(res => {
 			resolve(res);
 		}).catch(function(err){
 			console.log('error: Cannot find the user. The user may not be registered with that email.');
@@ -131,6 +131,7 @@ exports.insert_user = function (user){
 		});
 		newUser.save().then((res) => {
     		console.log('User '+newUser.name+' added to db.');
+				exports.removePlanner(newUser.email, newUser.planner[0]._id).then(rmres => console.log('Empty planner deleted'));				
     		resolve(true);
   		}).catch(function(err){
   			console.log('error: Cannot insert the user. Possible email duplicated.');
