@@ -2,7 +2,7 @@
 
 angular.module('app.controllers', ['app.services'])
 
-.controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
+// .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
 
 .controller('loginCtrl', function($scope, $http, $state) {
     $scope.enter = function() {
@@ -112,6 +112,32 @@ angular.module('app.controllers', ['app.services'])
     };
 })
 
+.controller('plannerCtrl', function($scope, $http, $state, planner) {
+	$scope.currentDate = new Date();
+
+	$scope.plan = function() {
+		$http.post('http://localhost:8420/planner', {
+			location: this.formdata.location,
+			budget: this.formdata.budget,
+			Leaving: this.formdata.sdate,
+			returningdate: this.formdata.rdate,
+			idealvacation: this.formdata.ivacation
+		}).then(function(plannerRes) {
+			if ('_id' in plannerRes.data) {
+        planner.setNewPlanner(plannerRes.data); // For eVaca controller $watch
+
+				$state.go('thingsToDo', {
+					newPlanner: 'true',
+					planner: plannerRes.data,
+					plannerId: plannerRes.data._id
+				});
+			} else {
+				$state.reload();
+			}
+		});
+	};
+})
+
 .controller('thingsToDoCtrl', function($scope, $http, $stateParams, $ionicPopup) {
 	$http.get('http://localhost:8420/events', {
 			params: {
@@ -158,6 +184,7 @@ angular.module('app.controllers', ['app.services'])
 		});
 	};
 })
+
 .controller('accountPreferencesCtrl', function($scope, $http, $state, $ionicPopup) {
     $scope.deleteAccount = function() {
         var confirmPopup = $ionicPopup.confirm({
@@ -254,29 +281,3 @@ function ionicAlert($scope, $ionicPopup) {
 		});
 	};
 }
-
-function plannerController($scope,planner,$http,$state,$q){
-     var pm = this;
-     console.log("PLANNER CONTROLLER ACTIVE");
-		 $scope.currentDate = new Date();
-     $scope.formData = {};
-     $scope.plan = function(){
-          console.log("PLANNER Called");
-          var location = this.formdata.location;
-          var budget = this.formdata.budget;
-          var sdate = this.formdata.sdate;
-          var rdate = this.formdata.rdate;
-          var ideal_vacation = this.formdata.ivacation;
-          planner.getPlanner(location, budget, sdate, rdate, ideal_vacation).then(function(data) {
-          	if ('_id' in data) {
-          		$state.go('thingsToDo', {
-          			newPlanner: 'true',
-          			planner: data,
-          			plannerId: data._id
-          		});
-          	} else {
-          		$state.reload();
-          	}
-          });
-     }
-};
