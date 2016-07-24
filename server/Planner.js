@@ -11,6 +11,7 @@
 </pre>*************************************************************************/
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
+"use strict";
 var mongoose = require("mongoose");
 var Preference = require('./Preferences.js');
 var Events = require('./Events.js');

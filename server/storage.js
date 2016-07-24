@@ -59,6 +59,7 @@ exports.login_verification = function(u_email, u_pass){
 exports.find_by_email = function (u_email){
 	return new Promise(function(resolve, reject){
 		User.findOne({email: u_email}).exec().then(res => {
+			console.log("find by email ::"+res);
 			resolve(res);
 		}).catch(function(err){
 			console.log('error: Cannot find the user. The user may not be registered with that email.');
@@ -130,6 +131,7 @@ exports.insert_user = function (user){
 			planner: user.planner
 		});
 		newUser.save().then((res) => {
+			console.log("this user is inserted :: "+res);
     		console.log('User '+newUser.name+' added to db.');
     		resolve(true);
   		}).catch(function(err){
@@ -230,6 +232,7 @@ exports.removeEvent = function(email, plannerID, eventID){
 exports.addPlannerToUser = function(email, newPlanner){
 	return new Promise(function(resolve, reject){
 		User.findOne({ email: email }).exec().then(res => {
+			console.log("ADDPLANNERTOUSER :: "  + newPlanner.events + " "+ newPlanner.location);
 			res.planner.push({
 				//isCurrent: newPlanner.isCurrent,
 				events: newPlanner.events,
@@ -254,6 +257,8 @@ exports.removePlanner = function(email, plannerID){
 	return new Promise(function(resolve, reject) {
         User.findOne({ email: email }).exec().then(res => {
         		console.log('User found.');
+			console.log('planner we want to delete :: '+ plannerID);
+			console.log(res.planner);
         		res.planner.id(plannerID).remove();
         		console.log('Planner removed.')
             	res.save().then((res) => {

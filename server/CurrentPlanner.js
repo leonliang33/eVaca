@@ -11,6 +11,7 @@
 </pre>*************************************************************************/
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
+"use strict";
 var Preference = require('./Preferences.js');
 var Events = require('./Events.js');
 var users = require('./models/user.model.js');
@@ -20,7 +21,6 @@ var Planner = require('./Planner.js')
 //******************************************************************************
 
 //******************************* Object Creation *****************************
-"use strict";
 class CurrentPlanner extends Planner{
 
      constructor(dest, budget, r_date, b_date){
@@ -28,7 +28,7 @@ class CurrentPlanner extends Planner{
           super(dest, budget, r_date, b_date);
 
      }
-     
+
      set removeEvents(event){
           if(NumOfEvents() <= 0){
                //Return NULL :: Invalid operation

@@ -11,6 +11,7 @@
 </pre>*************************************************************************/
 //******************************* Configuration ********************************
 /*                       Define Modules Requirement Here                        */
+"use strict";
 var mongoose = require("mongoose");
 var current_planners = require('../CurrentPlanner.js');
 var Events = require('../Events.js');
@@ -19,7 +20,7 @@ var storage = require('../storage.js');
 //******************************************************************************
 
 //******************************* Mongoose Object Creation *********************
-"use strict";
+//"use strict";
 
 class User{
      constructor(email){
@@ -54,6 +55,14 @@ class User{
           this.email = new_email;
      }
 
+     // set setPassword(pass){
+     //      this.password = pass;
+     // }
+     //
+     // set setName(name){
+     //      this.name=name;
+     // }
+
 }
 
 User.prototype.updateUserEmail = function(newEmail) {
@@ -69,19 +78,30 @@ User.prototype.del_Account = function() {
     storage.removeUser(this.email);
 }
 
+User.prototype.setName = function(name){
+     this.name = name;
+}
+
+User.prototype.setPassword = function(pass){
+     this.password = pass;
+}
+
+User.prototype.setEmail = function(email){
+     this.email=email;
+}
+
 //Return list of planners
 User.prototype.view_planner = function(itemID){
-     storage.removePlanner(this.email, itemID);
+
 }
 
 //Delete planner from list of planners
 User.prototype.delete_planner = function(itemID){
-     storage.removePlanner(this.email, itemID);
+     return storage.removePlanner(this.email, itemID);
 }
 
 User.prototype.delete_event = function(plannerID,itemID){
-
-     storage.removeEvent(this.email,plannerID, itemID);
+     return storage.removeEvent(this.email,plannerID, itemID);
 }
 
 //Add a planner to the list of planners
@@ -103,6 +123,7 @@ User.prototype.add_planner = function(days,budget,location,type,email){
              }
 
              setTimeout(function(){
+                  console.log(planners2);
                   resolve(storage.addPlannerToUser(email,planners2));
              },3000)
 
@@ -111,6 +132,38 @@ User.prototype.add_planner = function(days,budget,location,type,email){
            });
      })
 }
+
+User.prototype.save = function(){
+
+     console.log('save activated');
+     console.log(this.name + " " + this.email + " " + this.password);
+     var newUser = new storage.User({
+          name: String,
+          email: String,
+          password: String,
+          planner: [{}]
+     });
+     console.log(this.name + " " + this.email + " " + this.password);
+     newUser.name = this.name;
+     newUser.email = this.email;
+     newUser.password = this.password;
+     console.log(newUser);
+     return new Promise(function(resolve,reject){
+          resolve(storage.insert_user(newUser));
+     })
+
+
+}
+
+User.prototype.load = function(email){
+     console.log("load being called");
+     return new Promise(function(resolve,reject){
+          console.log("load being called2");
+          console.log(email);
+          resolve(storage.find_by_email(email));
+     })
+}
+
 
 
 module.exports = User;
