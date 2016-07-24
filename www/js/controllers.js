@@ -2,8 +2,6 @@
 
 angular.module('app.controllers', ['app.services'])
 
-.controller('resetPasswordCtrl', ['$scope','resetpassword','$http','$state','$q',resetPasswordController])
-
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
 
 .controller('loginCtrl', function($scope, $http, $state) {
@@ -54,6 +52,21 @@ angular.module('app.controllers', ['app.services'])
     };
 })
 
+.controller('resetPasswordCtrl', function($scope, $http, $state) {
+	$scope.getemail = function() {
+		$http.post('http://localhost:8420/verify', {
+				email: this.formdata.email
+			})
+			.then(function(resetRes) {
+				if (resetRes.data) {
+					$scope.confirmMessage = 'Email has been sent';
+				} else {
+					$scope.errorMessage = 'Email is not registered';
+				}
+			});
+	};
+})
+
 .controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state, planner) {
 	$http.get('http://localhost:8420/main').then(function(response) {
 		$scope.planners = response.data;
@@ -62,7 +75,6 @@ angular.module('app.controllers', ['app.services'])
 	$scope.$watch(function() {
 		return planner.getNewPlanner();
 	}, function(planner) {
-		console.log(planner);
 		if (planner !== null) {
 			$scope.planners.push(planner);
 		}
@@ -170,7 +182,6 @@ function plannerRemoval($scope, $http, $ionicPopup, item) {
 function eventRemoval($scope, $http, $ionicPopup, item, plannerID) {
 	console.log('removing event');
 	dbEventDeleteRequest($http, 'deleteEvent', item, plannerID, function(delresponse) {
-			console.log(delresponse.data);
 			if (delresponse.data) {
 				var eventIndex = $scope.events.indexOf(item);
 				$scope.events.splice(eventIndex, 1);
@@ -211,30 +222,6 @@ function ionicAlert($scope, $ionicPopup) {
 		});
 	};
 }
-
-function resetPasswordController($scope, resetpassword, $http, $state, $q){
-     var vm = this;
-
-     console.log("resetPasswordController Active");
-
-     $scope.getemail = function(){
-          console.log("ENTER CALLED");
-          var email = this.formdata.email;
-
-          var vbool;
-               vbool = resetPassword.getEmail(email).then(function(data){
-                    vbool= data;
-                    if(vbool == "true")
-                    {
-                         $state.go('newPassword');
-                    }
-                    else{
-                         $state.reload();
-                    }
-
-               });
-     }
-};
 
 function plannerController($scope,planner,$http,$state,$q){
      var pm = this;

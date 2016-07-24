@@ -176,7 +176,7 @@ app.post('/verificationcode', function (req, res) {
     }
 });
 
-app.post("/forgotPassword",function(req,res){
+app.post("/verify",function(req,res){
      sess=req.session;
      console.log("forgot pass email :: "+req.body.email);
      var resetPassword = makeid();
@@ -184,15 +184,14 @@ app.post("/forgotPassword",function(req,res){
      storage.updateUserPassword(req.body.email,resetPassword).then(
           result => {
                if(result){
-                    var sndBool = sendForgotPassword(req.body.email.resetPassword);
+                    var sndBool = sendForgotPassword(req.body.email, resetPassword);
                     res.send(sndBool);
+               } else {
+                    res.send(result);
                }
           }
      );
-     //var sndBool = sendForgotPassword(req.body.email.resetPassword);
-     //res.send(sndBool);
 })
-
 
 app.get('/logout',function(req,res){
      req.session.destroy(function(err) {
@@ -262,7 +261,7 @@ console.log('SMTP Configured');
      });
 }
 
-function sendForgotPassword(email,code){
+function sendForgotPassword(email, tempPassword){
      //sess=req.session;
      var rec_email = email;
      //var code = "ABC";
