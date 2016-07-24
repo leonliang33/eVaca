@@ -183,11 +183,12 @@ app.post("/verify",function(req,res){
      console.log("new forgot pass :: "+resetPassword);
      storage.updateUserPassword(req.body.email,resetPassword).then(
           result => {
+               //console.log(result);
                if(result){
-                    var sndBool = sendForgotPassword(req.body.email, resetPassword);
-                    res.send(sndBool);
+                    res.send(true);
+                    sendForgotPassword(req.body.email, resetPassword);
                } else {
-                    res.send(result);
+                    res.send(false);
                }
           }
      );
@@ -249,7 +250,7 @@ console.log('SMTP Configured');
           tls: { rejectUnauthorized: false },
            from: 'evaca8420@gmail.com', // sender address
            to: rec_email, // list of receivers
-           subject: 'Email Example', // Subject line
+           subject: 'Welcome to eVaca', // Subject line
            text: "Welcome to eVaca, here's your verification code:" + code
      };
      transporter.sendMail(mailOptions, function(error, info){
@@ -275,14 +276,15 @@ function sendForgotPassword(email, tempPassword){
        }})
  );
 
-console.log('SMTP Configured');
+ console.log('SMTP Configured');
      var mailOptions = {
           tls: { rejectUnauthorized: false },
            from: 'evaca8420@gmail.com', // sender address
            to: rec_email, // list of receivers
-           subject: 'Email Example', // Subject line
-           text: "Here's your new password:" + code
+           subject: 'Evaca New Password', // Subject line
+           text: "Here's your new password:" + tempPassword
      };
+     //console.log(mailOptions);
      transporter.sendMail(mailOptions, function(error, info){
          if(error){
              console.log(error);
@@ -291,5 +293,8 @@ console.log('SMTP Configured');
              console.log('Message sent: ' + info.response);
              return true;
          };
-     });
+     })
+
+         console.log('returning true');
+         return true;
 }
