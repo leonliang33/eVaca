@@ -62,6 +62,21 @@ app.use(function(req, res,next) {
 
 app.use(session({secret : 'secret'}));
 
+app.post('/newEmail', function(req, res) {
+    sess = req.session;
+    User1.updateUserEmail(req.body.newEmail);
+});
+
+app.post('/newPassword', function(req, res) {
+    sess = req.session;
+    User1.updateUserPass(req.body.newPass);
+});
+
+app.post('/deleteAccount', function(req, res) {
+    sess = req.session;
+    User1.del_Account();
+});
+
 app.get('/main', function(req, res) {
 	sess = req.session;
      console.log("MAIN :: "+email);
@@ -265,16 +280,17 @@ app.get('/logout',function(req,res){
 
 app.post('/deletePlanner', function(req, res) {
     console.log(req.body.itemId);
-    res.send('0');
-    //storage.removePlanner(req.body.itemId);
-    User1.delete_planner(req.body.itemId);
+    User1.delete_planner(req.body.itemId, function(response) {
+      res.send('0');
+    });
 });
 
 app.post('/deleteEvent', function(req, res) {
     console.log(req.body.itemId);
-    User1.delete_event(req.body.plannerID,req.body.itemId);
-    res.send('0');
-    //storage.removeEvent(email, req.body.itemId);
+    User1.delete_event(req.body.plannerID,req.body.itemId, function(response) {
+
+      res.send('0');
+    });
 });
 
 //Server is currently serving on port 8420

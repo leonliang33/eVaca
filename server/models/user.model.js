@@ -56,9 +56,17 @@ class User{
 
 }
 
-//Delete command to delete account from the database
-User.prototype.del_Account = function(){
+User.prototype.updateUserEmail = function(newEmail) {
+    storage.updateUserEmail(this.email, newEmail);
+}
 
+User.prototype.updateUserPass = function(newPass) {
+    storage.updateUserPassword(this.email, newPass);
+}
+
+//Delete command to delete account from the database
+User.prototype.del_Account = function() {
+    storage.removeUser(this.email);
 }
 
 //Return list of planners

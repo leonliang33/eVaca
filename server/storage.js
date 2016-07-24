@@ -51,6 +51,7 @@ exports.login_verification = function(u_email, u_pass){
 			resolve(login);
 		}).catch(function(err){
   			console.log('error: Cannot find the user with email ', u_email);
+				resolve(false);
 		});
 	});
 }
@@ -133,7 +134,7 @@ exports.insert_user = function (user){
     		resolve(true);
   		}).catch(function(err){
   			console.log('error: Cannot insert the user. Possible email duplicated.');
-  			reject(false);
+  			resolve(false);
 		});
 	});
 }
