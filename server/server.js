@@ -176,38 +176,22 @@ app.post('/verificationcode', function (req, res) {
     }
 });
 
-
-
-function sendEmail(email,code){
-     //sess=req.session;
-     var rec_email = email;
-     //var code = "ABC";
-     console.log("send EMAIL CALLED :: " + email);
-     var transporter = nodemailer.createTransport(
-          smtpTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'evaca8420@gmail.com', // Your email id
-            pass: 'evacaproject' // Your password
-       }})
- );
-
-console.log('SMTP Configured');
-     var mailOptions = {
-          tls: { rejectUnauthorized: false },
-           from: 'evaca8420@gmail.com', // sender address
-           to: rec_email, // list of receivers
-           subject: 'Email Example', // Subject line
-           text: "Welcome to eVaca, here's your verification code:" + code
-     };
-     transporter.sendMail(mailOptions, function(error, info){
-         if(error){
-             console.log(error);
-         }else{
-             console.log('Message sent: ' + info.response);
-         };
-     });
-}
+app.post("/forgotPassword",function(req,res){
+     sess=req.session;
+     console.log("forgot pass email :: "+req.body.email);
+     var resetPassword = makeid();
+     console.log("new forgot pass :: "+resetPassword);
+     storage.updateUserPassword(req.body.email,resetPassword).then(
+          result => {
+               if(result){
+                    var sndBool = sendForgotPassword(req.body.email.resetPassword);
+                    res.send(sndBool);
+               }
+          }
+     );
+     //var sndBool = sendForgotPassword(req.body.email.resetPassword);
+     //res.send(sndBool);
+})
 
 
 app.get('/logout',function(req,res){
@@ -241,8 +225,72 @@ function makeid()
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for( var i=0; i < 5; i++ )
+    for( var i=0; i < 8; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+}
+
+function sendEmail(email,code){
+     //sess=req.session;
+     var rec_email = email;
+     //var code = "ABC";
+     console.log("send EMAIL CALLED :: " + email);
+     var transporter = nodemailer.createTransport(
+          smtpTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'evaca8420@gmail.com', // Your email id
+            pass: 'evacaproject' // Your password
+       }})
+ );
+
+console.log('SMTP Configured');
+     var mailOptions = {
+          tls: { rejectUnauthorized: false },
+           from: 'evaca8420@gmail.com', // sender address
+           to: rec_email, // list of receivers
+           subject: 'Email Example', // Subject line
+           text: "Welcome to eVaca, here's your verification code:" + code
+     };
+     transporter.sendMail(mailOptions, function(error, info){
+         if(error){
+             console.log(error);
+         }else{
+             console.log('Message sent: ' + info.response);
+         };
+     });
+}
+
+function sendForgotPassword(email,code){
+     //sess=req.session;
+     var rec_email = email;
+     //var code = "ABC";
+     console.log("send EMAIL CALLED :: " + email);
+     var transporter = nodemailer.createTransport(
+          smtpTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'evaca8420@gmail.com', // Your email id
+            pass: 'evacaproject' // Your password
+       }})
+ );
+
+console.log('SMTP Configured');
+     var mailOptions = {
+          tls: { rejectUnauthorized: false },
+           from: 'evaca8420@gmail.com', // sender address
+           to: rec_email, // list of receivers
+           subject: 'Email Example', // Subject line
+           text: "Here's your new password:" + code
+     };
+     transporter.sendMail(mailOptions, function(error, info){
+         if(error){
+             console.log(error);
+             return false;
+         }else{
+             console.log('Message sent: ' + info.response);
+             return true;
+         };
+     });
 }
