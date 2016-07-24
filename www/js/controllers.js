@@ -2,18 +2,57 @@
 
 angular.module('app.controllers', ['app.services'])
 
-.controller('loginCtrl', ['$scope','login','$http','$state','$q',loginController])
-
-.controller('signUpCtrl', ['$scope','signUp','$http','$state','$q',signupController])
-
 .controller('resetPasswordCtrl', ['$scope','resetpassword','$http','$state','$q',resetPasswordController])
 
 .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
 
-.controller('verifcationCodeCtrl', ['$scope','verificationcode','$http','$state','$q',verificationCodeController])
+.controller('loginCtrl', function($scope, $http, $state) {
+    $scope.enter = function() {
+        $http.post('http://localhost:8420/', {
+                email: this.formdata.log_email,
+                password: this.formdata.log_pass
+            })
+            .then(function(loginRes) {
+                if (loginRes.data) {
+                    $state.go('tabsController.eVaca');
+                } else {
+										$scope.errorMessage = 'Wrong email or password';
+                }
+            });
+    };
+})
 
-.controller('newPasswordCtrl',['$scope', 'newPassword', '$http', '$state', '$q',newPasswordController])
+.controller('signUpCtrl', function($scope, $http, $state) {
+    $scope.signup = function() {
+        $http.post('http://localhost:8420/signup', {
+                name: this.formdata.name,
+                email: this.formdata.email,
+                password: this.formdata.log_pass
+            })
+            .then(function(signupRes) {
+                if (signupRes.data) {
+                    $state.go('verifcationCode');
+                } else {
+                    $scope.errorMessage = 'A user with that email already exists';
+                }
+            });
+    };
+})
 
+.controller('verifcationCodeCtrl', function($scope, $http, $state) {
+    $scope.verifycode = function() {
+        $http.post('http://localhost:8420/verificationcode', {
+                verificationcode: this.formdata.code
+            })
+            .then(function(verifRes) {
+                if (verifRes.data == "true") {
+                    $state.go('tabsController.planner');
+                } else {
+										$scope.errorMessage = 'Wrong validation code';
+                }
+            });
+    };
+})
 
 .controller('eVacaCtrl', function($scope, $http, $ionicPopup, $state, planner) {
 	$http.get('http://localhost:8420/main').then(function(response) {
@@ -39,8 +78,26 @@ angular.module('app.controllers', ['app.services'])
 	itemRemoval($scope, $http, $ionicPopup, title, template);
 })
 
-.controller('newEmailCtrl', function($scope) {
+.controller('newEmailCtrl', function($scope, $http) {
+    $scope.changeEmail = function() {
+        $http.post('http://localhost:8420/newEmail', {
+                newEmail: this.formdata.email1
+            })
+            .then(function(changeRes) {
+                //  console.log(changeRes);
+            });
+    };
+})
 
+.controller('newPasswordCtrl', function($scope, $http) {
+    $scope.changePassword = function() {
+        $http.post('http://localhost:8420/newPassword', {
+                newPass: this.formdata.pass1
+            })
+            .then(function(changeRes) {
+                //  console.log(changeRes);
+            });
+    };
 })
 
 .controller('thingsToDoCtrl', function($scope, $http, $stateParams, $ionicPopup) {
@@ -57,8 +114,24 @@ angular.module('app.controllers', ['app.services'])
 	itemRemoval($scope, $http, $ionicPopup, title, template, $stateParams.plannerId);
 })
 
-.controller('accountPreferencesCtrl', function($scope) {
-
+.controller('accountPreferencesCtrl', function($scope, $http, $state, $ionicPopup) {
+    $scope.deleteAccount = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Delete account',
+            template: 'Are you sure you want to delete your account?'
+        });
+        confirmPopup.then(function(res) {
+            if (res) { // Deletion confirmed
+                $http.post('http://localhost:8420/deleteAccount', {})
+                    .then(function(delRes) {
+                        //  console.log(delRes);
+                    });
+                $state.go('login');
+            } else {
+                console.log('Deletion canceled');
+            }
+        });
+    };
 })
 
 function itemRemoval($scope, $http, $ionicPopup, title, template, plannerID) {
@@ -84,8 +157,7 @@ function itemRemoval($scope, $http, $ionicPopup, title, template, plannerID) {
 function plannerRemoval($scope, $http, $ionicPopup, item) {
 	console.log('removing planner');
 	dbDeleteRequest($http, 'deletePlanner', item, function(delresponse) {
-		console.log(delresponse.data);
-		if (delresponse.data === '0') {
+		if (delresponse.data) {
 			var plannerIndex = $scope.planners.indexOf(item);
 			$scope.planners.splice(plannerIndex, 1);
 		} else {
@@ -99,7 +171,7 @@ function eventRemoval($scope, $http, $ionicPopup, item, plannerID) {
 	console.log('removing event');
 	dbEventDeleteRequest($http, 'deleteEvent', item, plannerID, function(delresponse) {
 			console.log(delresponse.data);
-			if (delresponse.data === '0') {
+			if (delresponse.data) {
 				var eventIndex = $scope.events.indexOf(item);
 				$scope.events.splice(eventIndex, 1);
 			} else {
@@ -164,35 +236,10 @@ function resetPasswordController($scope, resetpassword, $http, $state, $q){
      }
 };
 
-function verificationCodeController($scope, verificationcode, $http, $state, $q){
-     var vm = this;
-
-     console.log("VERIFICATIONCODE Active");
-
-     $scope.verifycode = function(){
-          console.log("VERIFY CALLED");
-          var code = this.formdata.code;
-
-          var verifybool;
-               verifyvbool = verificationcode.getCode(code).then(function(data){
-                    verifybool= data;
-                    if(verifybool == "true")
-                    {
-                         $state.go('tabsController.planner');
-                    }
-                    else{
-                         $state.reload();
-                    }
-
-               });
-     }
-};
-
-
-
 function plannerController($scope,planner,$http,$state,$q){
      var pm = this;
      console.log("PLANNER CONTROLLER ACTIVE");
+		 $scope.currentDate = new Date();
      $scope.formData = {};
      $scope.plan = function(){
           console.log("PLANNER Called");
@@ -212,86 +259,5 @@ function plannerController($scope,planner,$http,$state,$q){
           		$state.reload();
           	}
           });
-     }
-};
-
-
-function loginController($scope,login,$http,$state,$q){
-     //console.log($scope.log_email);
-     //login;
-     var vm = this;
-     console.log("LOGIN CONTROLLER ACTIVE");
-     //console.log(this.formdata.log_email +" "+ this.formdata.log_pass);
-
-     $scope.enter = function(){
-          console.log("ENTER CALLED");
-          console.log(this.formdata.log_email);
-          var em =this.formdata.log_email;
-          var pass=this.formdata.log_pass;
-          var log_bool;
-               log_bool=login.note(em,pass).then(function(data){
-                    log_bool = data;
-                    console.log(log_bool);
-                    if(log_bool){
-                         console.log(log_bool);
-                         $state.go('tabsController.eVaca');
-                    }else{
-                         console.log(log_bool);
-                         $state.reload();
-                    }
-               });
-
-     }
-};
-
-function newPasswordController($scope, newPassword, $http, $state, $q){
-     var np = this;
-     console.log("NEW password controller active");
-
-     $scope.changePass = function(){
-          console.log("CHANGPASSWORD CALLED");
-          var vcode=this.formdata.vcode;
-          var pass1 = this.formdata.pass1;
-          var pass2 = this.formdata.pass2;
-
-          var passbool;
-               passbool = newPassword.getnewPass(vcode,pass1,pass2).then(function(data){
-                    passbool = data;
-                    console.log(passbool);
-                    if(passbool == "true"){
-                         $state.go('login');
-                    }else{
-                         $state.reload();
-                    }
-               });
-     }
-};
-
-
-function signupController($scope,signUp,$http,$state,$q){
-     var sm = this;
-     console.log("SIGNUP CONTROLLER ACTIVE");
-
-     $scope.signup = function(){
-          console.log("SIGNUP CALLED");
-          console.log(this.formdata.email);
-          var name = this.formdata.name;
-          var em = this.formdata.email;
-          var pass=this.formdata.log_pass;
-
-
-          var sign_bool;
-               sign_bool=signUp.note(name,em,pass).then(function(data){
-                    sign_bool = data;
-                    console.log(sign_bool);
-                    if(sign_bool){
-                         console.log(sign_bool);
-                         $state.go('verifcationCode');
-                    }else{
-                         console.log(sign_bool);
-                         $state.reload();
-                    }
-               });
-
      }
 };

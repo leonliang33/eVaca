@@ -1,15 +1,17 @@
 <ion-view title="New Email" id="page14" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
-        <form id="newEmail-form10" class="list ">
+        <form id="newEmail-form10" name="newEmailForm" class="list ">
             <label class="item item-input " id="newEmail-textarea1">
-                <input type="Email" placeholder="New email" ng-model="formdata.email1">
-                </textarea>
+                <input type="email" placeholder="New email" name="email1" ng-model="formdata.email1" required>
             </label>
             <label class="item item-input " id="newEmail-textarea2">
-                <input type="Email" placeholder="Confirm email" ng-model="formdata.email2">
-                </textarea>
+                <input type="email" placeholder="Confirm email" name="email2" ng-model="formdata.email2" ng-pattern="formdata.email1" required>
             </label>
-            <a ui-sref="login" id="newPassword-button18" style="border-radius:1000px 1000px 1000px 1000px;" class=" button button-assertive  button-block " ng-click="changeEmail()">Save Change</a>
+            <div style="color: white;">
+                <p ng-show="newEmailForm.email1.$invalid && !newEmailForm.email1.$pristine">* Must be a valid email address</p>
+                <p ng-show="newEmailForm.email2.$error.pattern">* Emails have to match</p>
+            </div>
+            <a ui-sref="login" ng-disabled="newEmailForm.$invalid" id="newPassword-button18" style="border-radius:1000px 1000px 1000px 1000px;" class=" button button-assertive  button-block " ng-click="changeEmail()">Save Change</a>
         </form>
     </ion-content>
 </ion-view>

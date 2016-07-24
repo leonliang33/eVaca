@@ -41,12 +41,6 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('history', {
-    url: '/History',
-    templateUrl: 'templates/history.html',
-    controller: 'historyCtrl'
-  })
-
   .state('thingsToDo', {
     url: '/events',
     params: {

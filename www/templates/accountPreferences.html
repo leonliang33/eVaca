@@ -2,11 +2,11 @@
     <ion-content padding="true" class="has-header">
         <ion-list id="userSettings" class=" ">
             <ion-item id="changeEmailDivider" class="item item-divider">Change Email</ion-item>
-            <ion-item id="changeEmail" ui-sref="newEmail">theuseremail@mail.com</ion-item>
+            <ion-item id="changeEmail" ui-sref="newEmail">Change Email</ion-item>
             <ion-item id="changeEmailDivider" class="item item-divider">Change Password</ion-item>
             <ion-item id="changePassword" ui-sref="newPassword">Change Password</ion-item>
         </ion-list>
-        <a ui-sref="login" id="eVaca-button14" style="font-size:20px;border-radius:70px 70px 70px 70px;" class=" button button-assertive  button-block icon ion-trash-a"> Delete Account</a>
+        <a id="eVaca-button14" style="font-size:20px;border-radius:70px 70px 70px 70px;" class=" button button-assertive  button-block icon ion-trash-a" ng-click="deleteAccount()"> Delete Account</a>
         <div id="eVaca-button-bar1" class=" button-bar "></div>
     </ion-content>
 </ion-view>

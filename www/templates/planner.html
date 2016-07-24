@@ -1,36 +1,50 @@
 <ion-view title="Planner" id="page9" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
-        <form id="planner-form8" class="list ">
+        <form id="planner-form8" name="plannerForm" class="list ">
             <label class="item item-input " id="planner-location">
                 <span class="input-label">Location</span>
-                <input type="text" placeholder="" ng-model = "formdata.location">
+                <input type="text" name="location" ng-model="formdata.location" ng-maxlength="59" required>
             </label>
+            <div style="color:white;">
+                <p ng-show="plannerForm.location.$invalid && !plannerForm.location.$pristine">* Location is required</p>
+                <p ng-show="plannerForm.location.$error.maxlength">* Location names must be shorter than 59 characters</p>
+            </div>
             <div class="spacer" style="width: 300px; height: 23px;"></div>
             <label class="item item-input " id="planner-input12">
                 <span class="input-label">Budget</span>
-                <input type="number" placeholder="" ng-model= "formdata.budget">
-
+                <input type="number" name="budget" ng-model="formdata.budget" min="0" required>
             </label>
-        </form>
-        <form id = "planner-form6" class="list ">
+            <div style="color:white;">
+                <p ng-show="plannerForm.budget.$invalid && !plannerForm.budget.$pristine">* Budget is required</p>
+                <p ng-show="plannerForm.budget.$error.min">* Budget minimum is 0</p>
+            </div>
+            <div class="spacer" style="width: 300px; height: 23px;"></div>
             <label class="item item-input " id="planner-input10">
                 <span class="input-label">Leaving</span>
-                <input type="date" placeholder="" ng-model = "formdata.sdate">
+                <input type="date" name="sdate" placeholder="" min="{{currentDate | date: 'yyyy-MM-dd'}}" ng-model="formdata.sdate" required>
             </label>
             <label class="item item-input " id="planner-input9">
                 <span class="input-label">Returning</span>
-                <input type="date" placeholder="" ng-model = "formdata.rdate">
+                <input type="date" name="rdate" placeholder="" min="{{currentDate | date: 'yyyy-MM-dd'}}" ng-model="formdata.rdate" required>
             </label>
+            <div style="color:white;">
+                <p ng-show="plannerForm.sdate.$invalid && !plannerForm.sdate.$pristine">* Starting date is required</p>
+                <p ng-show="plannerForm.sdate.$error.min">* Start date should not be less than current date</p>
+                <p ng-show="plannerForm.rdate.$invalid && !plannerForm.rdate.$pristine">* Returning date is required</p>
+                <p ng-show="plannerForm.rdate.$error.min">* Returning date should not be less than current date</p>
+                <!-- <p ng-show="plannerForm.rdate.$error.max">* Maximum number of days currently allowed is 10</p> -->
+            </div>
+            <div class="spacer" style="width: 300px; height: 23px;"></div>
+            <ion-list id="planner-list5" class=" ">
+                <ion-item class="item-icon-right balanced  " id="planner-list-item18">Check Your Ideal Vacation
+                    <i class="icon ion-bonfire"></i>
+                </ion-item>
+                <ion-checkbox name="active" ng-model="formdata.ivacation.active">Active Life</ion-checkbox>
+                <ion-checkbox name="arts" ng-model="formdata.ivacation.arts">Arts &amp; Entertainment</ion-checkbox>
+                <ion-checkbox name="food" ng-model="formdata.ivacation.food">Food </ion-checkbox>
+                <ion-checkbox name="nightlife" ng-model="formdata.ivacation.nightlife">Nightlife </ion-checkbox>
+            </ion-list>
+            <a id="plan-vacation-button" ng-disabled="plannerForm.$invalid" style="border-radius:100px 100px 100px 100px;" class=" button button-assertive  button-block icon ion-ios-world " ng-click="plan()">Let's Adventure</a>
         </form>
-        <ion-list id="planner-list5" class=" ">
-            <ion-item class="item-icon-right balanced  " id="planner-list-item18">Check Your Ideal Vacation
-                <i class="icon ion-bonfire"></i>
-            </ion-item >
-            <ion-checkbox ng-model="formdata.ivacation.active" >Active Life</ion-checkbox>
-            <ion-checkbox ng-model="formdata.ivacation.arts">Arts &amp; Entertainment</ion-checkbox>
-            <ion-checkbox ng-model="formdata.ivacation.food">Food </ion-checkbox>
-            <ion-checkbox ng-model="formdata.ivacation.nightlife">Nightlife </ion-checkbox>
-        </ion-list>
-        <a id="plan-vacation-button" style="border-radius:100px 100px 100px 100px;" class=" button button-assertive  button-block icon ion-ios-world " ng-click="plan()">Let's Adventure</a>
     </ion-content>
 </ion-view>

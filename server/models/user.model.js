@@ -65,9 +65,17 @@ class User{
 
 }
 
-//Delete command to delete account from the database
-User.prototype.del_Account = function(){
+User.prototype.updateUserEmail = function(newEmail) {
+    storage.updateUserEmail(this.email, newEmail);
+}
 
+User.prototype.updateUserPass = function(newPass) {
+    storage.updateUserPassword(this.email, newPass);
+}
+
+//Delete command to delete account from the database
+User.prototype.del_Account = function() {
+    storage.removeUser(this.email);
 }
 
 User.prototype.setName = function(name){
@@ -103,8 +111,8 @@ User.prototype.add_planner = function(days,budget,location,type,email){
           var planners2 =
              {location:String, events:[null]};
           Event1.getApiEvents(function(response) {
-
-             planners2.location = location;
+             // Quick hack to add to fix user's bad location inputs
+             planners2.location = response.businesses[0].location.city;
              planners2.events = response.businesses;
              while(days>=0){
 
@@ -115,7 +123,6 @@ User.prototype.add_planner = function(days,budget,location,type,email){
              }
 
              setTimeout(function(){
-                  console.log(planners2);
                   resolve(storage.addPlannerToUser(email,planners2));
              },3000)
 

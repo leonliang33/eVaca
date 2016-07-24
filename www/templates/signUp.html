@@ -1,21 +1,25 @@
 <ion-view title="Sign up" id="page7" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
-        <form id="signUp-form2" class="list ">
+        <form id="signUp-formid" name="signUpForm" class="list ">
             <ion-list id="signUp-list3">
                 <label class="item item-input " id="signUp-input3">
-                    <!-- <span class="input-label">Name</span> -->
-                    <input type="text" placeholder="name" ng-model="formdata.name">
+                    <input type="text" placeholder="name" name="name" ng-model="formdata.name" required>
                 </label>
                 <label class="item item-input " id="signUp-input6">
-                    <!-- <span class="input-label">E-mail</span> -->
-                    <input type="text" placeholder="email" ng-model = "formdata.email">
+                    <input type="email" placeholder="email" name="email" ng-model="formdata.email" required>
                 </label>
                 <label class="item item-input " id="signUp-input5">
-                    <!-- <span class="input-label">Password</span> -->
-                    <input type="password" placeholder="password" ng-model = "formdata.log_pass">
+                    <input type="password" placeholder="password" name="password" ng-minlength="6" ng-model="formdata.log_pass" required>
                 </label>
             </ion-list>
-            <a id="signUp-button3" style="border-radius:80px 80px 80px 80px;" class=" button button-assertive  button-block " ng-click = "signup()">Sign up</a>
+            <p style="color:red;" ng-if="errorMessage">* {{errorMessage}}</p>
+            <div style="color:white;">
+                <p ng-show="signUpForm.name.$invalid && !signUpForm.name.$pristine">* Name is required</p>
+                <p ng-show="signUpForm.email.$invalid && !signUpForm.email.$pristine">* Must be a valid email address</p>
+                <p ng-show="signUpForm.password.$invalid && !signUpForm.password.$pristine">* Password is required</p>
+                <p ng-show="signUpForm.password.$error.minlength">* Password must be longer than 6 characters</p>
+            </div>
+            <a id="signUp-button3" style="border-radius:80px 80px 80px 80px;" class=" button button-assertive  button-block " ng-disabled="signUpForm.$invalid" ng-click="signup()">Sign up</a>
         </form>
     </ion-content>
 </ion-view>

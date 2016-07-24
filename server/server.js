@@ -62,6 +62,21 @@ app.use(function(req, res,next) {
 
 app.use(session({secret : 'secret'}));
 
+app.post('/newEmail', function(req, res) {
+    sess = req.session;
+    User1.updateUserEmail(req.body.newEmail);
+});
+
+app.post('/newPassword', function(req, res) {
+    sess = req.session;
+    User1.updateUserPass(req.body.newPass);
+});
+
+app.post('/deleteAccount', function(req, res) {
+    sess = req.session;
+    User1.del_Account();
+});
+
 app.get('/main', function(req, res) {
 	sess = req.session;
      console.log("MAIN :: "+email);
@@ -99,7 +114,7 @@ app.post('/planner', function(req,res){
           vacaType += 'active,'
      }
      console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
-     var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000));
+     var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000)) + 1;
      console.log("Days = "+num_of_days);
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
@@ -108,9 +123,7 @@ app.post('/planner', function(req,res){
           .then(result => {
                console.log("add planner result" + result);
                User1.load(email).then(dbres => {
-                    console.log(dbres);
                     // Sends the most recently added planner
-                    console.log(dbres.planner[dbres.planner.length-1]);
                     res.send(dbres.planner[dbres.planner.length-1]);
                });
           });
@@ -145,17 +158,8 @@ app.post('/signup', function(req,res){
     User1= new User(email);
     User1.setPassword(req.body.password);
     User1.setName(req.body.name);
-    User1.save().then(results=>{
-         storage.find_by_email(email).then(res_find => {
-              console.log("first planner to be deleted "+res_find.planner[0]._id);
-              console.log("email from the person to be deleted = "+ email);
-              User1.delete_planner(res_find.planner[0]._id).then(r =>
-                   {
-                       res.send(results);
-                   });
-         })
-    });
-
+    User1.setEmail(req.body.email);
+    User1.save().then(results=> res.send(results));
 });
 
 
@@ -217,17 +221,11 @@ app.get('/logout',function(req,res){
 });
 
 app.post('/deletePlanner', function(req, res) {
-    console.log(req.body.itemId);
-    res.send('0');
-    //storage.removePlanner(req.body.itemId);
-    User1.delete_planner(req.body.itemId);
+    User1.delete_planner(req.body.itemId).then(results => res.send(results));
 });
 
 app.post('/deleteEvent', function(req, res) {
-    console.log(req.body.itemId);
-    User1.delete_event(req.body.plannerID,req.body.itemId);
-    res.send('0');
-    //storage.removeEvent(email, req.body.itemId);
+    User1.delete_event(req.body.plannerID, req.body.itemId).then(results => res.send(results))
 });
 
 //Server is currently serving on port 8420
