@@ -1,7 +1,7 @@
 <ion-view title="Home" id="page6" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class="has-header">
         <ion-list id="userVacations" class=" " can-swipe="true">
-            <ion-item id="userVacation1" ng-repeat="planner in planners" ng-click="getPlannerEvents(planner._id)">
+            <ion-item id="userVacation1" class="item-text-wrap" ng-repeat="planner in planners" ng-click="getPlannerEvents(planner._id)">
                 <h2>{{planner.location}}</h2>
                 <ion-option-button class="ion-trash-a" ng-click="remove(planner)"></ion-option-button>
             </ion-item>
