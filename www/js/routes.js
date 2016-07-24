@@ -19,16 +19,7 @@ angular.module('app.routes', [])
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller:
-    // function($scope,$state){
-    //  //     if($scope.successLoginCtrl == "yes"){
-    //  //          $state.go("/login");
-    //  //     }else{
-    //  //          $state.go('loginCtrl');
-    //  //     }
-    //       $state.go('loginCtrl');
-    // }
-    'loginCtrl'
+    controller: 'loginCtrl'
   })
 
   .state('tabsController.eVaca', {
@@ -58,6 +49,12 @@ angular.module('app.routes', [])
     url: '/signup',
     templateUrl: 'templates/signUp.html',
     controller: 'signUpCtrl'
+  })
+
+  .state('recommendations', {
+    url: '/recommendations',
+    templateUrl: 'templates/recommendations.html',
+    controller: 'recommendationsCtrl'
   })
 
   .state('tabsController.planner', {

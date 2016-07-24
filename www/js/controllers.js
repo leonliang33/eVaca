@@ -126,6 +126,10 @@ angular.module('app.controllers', ['app.services'])
 	itemRemoval($scope, $http, $ionicPopup, title, template, $stateParams.plannerId);
 })
 
+.controller('recommendationsCtrl', function($scope, $http, $state, $ionicPopup) {
+
+})
+
 .controller('accountPreferencesCtrl', function($scope, $http, $state, $ionicPopup) {
     $scope.deleteAccount = function() {
         var confirmPopup = $ionicPopup.confirm({
