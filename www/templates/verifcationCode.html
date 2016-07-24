@@ -1,11 +1,15 @@
 <ion-view title="Verifcation Code" hide-nav-bar="true" id="page10" style="background-color:#2BB2B9;" class=" ">
     <ion-content padding="true" class=" manual-remove-top-padding">
         <div class="spacer" style="width: 300px; height: 33px;"></div>
-        <form id="reset-form" class="list ">
-            <label class="item item-input " id="budget_amt">
-                <input id="budget_amt" type="text" value="" placeholder="verification code" ng-model="formdata.code">
+        <form id="veriFormid" name="verifForm" class="list">
+            <label class="item item-input">
+                <input type="text" value="" name="code" placeholder="verification code" ng-model="formdata.code" required>
             </label>
+            <div style="color:white;">
+                <p ng-show="verifForm.code.$invalid && !verifForm.code.$pristine">* Verification code is required</p>
+                <!-- <p ng-show="verifForm.code.$error.minlength">* Verification code must be longer than 6 characters</p> -->
+            </div>
         </form>
-        <a id="verifcationCode-button4" style="border-radius:80px 80px 80px 80px;" class="button button-assertive button-block icon ion-paper-airplane" ng-click="verifycode()"> Submit</a>
+        <a id="verifcationCode-button4" ng-disabled="verifForm.$invalid" style="border-radius:80px 80px 80px 80px;" class="button button-assertive button-block icon ion-paper-airplane" ng-click="verifycode()"> Submit</a>
     </ion-content>
 </ion-view>

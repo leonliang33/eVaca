@@ -3,19 +3,21 @@
         <div class="spacer" style="width: 300px; height: 33px;"></div>
         <h1 id="login-heading1" style="color:#F8F5F5;text-align:center;" class=" ">eVaca</h1>
         <div class="spacer" style="width: 300px; height: 40px;"></div>
-        <form id="login-form1" class="list ">
+        <form id="login-form1" name="loginForm" class="list ">
             <ion-list id="login-list2" class=" ">
                 <label class="item item-input " id="login-input1">
-                    <!-- <span class="input-label">E-Mail</span> -->
-                    <input type="text" placeholder="email" ng-model="formdata.log_email">
+                    <input type="email" placeholder="email" name="email" ng-model="formdata.log_email" required>
                 </label>
                 <label class="item item-input " id="login-input2">
-                    <!-- <span class="input-label">Password</span> -->
-                    <input type="password" placeholder="password" ng-model="formdata.log_pass">
+                    <input type="password" placeholder="password" name="password" ng-minlength="6" ng-model="formdata.log_pass" required>
                 </label>
             </ion-list>
-            <!-- <input type="hidden" value="no" ng-model="successLoginCtrl" ></input> -->
-            <a id="login-button1" class=" button button-assertive  button-block " ng-click="enter()">Log in</a>
+            <p style="color:red;" ng-if="errorMessage">* {{errorMessage}}</p>
+            <div style="color:white;">
+                <p ng-show="loginForm.email.$invalid && !loginForm.email.$pristine">* Must be a valid email address</p>
+                <p ng-show="loginForm.password.$invalid && !loginForm.password.$pristine">* Password is required</p>
+            </div>
+            <a id="login-button1" class=" button button-assertive  button-block " ng-disabled="loginForm.$invalid" ng-click="enter()">Log in</a>
             <a ui-sref="signUp" id="login-button2" class=" button button-assertive  button-block ">Create Account</a>
             <a ui-sref="resetPassword" id="login-button13" style="color:#0500e8;" class=" button button-clear button-block">Forgot password?</a>
         </form>
