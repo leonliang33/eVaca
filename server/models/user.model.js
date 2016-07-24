@@ -123,7 +123,6 @@ User.prototype.add_planner = function(days,budget,location,type,email){
              }
 
              setTimeout(function(){
-                  console.log(planners2);
                   resolve(storage.addPlannerToUser(email,planners2));
              },3000)
 

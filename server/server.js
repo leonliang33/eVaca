@@ -114,7 +114,7 @@ app.post('/planner', function(req,res){
           vacaType += 'active,'
      }
      console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
-     var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000));
+     var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000)) + 1;
      console.log("Days = "+num_of_days);
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
@@ -123,9 +123,7 @@ app.post('/planner', function(req,res){
           .then(result => {
                console.log("add planner result" + result);
                User1.load(email).then(dbres => {
-                    console.log(dbres);
                     // Sends the most recently added planner
-                    console.log(dbres.planner[dbres.planner.length-1]);
                     res.send(dbres.planner[dbres.planner.length-1]);
                });
           });
