@@ -101,16 +101,16 @@ app.post('/planner', function(req,res){
      var vacaType=" ";
      var JvacaType = JSON.stringify(req.body.idealvacation);
      console.log("JSON type = "+JvacaType);
-     if(JvacaType.indexOf('arts')){
+     if(JvacaType.indexOf('arts') >= 0){
           vacaType+='arts,';
      }
-     if(JvacaType.indexOf('food')){
+     if(JvacaType.indexOf('food') >= 0){
           vacaType += 'food,';
      }
-     if(JvacaType.indexOf('nightlife')){
+     if(JvacaType.indexOf('nightlife')>=0){
           vacaType += 'nightlife,'
      }
-     if(JvacaType.indexOf('active')){
+     if(JvacaType.indexOf('active')>=0){
           vacaType += 'active,'
      }
      console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
@@ -211,6 +211,7 @@ app.post('/deletePlanner', function(req, res) {
 app.post('/deleteEvent', function(req, res) {
     User1.delete_event(req.body.plannerID, req.body.itemId).then(results => res.send(results))
 });
+
 
 //Server is currently serving on port 8420
 app.listen(8420, function startServer() {
