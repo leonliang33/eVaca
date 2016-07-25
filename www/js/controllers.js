@@ -2,8 +2,6 @@
 
 angular.module('app.controllers', ['app.services'])
 
-// .controller('plannerCtrl', ['$scope','planner','$http','$state','$q',plannerController])
-
 .controller('loginCtrl', function($scope, $http, $state) {
     $scope.enter = function() {
         $http.post('http://localhost:8420/', {
@@ -154,39 +152,6 @@ angular.module('app.controllers', ['app.services'])
 	var title = 'Delete event';
 	var template = 'Are you sure you want to delete this event?';
 	itemRemoval($scope, $http, $ionicPopup, title, template, $stateParams.plannerId);
-})
-
-.controller('recommendationsCtrl', function($scope, $http, $state, $ionicPopup, planner) {
-	$http.get('http://localhost:8420/recommendations').then(function(response) {
-		$scope.recommendedPlanners = response.data;
-	});
-
-	$scope.getPlannerEvents = function(id) {
-		$state.go('thingsToDo', {
-			plannerId: id
-		});
-	};
-
-	$scope.add = function(addedPlanner) {
-		var alertPopup = $ionicPopup.alert({
-			title: 'Added planner',
-			template: 'Planner has been added to your list of planners'
-		});
-
-		$http.post('http://localhost:8420/recommendations', {
-			params: {
-				plannerId: addedPlanner._id
-			}
-		}).then(function(response) {
-			var plannerIndex = $scope.recommendedPlanners.indexOf(addedPlanner);
-			$scope.recommendedPlanners.splice(plannerIndex, 1);
-			planner.setNewPlanner(addedPlanner); // For eVaca $watch
-
-			alertPopup.then(function(res) {
-				console.log('User pressed ok on add planner recommendation');
-			});
-		});
-	};
 })
 
 .controller('accountPreferencesCtrl', function($scope, $http, $state, $ionicPopup) {
