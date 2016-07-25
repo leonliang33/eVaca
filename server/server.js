@@ -175,8 +175,8 @@ app.post('/verificationcode', function (req, res) {
     if(req.body.verificationcode == server_code){
          res.send("true");
     }else{
-         //res.send("false");
-         res.send("true");
+         res.send("false");
+         //res.send("true");
     }
 });
 
