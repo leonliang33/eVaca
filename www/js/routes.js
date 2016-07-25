@@ -51,12 +51,6 @@ angular.module('app.routes', [])
     controller: 'signUpCtrl'
   })
 
-  .state('recommendations', {
-    url: '/recommendations',
-    templateUrl: 'templates/recommendations.html',
-    controller: 'recommendationsCtrl'
-  })
-
   .state('tabsController.planner', {
     url: '/planner',
     views: {
