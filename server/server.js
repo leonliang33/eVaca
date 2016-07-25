@@ -98,20 +98,24 @@ app.post('/planner', function(req,res){
      sess.Leaving=req.body.Leaving;
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
-     var vacaType=" ";
+     var vacaType="";
      var JvacaType = JSON.stringify(req.body.idealvacation);
      console.log("JSON type = "+JvacaType);
-     if(JvacaType.indexOf('arts') >= 0){
-          vacaType+='arts,';
-     }
-     if(JvacaType.indexOf('food') >= 0){
-          vacaType += 'food,';
-     }
-     if(JvacaType.indexOf('nightlife')>=0){
-          vacaType += 'nightlife,'
-     }
-     if(JvacaType.indexOf('active')>=0){
-          vacaType += 'active,'
+     if (JvacaType === undefined) {
+         vacaType = 'active,arts,food,nightlife,';
+     } else {
+         if (JvacaType.indexOf('arts') >= 0) {
+             vacaType += 'arts,';
+         }
+         if (JvacaType.indexOf('food') >= 0) {
+             vacaType += 'food,';
+         }
+         if (JvacaType.indexOf('nightlife') >= 0) {
+             vacaType += 'nightlife,'
+         }
+         if (JvacaType.indexOf('active') >= 0) {
+             vacaType += 'active,'
+         }
      }
      console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
      var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000)) + 1;

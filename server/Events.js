@@ -86,10 +86,11 @@ Event.prototype.getApiEvents = function(callback) {
      if(days_lim > 20){
           days_lim = 20;
      }
+     console.log("this theme " +this.theme);
     yelp.search({
             location: this.dest,
             sort: 2, // Highest rated
-            term: this.theme,
+            category_filter: this.theme,            
             limit: days_lim
         })
         .then(function(data) {
