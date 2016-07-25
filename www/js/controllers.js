@@ -110,12 +110,14 @@ angular.module('app.controllers', ['app.services'])
     };
 })
 
-.controller('plannerCtrl', function($scope, $http, $state, $ionicLoading, planner) {
+.controller('plannerCtrl', function($scope, $http, $state, $ionicLoading, $timeout, planner) {
 	$scope.currentDate = new Date();
 
 	$scope.plan = function() {
     $ionicLoading.show();
-
+    $timeout(function () {
+      $ionicLoading.hide();
+    }, 1500);
 		$http.post('http://localhost:8420/planner', {
 			location: this.formdata.location,
 			budget: this.formdata.budget,
