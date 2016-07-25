@@ -31,12 +31,6 @@ var User1;
 
 var planners2 =
    {location:String, events:[null]};
-// var newUser = new storage.User({
-//      name: String,
-//      email: String,
-//      password: String,
-//      planner: [null]
-// });
 
 var server_code = "";
 //******************************************************************************
@@ -99,8 +93,9 @@ app.post('/planner', function(req,res){
      sess.returningdate=req.body.returningdate;
      sess.idealvacation=req.body.idealvacation;
      var vacaType="";
+
+     //Turn request into a string to be read and reindexed
      var JvacaType = JSON.stringify(req.body.idealvacation);
-    //  console.log("JSON type = "+JvacaType);
      if (JvacaType === undefined) {
          vacaType = 'active,arts,food,nightlife,';
      } else {
@@ -118,10 +113,13 @@ app.post('/planner', function(req,res){
          }
      }
      console.log("vacation type = "+ vacaType.substring(0,vacaType.length-1));
+
+     //Calculate number of days the user inputted
      var num_of_days = Math.abs(Math.floor((Date.parse(sess.Leaving)-Date.parse(req.body.returningdate))/86400000)) + 1;
      console.log("Days = "+num_of_days);
      var Event1 = new events(num_of_days,req.body.budget,req.body.location, vacaType.substring(0,vacaType.length-1));
 
+     //Creates a planner based on the preferences and saves to DB
      console.log("About to call events get api ");
      User1.add_planner(num_of_days,req.body.budget,req.body.location,vacaType.substring(0,vacaType.length-1),email)
           .then(result => {
@@ -133,7 +131,7 @@ app.post('/planner', function(req,res){
           });
 });
 
-//Receive post requests from client
+//Login function, checks and authenticates users
 app.post("/", function (req, res) {
      email = "";
     sess=req.session;
@@ -147,6 +145,7 @@ app.post("/", function (req, res) {
     storage.login_verification(req.body.email,req.body.password).then(result => res.send(result));
 });
 
+//Sign up function, creates new entry in the DB
 app.post('/signup', function(req,res){
     sess=req.session;
     console.log("Post received from post");
@@ -166,7 +165,9 @@ app.post('/signup', function(req,res){
     User1.save().then(results=> res.send(results));
 });
 
-
+/*Checks to see if user inputted correct verification code
+  returns true or false
+*/
 app.post('/verificationcode', function (req, res) {
      sess=req.session;
     console.log("Post received from post :: VERIFICATION CODE");
@@ -176,7 +177,6 @@ app.post('/verificationcode', function (req, res) {
          res.send("true");
     }else{
          res.send("false");
-         //res.send("true");
     }
 });
 
@@ -208,10 +208,12 @@ app.get('/logout',function(req,res){
      })
 });
 
+//Deletes planner given their unique id
 app.post('/deletePlanner', function(req, res) {
     User1.delete_planner(req.body.itemId).then(results => res.send(results));
 });
 
+//Deletes event given their unique id
 app.post('/deleteEvent', function(req, res) {
     User1.delete_event(req.body.plannerID, req.body.itemId).then(results => res.send(results))
 });
@@ -224,7 +226,14 @@ app.listen(8420, function startServer() {
 });
 
 
-//******FUNCTIONS*******//
+//*******************************FUNCTIONS************************************//
+/** ****************************************************************************
+  * Name:       makeid()
+  *             Function creates a unique ID
+  *
+  * @param
+  * @returns    String
+  *****************************************************************************/
 function makeid()
 {
     var text = "";
@@ -236,6 +245,14 @@ function makeid()
     return text;
 }
 
+/** ****************************************************************************
+  * Name:       sendEmail()
+  *             Function uses notemailer to create a transport and sends a
+  *             verification email with the verification code
+  *
+  * @param      email <string> :: code <string>
+  * @returns
+  *****************************************************************************/
 function sendEmail(email,code){
      //sess=req.session;
      var rec_email = email;
@@ -267,6 +284,14 @@ console.log('SMTP Configured');
      });
 }
 
+
+/** ****************************************************************************
+  * Name:       sendForgotPassword()
+  *             Function sends an email containing their new password
+  *
+  * @param      email <string> :: tempPassword <string>
+  * @returns    boolean true or false
+  *****************************************************************************/
 function sendForgotPassword(email, tempPassword){
      //sess=req.session;
      var rec_email = email;

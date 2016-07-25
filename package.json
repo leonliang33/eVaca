@@ -9,6 +9,7 @@
     "express-session": "^1.14.0",
     "firebase": "^3.2.0",
     "mocha": "^2.5.3",
+    "mongo": "^0.1.0",
     "mongoose": "^4.5.3",
     "node-googleplaces": "^0.1.2",
     "nodemailer": "^2.5.0",
